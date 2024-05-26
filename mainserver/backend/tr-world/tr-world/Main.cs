@@ -9,15 +9,18 @@ namespace tr_world
 {
     public class Main : Resource
     {
+        // Start Func
         public override void OnStart()
         {
-            Alt.Log("Server-c#-backend is starting!");
+            Alt.Log("Server-C#-backend is starting!");
+
 
         }
 
+        // Close Func
         public override void OnStop()
         {
-            throw new NotImplementedException();
+            Alt.Log("Server-C#-backend is stopping!");
         }
     }
 }
