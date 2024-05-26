@@ -396,3 +396,13 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+mainserver/altv-server.exe
+mainserver/altv-crash-handler.exe
+mainserver/AltV.Net.Host.runtimeconfig.json
+mainserver/AltV.Net.Host.dll
+mainserver/data/clothes.bin
+/mainserver/data
+mainserver/libnode.dll
+mainserver/modules/csharp-module.dll
+mainserver/modules/js-bytecode-module.dll
+mainserver/modules/js-module.dll
