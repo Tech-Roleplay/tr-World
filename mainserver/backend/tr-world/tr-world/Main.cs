@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AltV.Net;
+using AltV.Net.Elements.Entities;
+using tr_world.Base;
 
 namespace tr_world
 {
@@ -15,6 +17,12 @@ namespace tr_world
             Alt.Log("Server-C#-backend is starting!");
 
 
+        }
+
+        // Player Factory
+        public override IEntityFactory<IPlayer> GetPlayerFactory()
+        {
+            return new BPlayerFactory();
         }
 
         // Close Func
