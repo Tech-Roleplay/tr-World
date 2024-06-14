@@ -1,0 +1,77 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "tr-world/1.0.0": {
+        "dependencies": {
+          "AltV.Net": "16.0.15"
+        },
+        "runtime": {
+          "tr-world.dll": {}
+        }
+      },
+      "AltV.Net/16.0.15": {
+        "dependencies": {
+          "AltV.Net.Shared": "16.0.15"
+        },
+        "runtime": {
+          "lib/net6.0/AltV.Net.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "AltV.Net.CApi/16.0.15": {
+        "runtime": {
+          "lib/net6.0/AltV.Net.CApi.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "AltV.Net.Shared/16.0.15": {
+        "dependencies": {
+          "AltV.Net.CApi": "16.0.15"
+        },
+        "runtime": {
+          "lib/net6.0/AltV.Net.Shared.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "tr-world/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AltV.Net/16.0.15": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-D1dlhHvPS7hnQXwzEGVYvhpkN8Iib89Xozp7RQon9oGXuGe91mSn2xXxXyTmx0+/YQww8frlEjt+FCHUMIbUAA==",
+      "path": "altv.net/16.0.15",
+      "hashPath": "altv.net.16.0.15.nupkg.sha512"
+    },
+    "AltV.Net.CApi/16.0.15": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-G4MAuPBFWlhr31bRbloqwrfAa/tBkn+iWPrT5iqC1X0hgyP2ajR13GIqrQOGfQCnDNJPOWUTmXpp9eestiLE/w==",
+      "path": "altv.net.capi/16.0.15",
+      "hashPath": "altv.net.capi.16.0.15.nupkg.sha512"
+    },
+    "AltV.Net.Shared/16.0.15": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-OtYIDuVYpdxksNHhPhboVhGtJOUktNoeZnPPs6zjxrnbbz9VjIrFHRgo8da30urb86jgRlpi5mBJ4YjPv7eSwA==",
+      "path": "altv.net.shared/16.0.15",
+      "hashPath": "altv.net.shared.16.0.15.nupkg.sha512"
+    }
+  }
+}
