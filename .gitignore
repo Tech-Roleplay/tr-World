@@ -406,3 +406,4 @@ mainserver/libnode.dll
 mainserver/modules/csharp-module.dll
 mainserver/modules/js-bytecode-module.dll
 mainserver/modules/js-module.dll
+mainserver/server.toml
