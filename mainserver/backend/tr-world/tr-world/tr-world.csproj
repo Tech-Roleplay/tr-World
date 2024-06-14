@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>tr_world</RootNamespace>
@@ -15,6 +15,8 @@
 	</PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AltV.Net" Version="16.0.15" />
+    <PackageReference Include="AltV.Net.Resources.Chat.Api" Version="16.0.15" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>
     <AllOutputFiles Include="$(OutputPath)\publish\*.*" />
