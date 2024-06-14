@@ -1,14 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>tr_world</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="AltV.Net" Version="16.0.15" />
   </ItemGroup>
+  <ItemGroup>
+    <AllOutputFiles Include="$(OutputPath)\publish\*.*" />
+</ItemGroup>
 
+<Target Name="CopyFiles" AfterTargets="publish">
+    <PropertyGroup>
+        <CopiedFiles>$(OutputPath)\publish\*.*</CopiedFiles>
+        <TargetLocation Condition=" '$(Configuration)' == 'Release' ">../path/where/dlls/should/be/copied/</TargetLocation>
+    </PropertyGroup>
+    <Copy Condition=" '$(TargetLocation)' != '' " SourceFiles="@(AllOutputFiles)" DestinationFolder="$(TargetLocation)" SkipUnchangedFiles="false" />
+</Target>
 </Project>

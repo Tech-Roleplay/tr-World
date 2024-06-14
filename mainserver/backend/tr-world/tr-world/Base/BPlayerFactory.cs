@@ -10,7 +10,7 @@ namespace tr_world.Base
 {
     internal class BPlayerFactory : IEntityFactory<IPlayer>
     {
-        public IPlayer Create(ICore core, IntPtr entityPointer, uint id)
+        public IPlayer Create (ICore core, IntPtr entityPointer, uint id)
         {
             return new BPlayer(core, entityPointer, id);
         }
