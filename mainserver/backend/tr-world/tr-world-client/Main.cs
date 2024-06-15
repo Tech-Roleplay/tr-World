@@ -12,7 +12,7 @@ namespace tr_world_client
 
         public override void OnStop()
         {
-            throw new NotImplementedException();
+            Alt.Log("Bye from Client");
         }
     }
 }

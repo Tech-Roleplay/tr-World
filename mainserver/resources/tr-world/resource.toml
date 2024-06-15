@@ -1,2 +1,8 @@
 type = "csharp"
-main = "bin/ExampleProject.dll"
+main = "server/tr-world.dll"
+
+client-type = "csharp"
+client-main = "client/tr-world-client.dll"
+client-files = [
+    "client/*"
+]
