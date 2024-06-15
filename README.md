@@ -1,2 +1,14 @@
 # tr World
- A C# based gamemode
+ A open-source C# based roleplay gamemode.
+
+> [!NOTE]
+> Under Development
+
+## Installation
+
+> [!CAUTION]
+> Doesn't have a documentation.
+
+## ~~Construbting~~
+
+**TBA**
