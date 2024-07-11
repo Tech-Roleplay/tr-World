@@ -1,4 +1,4 @@
-﻿using AltV.Net;
+using AltV.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;

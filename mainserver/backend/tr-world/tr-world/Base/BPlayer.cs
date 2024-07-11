@@ -23,6 +23,11 @@ namespace tr_world.Base
         /// <summary>
         public string CharId { get; set; }
 
+        /// <summary>
+        /// This property is used to store Group of a player.
+        /// <summary>
+        public string Group {  get; protected set; }
+
 
         /// <summary>
         /// This property is used to store the first name of a player.
@@ -30,9 +35,9 @@ namespace tr_world.Base
         public string Firstname { get; set; }
 
         /// <summary>
-        /// This property is used to store the last name of a player.
+        /// This property is used to store the surname of a player.
         /// </summary>
-        public string Lastname { get; set; }
+        public string Surname { get; set; }
 
 
         /// <summary>
@@ -41,15 +46,29 @@ namespace tr_world.Base
         public char Sex { get; set; }
 
         /// <summary>
+        /// This property is used to store the height of a player.
+        /// </summary>
+        public int Height { get; set; }
+
+        /// <summary>
         /// This property is used to store the birthday of a player.
         /// </summary>
         public DateOnly Birthday { get; set; }
 
+        /// <summary>
+        /// This property is used to store the backstory of a player. (AI Ped will use it.)
+        /// </summary>
+        public string Backstory { get; set; }
+
         #endregion
+
+        #region Interfaces Job & Gang
 
         public IJob Job { get; set; }
 
         public IGang Gang { get; set; }
+
+        #endregion
 
         #region Money
 
@@ -65,29 +84,46 @@ namespace tr_world.Base
 
         #endregion
 
+        #region Invenotry
+        public string Inventory {  get; set; }
+        #endregion
+
+        #region Detailed Metas
+        #region Booleans
+        public bool IsPlyDead { get; set; }
+        public bool IsPlyDown { get; set; }
+        public bool IsPlyHeadshotted { get; set; }
+        public bool IsPlyLogout { get; set; }
+
+        #endregion
+
+        #region phone infos
+
+        #endregion
+
+        #endregion
 
 
-        /**
-         * BPlayer Constructor:
-         * This constructor is used to initialize a new instance of the BPlayer class.
-         * 
-         * @param core: The core instance of the game.
-         * @param nativePointer: A pointer to the native player instance.
-         * @param id: The unique ID of the player.
-         */
+
+        /// <summary>
+        /// This constructor is used to initialize a new instance of the BPlayer class.
+        /// </summary>
+        /// <param name="core"> The core instance of the game.</param>
+        /// <param name="nativePointer"> A pointer to the native player instance.</param>
+        /// <param name="id"> The unique ID of the player.</param>
         public BPlayer(ICore core, IntPtr nativePointer, uint id) : base(core, nativePointer, id)
         {
             /**
-             * Initialize the metaData instance with default values.
+             * Initialize the default instance with default values.
              */
 
             Job = new TJob();
             Gang = new TGang();
 
-
+            Group = "Player";
 
             Firstname = "ABC";
-            Lastname = "DEF";
+            Surname = "DEF";
         }
     }
 }
