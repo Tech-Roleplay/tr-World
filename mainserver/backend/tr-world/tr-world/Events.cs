@@ -33,8 +33,14 @@ namespace tr_world
         [ScriptEvent(ScriptEventType.PlayerDisconnect)]
         public void PlayerDisconnect(BPlayer player, string reason)
         {
+            if (reason == string.Empty)
+            {
+                reason = "disconnected by user or else";
+            }
             //AltChat.SendBroadcast($"[{player.Id}] The Player {player.Name} has left the Server. Bye.");
             Alt.Log($"[{player.Id}] The Player {player.Name} has left the Server. Discord-ID is: {player.DiscordId}. Bye. Of Reason: {reason}.");
+
+            Utility.DClog($"[{player.Id}] The Player {player.Name} has left the Server. Discord-ID is: {player.DiscordId}. Bye. Of Reason: {reason}.", "Disconnect-Log", "https://ptb.discord.com/api/webhooks/1169370156791771216/13iMjj-nh-h1LOiSFw-W1Usz95gJyIbt9niM-cv5mq42CYLWCYXaDctwkjqCN2p5Mszl", "https://altv.mp/img/branding/logo_black.png");
         }
 
         // death handle || only for dev

@@ -108,7 +108,7 @@ namespace tr_world.Base
 
         #endregion
 
-
+        #region Basic Constructor
 
         /// <summary>
         /// This constructor is used to initialize a new instance of the BPlayer class.
@@ -148,5 +148,32 @@ namespace tr_world.Base
             Firstname = "ABC";
             Surname = "DEF";
         }
+
+        #endregion
+
+        #region Funtions
+
+        #region Money functions
+
+
+        public static void AddMoney(BPlayer target, int amount, string reason, string moneytype )
+        {
+
+        }
+        // add function
+        // add
+        #endregion
+
+        // all from job
+        #region job functions
+
+        #endregion
+        // all from 
+
+        #region gang functions
+
+        #endregion
+
+        #endregion
     }
 }

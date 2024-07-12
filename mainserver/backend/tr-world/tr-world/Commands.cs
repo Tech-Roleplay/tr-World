@@ -22,9 +22,17 @@ namespace tr_world
         [Command("veh")]
         public void CMD_veh(BPlayer player, string VehicleName)
         {
-            IVehicle veh = Alt.CreateVehicle(Alt.Hash(VehicleName), new Position(player.Position.X, player.Position.Y + 1.5f, player.Position.Z), player.Rotation);
-            veh.NumberplateText = player.Name;
-            veh.EngineOn = true;
+            if (VehicleName != null)
+            {
+                IVehicle veh = Alt.CreateVehicle(Alt.Hash(VehicleName), new Position(player.Position.X, player.Position.Y + 1.5f, player.Position.Z), player.Rotation);
+                veh.NumberplateText = player.Name;
+                veh.EngineOn = true;
+            }
+            else
+            {
+                player.SendChatMessage($"Vehicle Name: {VehicleName} was not founded.");
+            }
+            
         }
 
     }
