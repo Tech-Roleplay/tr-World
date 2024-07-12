@@ -16,6 +16,7 @@
   <ItemGroup>
     <PackageReference Include="AltV.Net" Version="16.0.16" />
     <PackageReference Include="AltV.Net.Resources.Chat.Api" Version="16.0.16" />
+    <PackageReference Include="MySqlConnector" Version="2.3.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>

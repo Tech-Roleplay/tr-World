@@ -15,6 +15,8 @@ namespace tr_world
         public override void OnStart()
         {
             Alt.Log("Server-C#-backend is starting!");
+
+            Databank.InitConnection();
         }
 
         // Player Factory

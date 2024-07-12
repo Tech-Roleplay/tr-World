@@ -1,8 +1,9 @@
-using AltV.Net;
+﻿using AltV.Net;
 
 using AltV.Net.Elements.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,6 +91,7 @@ namespace tr_world.Base
 
         #region Detailed Metas
         #region Booleans
+        public bool IsCuffed { get; set; }
         public bool IsPlyDead { get; set; }
         public bool IsPlyDown { get; set; }
         public bool IsPlyHeadshotted { get; set; }
@@ -98,6 +100,9 @@ namespace tr_world.Base
         #endregion
 
         #region phone infos
+        public int phonenumber {get; set;}
+        public string phone_profilpic_url {get; set;}
+        public string phone_name {get; set;}
 
         #endregion
 
@@ -121,6 +126,24 @@ namespace tr_world.Base
             Gang = new TGang();
 
             Group = "Player";
+
+            // 1-1 Change for custome values
+            Job.Name = "unemployed";
+            Job.Label = "Civilian";
+            Job.IsBoss = false;
+            Job.OnDuty = true;
+            Job.Type = "none";
+            Job.Payment = 30;
+            Job.Grade_level = 0;
+            Job.Grade_name = "No Grades";
+
+            Gang.Name = "none";
+            Gang.Label = "No Gang Affiliaton";
+            Gang.IsBoss = false;
+            Gang.OnDuty = false;
+            Gang.Type = "none";
+            Gang.Grade_level = 0;
+            Gang.Grade_name = "No Grades";
 
             Firstname = "ABC";
             Surname = "DEF";

@@ -10,5 +10,6 @@ namespace tr_world.Base
     // Discord Class
     public class Discord : IScript
     {
+
     }
 }
