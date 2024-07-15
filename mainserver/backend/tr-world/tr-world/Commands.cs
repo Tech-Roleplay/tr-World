@@ -35,5 +35,21 @@ namespace tr_world
             
         }
 
+        [Command("repair")]
+        public void CMD_repair(BPlayer player)
+        {
+            var veh = player.Vehicle;
+
+            if ( veh != null )
+            {
+                veh.Repair();
+            }
+            else
+            {
+                player.SendChatMessage("You are not in a vehicle.");
+            }
+        }
+
+
     }
 }

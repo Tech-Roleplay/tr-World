@@ -1,0 +1,31 @@
+{
+    "name": "tr-world",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Tech-Roleplay/tr-World.git"
+    },
+    "keywords": [
+        "c#",
+        "and",
+        "js"
+    ],
+    "author": "TheBlokker",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Tech-Roleplay/tr-World/issues"
+    },
+    "homepage": "https://github.com/Tech-Roleplay/tr-World#readme",
+    "devDependencies": {
+        "@altv/types-client": "^16.2.3",
+        "@altv/types-natives": "^16.2.0",
+        "@altv/types-shared": "^16.2.1",
+        "@altv/types-webview": "^16.2.1"
+    },
+    "type": "module"
+}

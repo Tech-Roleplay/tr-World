@@ -7,7 +7,7 @@ port = 7788
 # The amount of players that can play on your server concurrently
 players = 256
 # The password required to join your server
-password = "mySecretPassword"
+#password = "mySecretPassword"
 # If the server should be visible on the masterlist in the alt:V client
 announce = false
 # Token to announce the server to the masterlist
@@ -79,7 +79,8 @@ sendPlayerNames = true
 
 # An array of all resources that should be loaded
 resources = [
-    "tr-world"#,
+    "tr-world",
+    "altv-indicators"
     # Since alt:V 15.0 you can even use * wildcard character to use all folders as resources
     #"vehicles/*",
 ]
