@@ -36,9 +36,9 @@ namespace tr_world
         }
 
         [Command("repair")]
-        public void CMD_repair(BPlayer player)
+        public void CMD_repair(BPlayer player, string[] args)
         {
-            var veh = player.Vehicle;
+            IVehicle veh = player.Vehicle;
 
             if ( veh != null )
             {

@@ -12,5 +12,14 @@ namespace tr_world.Controllers
         {
 
         }
+        public static void SaveBPlayerData() 
+        {
+            
+        }
+        public static void UpdateBPlayerData() 
+        {
+            
+        }
+
     }
 }
