@@ -27,7 +27,7 @@ namespace tr_world.Base
         /// <summary>
         /// This property is used to store Group of a player.
         /// <summary>
-        public string Group {  get; protected set; }
+        public string Group {  get;  set; }
 
 
         /// <summary>
@@ -92,6 +92,7 @@ namespace tr_world.Base
         #region Detailed Metas
         #region Booleans
         public bool IsCuffed { get; set; }
+        public bool IsInPrison { get; set; }
         public bool IsPlyDead { get; set; }
         public bool IsPlyDown { get; set; }
         public bool IsPlyHeadshotted { get; set; }
