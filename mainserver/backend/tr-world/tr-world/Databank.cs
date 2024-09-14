@@ -15,9 +15,9 @@ namespace tr_world
         public static bool DatabankConnection = false;
         public static MySqlConnection Connection;
         public string Host { get; set; }
-        public String Username { get; set; }
-        public String Password { get; set; }
-        public String Database { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Database { get; set; }
 
         public Databank()
         {

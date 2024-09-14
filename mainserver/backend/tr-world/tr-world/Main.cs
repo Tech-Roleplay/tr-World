@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AltV.Net;
 using AltV.Net.Elements.Entities;
+
 using tr_world.Base;
 
 namespace tr_world
@@ -14,6 +15,9 @@ namespace tr_world
         // Start Func
         public override void OnStart()
         {
+
+
+
             Alt.Log("Server-C#-backend is starting!");
 
             Databank.InitConnection();
@@ -22,8 +26,16 @@ namespace tr_world
         // Player Factory
         public override IEntityFactory<IPlayer> GetPlayerFactory()
         {
-            return new BPlayerFactory();
+            return new Player.BPlayerFactory();
         }
+        
+        // Vehicle Factory
+        public override IEntityFactory<IVehicle> GetVehicleFactory()
+        {
+            return new Vehicle.BVehicleFactory();
+        }
+
+
 
         // Close Func
         public override void OnStop()

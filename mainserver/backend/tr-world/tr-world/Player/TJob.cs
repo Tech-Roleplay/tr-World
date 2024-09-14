@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace tr_world.Base
+namespace tr_world.Player
 {
-    public interface IGang
+    public interface IJob
     {
         public string Type { get; set; }
         public string Name { get; set; }
         public string Label { get; set; }
+        public uint Payment { get; set; }
         public bool IsBoss { get; set; }
         public bool OnDuty { get; set; }
         public uint Grade_level { get; set; }
@@ -18,7 +19,7 @@ namespace tr_world.Base
         public string Skin { get; set; }
     }
 
-    public class TGang : IGang
+    public class TJob : IJob
     {
         public string Type { get; set; }
         public string Name { get; set; }
@@ -27,9 +28,10 @@ namespace tr_world.Base
         public uint Grade_level { get; set; }
         public string Grade_name { get; set; }
         public bool OnDuty { get; set; }
-        string IGang.Skin { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public uint Payment { get; set; }
+        string IJob.Skin { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public TGang()
+        public TJob()
         {
             Type = "none";
             Name = "unemployed";
@@ -38,6 +40,7 @@ namespace tr_world.Base
             Grade_level = 0;
             Grade_name = "Freelancer";
             OnDuty = true;
+            Payment = 800;
         }
     }
 }

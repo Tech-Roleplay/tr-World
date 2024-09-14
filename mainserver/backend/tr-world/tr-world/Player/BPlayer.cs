@@ -7,15 +7,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static tr_world.Base.BPlayer;
+using static tr_world.Player.BPlayer;
 
-namespace tr_world.Base
+namespace tr_world.Player
 {
     /**
      * BPlayer Class:
-     * This class extends the AsyncPlayer class and adds additional functionality.
+     * This class extends the Player class and adds additional functionality.
      */
-    public class BPlayer : Player
+    public class BPlayer : AltV.Net.Elements.Entities.Player
     {
         #region Metadata
 
@@ -27,7 +27,7 @@ namespace tr_world.Base
         /// <summary>
         /// This property is used to store Group of a player.
         /// <summary>
-        public string Group {  get;  set; }
+        public string Group { get; set; }
 
 
         /// <summary>
@@ -86,8 +86,10 @@ namespace tr_world.Base
         #endregion
 
         #region Invenotry
-        public string Inventory {  get; set; }
+        public string Inventory { get; set; }
         #endregion
+
+        public string[] VehKeysIDs { get; set; }
 
         #region Detailed Metas
         #region Booleans
@@ -101,9 +103,9 @@ namespace tr_world.Base
         #endregion
 
         #region phone infos
-        public int phonenumber {get; set;}
-        public string phone_profilpic_url {get; set;}
-        public string phone_name {get; set;}
+        public int phonenumber { get; set; }
+        public string phone_profilpic_url { get; set; }
+        public string phone_name { get; set; }
 
         #endregion
 
@@ -134,7 +136,7 @@ namespace tr_world.Base
             Job.IsBoss = false;
             Job.OnDuty = true;
             Job.Type = "none";
-            Job.Payment = 30;
+            Job.Payment = 420;
             Job.Grade_level = 0;
             Job.Grade_name = "No Grades";
 
@@ -156,8 +158,8 @@ namespace tr_world.Base
 
         #region Money functions
 
-
-        public static void AddMoney(BPlayer target, int amount, string reason, string moneytype )
+        [Obsolete]
+        public static void AddMoney(BPlayer player, int amount, string reason, string moneytype)
         {
 
         }

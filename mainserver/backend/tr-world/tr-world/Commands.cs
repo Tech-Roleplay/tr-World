@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using tr_world.Base;
+using tr_world.Player;
 
 namespace tr_world
 {
@@ -50,6 +50,28 @@ namespace tr_world
             }
         }
 
+        [Command("pos", true)]
+        public void CMD_pos(BPlayer player, string name){
+            player.SendChatMessage($"X: {player.Position.X} Y: {player.Position.Y} Z: {player.Position.Z} and with Name: {name}.");
+
+            Alt.Log("==POS==");
+            Alt.Log($"{player.Position.X}, {player.Position.Y}, {player.Position.Z} and with Name: {name}.");
+            Alt.Log("");
+
+            Utility.DClog($"X/Y/Z: {player.Position.X}, {player.Position.Y}, {player.Position.Z} and with Name: {name}.", "Position Save", "https://ptb.discord.com/api/webhooks/1217755784172015686/8-B8A7rFN3E6PE_W-H5mZuQMRI6Q5BMfRv7jR4PvL7L5y-epGr1bLfwGEc8hlMdRK-oI", "https://cdn.discordapp.com/avatars/1217755784172015686/2f17a9989ab2dc3869219a803d3dda10.webp?size=1024");
+        }
+
+        [Command("addmoneycash")]
+        public void CMD_addmoneycash(BPlayer player, int amount)
+        {
+            player.AddMoneyToCash(amount, "");
+            Player.PlayerFuntions.AddMoneyToCash(player, amount, "");
+        }
+        [Command ("showcash")]
+        public void CMD_showcash(BPlayer player, string[] args)
+        {
+            player.SendChatMessage($"Your Cash Balance is: {player.CashBalance}");
+        }
 
     }
 }

@@ -11,7 +11,7 @@ namespace tr_world.Controllers
 {
     public class JobController : IScript
     {
-        public static List<object> LoadJobDetailsFromDB(string jobname)
+        public static object LoadJobDetailsFromDB(string jobname)
         {
 			try
 			{
@@ -24,19 +24,14 @@ namespace tr_world.Controllers
                 {
                     reader.Read();
 
-                    string label = reader.GetString("label");
+                    var label = reader.GetString("label");
                     bool requireInvitation = reader.GetBoolean("is_required_to_be_invited");
                     bool whitlistedjob = reader.GetBoolean("whitelisted");
 
-                    List<object> liste = new List<object>();
-                    
-                    liste.Add(label);
-                    liste.Add(requireInvitation);
-                    liste.Add(whitlistedjob);
 
-                    reader.Close();
 
-                    return liste;
+                    return (label, requireInvitation, whitlistedjob);
+
                 }
             }
             catch (Exception e)

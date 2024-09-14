@@ -1,6 +1,5 @@
 ﻿using AltV.Net;
 using MySqlConnector;
-using tr_world.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 using AltV.Net.Resources.Chat.Api;
 using AltV.Net.Elements.Entities;
 using System.Data;
+using tr_world.Player;
 
 namespace tr_world.Controllers
 {
@@ -62,12 +62,13 @@ namespace tr_world.Controllers
                         // Jobs
                         string jobname = reader.GetString("job");
 
-
+                        JobController.LoadJobDetailsFromDB(jobname);
 
                         player.Job.Grade_level = reader.GetUInt16("jobgrade");
                         player.Job.Name = jobname;
+                        
 
-                        var data = JobController.LoadJobDetailsFromDB(jobname);
+                        
 
 
 

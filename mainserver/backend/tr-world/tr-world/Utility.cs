@@ -1,4 +1,5 @@
 ﻿using AltV.Net;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -21,6 +22,33 @@ namespace tr_world
             using (WebClient webClient = new WebClient())
             {
                 return webClient.UploadValues(url, pairs);
+            }
+        }
+        public static string DC_Url (string nameofURL)
+        {
+            string url;
+            try
+            {
+                MySqlCommand cmd = Databank.Connection.CreateCommand();
+
+                cmd.CommandText = $"SELECT * FROM dc_url WHERE name=@name LIMIT 1";
+
+                cmd.Parameters.AddWithValue("@name", nameofURL);
+
+                using(MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    url = reader.GetString("url");
+
+
+                    reader.Close();
+                    return url;                   
+                }
+            }
+            catch (Exception e)
+            {
+                Alt.LogError("ERROR == ERROR == ERROR");
+                Alt.LogError(e.ToString());
+                return null;
             }
         }
 

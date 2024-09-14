@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using tr_world.Base;
-using tr_world;
 
 using AltV.Net.Elements.Entities;
 using System.Runtime.InteropServices;
+using tr_world.Player;
+using tr_world.Config;
 
 namespace tr_world
 {
@@ -27,7 +27,7 @@ namespace tr_world
             Alt.Log($"[{player.Id}] The Player {player.Name} has joined the Server. Discord-ID is: {player.DiscordId}. Welcome.");
 
 
-            Utility.DClog($"[{player.Id}] The Player {player.Name} has joined the Server. Welcome.", "Join-Log", "https://ptb.discord.com/api/webhooks/1169370156791771216/13iMjj-nh-h1LOiSFw-W1Usz95gJyIbt9niM-cv5mq42CYLWCYXaDctwkjqCN2p5Mszl", "https://altv.mp/img/branding/logo_black.png");
+            Utility.DClog($"[{player.Id}] The Player {player.Name} has joined the Server. Welcome.", "Join-Log", secret.URL_Join, "https://altv.mp/img/branding/logo_black.png");
         }
 
         [ScriptEvent(ScriptEventType.PlayerDisconnect)]
@@ -40,7 +40,7 @@ namespace tr_world
             //AltChat.SendBroadcast($"[{player.Id}] The Player {player.Name} has left the Server. Bye.");
             Alt.Log($"[{player.Id}] The Player {player.Name} has left the Server. Discord-ID is: {player.DiscordId}. Bye. Of Reason: {reason}.");
 
-            Utility.DClog($"[{player.Id}] The Player {player.Name} has left the Server. Discord-ID is: {player.DiscordId}. Bye. Of Reason: {reason}.", "Disconnect-Log", "https://ptb.discord.com/api/webhooks/1169370156791771216/13iMjj-nh-h1LOiSFw-W1Usz95gJyIbt9niM-cv5mq42CYLWCYXaDctwkjqCN2p5Mszl", "https://altv.mp/img/branding/logo_black.png");
+            Utility.DClog($"[{player.Id}] The Player {player.Name} has left the Server. Discord-ID is: {player.DiscordId}. Bye. Of Reason: {reason}.", "Disconnect-Log", secret.URL_Join, "https://altv.mp/img/branding/logo_black.png");
         }
 
         // death handle || only for dev
@@ -51,7 +51,8 @@ namespace tr_world
             //Alt.Log($"")
         }
 
-
+        
+    
         // Server Events
     }
 }

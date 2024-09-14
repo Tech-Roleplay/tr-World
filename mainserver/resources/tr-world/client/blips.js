@@ -50,8 +50,31 @@ export function loadBlips() {
     createBlip(454.01633, -658.4551, 27.866255, 513, 47, 0.7, true, "Bus Station");
 
     // MEtro
+    createBlip(-1084.2657, -2719.5398, -7.410132, 607, 49, 0.6, true, "Metro LSIA Terminal");
+    createBlip(-883.624, -2314.9814, -11.732785, 607, 49, 0.6, true, "Metro LSIA Parking");
+    createBlip(-539.3826, -1283.5278, 26.901606, 607, 49, 0.6, true, "Metro Puerto del Sol");
+    createBlip(278.6903, -1201.9535, 38.896255, 607, 49, 0.6, true, "Metro Strawberry");
+    createBlip(-292.98038, -332.386, 10.063103, 607, 49, 0.6, true, "Metro Burton");
+    createBlip(-815.5151, -135.68059, 19.950294, 607, 49, 0.6, true, "Metro Portola Drive");
+    createBlip(-1353.9574, -464.19272, 15.04531, 607, 49, 0.6, true, "Metro Del Perro");
+    createBlip(-503.02167, -674.93274, 11.808959, 607, 49, 0.6, true, "Metro Little Seoul");
+    createBlip(-212.7016, -1035.0039, 30.139433, 607, 49, 0.6, true, "Metro Pillbox South");
+    createBlip(115.049774, -1727.3262, 30.110792, 607, 49, 0.6, true, "Metro Davis");
 
     //RecyleJob
+    createBlip(115.049774, -1727.3262, 30.110792, 607, 49, 0.6, true, "Metro Davis");
+
+    // AmmoNation
+
+    //LS Coustomes
+    createBlip(-342.38242, -136.14066, 38.3114, 72, 4, 0.6, true, "LS Customs");
+    createBlip(732.34283, -1085.4066, 21.461548, 72, 4, 0.6, true, "LS Customs");
+    createBlip(-1154.7296, -2006.3077, 12.480591, 72, 4, 0.6, true, "LS Customs");
+    createBlip(110.4, 6626.0176, 31.082764, 72, 4, 0.6, true, "Beekers Garage & Parts");
+    createBlip(1174.8264, 2640.844, 37.064453, 72, 4, 0.6, true, "Auto Repairs")
+
+    // PDM
+    createBlip(-38.795605, -1109.6835, 26.432251, 369, 13, 0.6, true, "Premium Deluxe Motorsport");
 }
 
 /**
