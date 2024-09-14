@@ -409,3 +409,6 @@ mainserver/modules/js-module.dll
 mainserver/server.toml
 /mainserver/.server-crashes-cache
 /mainserver/cache
+/mainserver/backend/tr-world/tr-world/.env
+/mainserver/backend/tr-world/tr-world/secret.cs
+/mainserver/backend/tr-world/tr-world/Config/secret.cs
