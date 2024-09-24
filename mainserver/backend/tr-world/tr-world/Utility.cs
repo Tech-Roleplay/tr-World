@@ -17,14 +17,14 @@ namespace tr_world
             Alt.Log($"Script: [{Alt.Resource.Name}] " + message);
         }
 
-        public static byte[] Post (string url, NameValueCollection pairs)
+        public static byte[] Post(string url, NameValueCollection pairs)
         {
             using (WebClient webClient = new WebClient())
             {
                 return webClient.UploadValues(url, pairs);
             }
         }
-        public static string DC_Url (string nameofURL)
+        public static string DC_Url(string nameofURL)
         {
             string url;
             try
@@ -35,13 +35,13 @@ namespace tr_world
 
                 cmd.Parameters.AddWithValue("@name", nameofURL);
 
-                using(MySqlDataReader reader = cmd.ExecuteReader())
+                using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
                     url = reader.GetString("url");
 
 
                     reader.Close();
-                    return url;                   
+                    return url;
                 }
             }
             catch (Exception e)
@@ -52,23 +52,57 @@ namespace tr_world
             }
         }
 
-        public static void DClog(string message, string username, string url, string picurl)
+        /// <summary>
+        /// Sending Webhook to Discord.
+        /// </summary>
+        /// <param name="message">The Text</param>
+        /// <param name="username">Username of webhook</param>
+        /// <param name="url">URL of the webhook</param>
+        /// <param name="picurl">Picture's URL of the webhook</param>
+        /// <param name="suppress_Notifycation">Have it to do a sound?</param>
+        public static void DClog(string message, string username, string url, string picurl, bool suppress_Notifycation = false)
         {
-            Post(url, new System.Collections.Specialized.NameValueCollection()
+
+            if (suppress_Notifycation)
             {
+                Post(url, new System.Collections.Specialized.NameValueCollection()
                 {
-                    "username", 
-                    username
-                },
+                    {
+                        "username",
+                        username
+                    },
+                    {
+                        "avatar",
+                        picurl
+                    },
+                    {
+                        "content",
+                        message
+                    },
+                    {
+                        "flags",
+                        "12"
+                    }
+                });
+            } else
+            {
+                Post(url, new System.Collections.Specialized.NameValueCollection()
                 {
-                    "avatar",
-                    picurl
-                },
-                {
-                    "content", 
-                    message
-                }
-            });
+                    {
+                        "username",
+                        username
+                    },
+                    {
+                        "avatar",
+                        picurl
+                    },
+                    {
+                        "content",
+                        message
+                    }
+                });
+            }
+
         }
     }
 }

@@ -14,6 +14,7 @@ namespace tr_world.Controllers
 {
     public class BPlayerController : IScript
     {
+
         public static void LoadBPlayerData(BPlayer player, string CharId)
         {
             // try & catch function
@@ -61,14 +62,28 @@ namespace tr_world.Controllers
 
                         // Jobs
                         string jobname = reader.GetString("job");
+                        int jobgrade = reader.GetUInt16("jobgrade");
 
-                        JobController.LoadJobDetailsFromDB(jobname);
+                        object[] jobobj = JobController.LoadJobDetailsFromDB(jobname);
+                        object[] jobgradeobj = JobController.LoadJobGradeFromDB(jobname, jobgrade);
 
-                        player.Job.Grade_level = reader.GetUInt16("jobgrade");
                         player.Job.Name = jobname;
-                        
+                        player.Job.Grade_level = (uint)jobgrade;
+                        player.Job.Label = (string)jobobj[0];
+                        player.Job.Grade_name = (string)jobgradeobj[0];
+                        player.Job.Grade_Label = (string)jobgradeobj[1];
+                        player.Job.Payment = (uint)jobgradeobj[2];
+                        player.Job.Skin_Male = (string)jobgradeobj[3];
+                        player.Job.Skin_Female = (string)jobgradeobj[4];
 
-                        
+                        // gang
+
+
+
+                        player.Skin = reader.GetString("skin");
+
+
+
 
 
 
@@ -114,10 +129,52 @@ namespace tr_world.Controllers
             }
 
         }
-        public static void SaveBPlayerData()
-        {
 
+        private const string UpdateString = "UPDATE users SET charid=@charid, discordid=@discordid, group=@group, fname=@fname, lname=@lname, bank_money=@bank_money, cash_money=@cash_money, sex=@sex, height=@height, skin=@skin, status=@status, position=@position, metadata=@metadata, inventory=@inventory, backstory=@backstory, is_dead=@is_dead, is_downed=@is_downed, is_cuffed=@is_cuffed, is_headshotted=@is_headshotted, is_logout=@is_logout, is_inprision=@is_inprision, disabled=@disabled, main_property=@main_property, created=@created, last_seen=@last_seen, job=@job, jobgrade=@jobgrade, gang=@gang, ganggrade=@ganggrade, phone_number=@phone_number, phone_pic_url=@phone_pic_url, phone_background=@phone_background, iban=@iban, callsign=@callsign";
+
+        public static void SaveBPlayerData(BPlayer player)
+        {
+            try
+            {
+                MySqlCommand cmd = Databank.Connection.CreateCommand();
+                cmd.CommandText = UpdateString;
+
+                cmd.Parameters.AddWithValue("@charid", player.CharId);
+                cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
+                cmd.Parameters.AddWithValue("@group", player.Group);
+                cmd.Parameters.AddWithValue("@fname", player.Firstname);
+                cmd.Parameters.AddWithValue("@lname", player.Surname);
+                cmd.Parameters.AddWithValue("@cash_money", player.CashBalance);
+                cmd.Parameters.AddWithValue("@bank_money", player.BankBalance);
+                cmd.Parameters.AddWithValue("@sex", player.Sex);
+                cmd.Parameters.AddWithValue("@height", player.Height);
+                cmd.Parameters.AddWithValue("@skin", player.Skin);
+                cmd.Parameters.AddWithValue("@position", player.Position.ToString());
+                cmd.Parameters.AddWithValue("@inventory", player.Inventory);
+                cmd.Parameters.AddWithValue("@backstory", player.Backstory);
+
+
+            }
+            catch (Exception e)
+            {
+                Alt.LogError("ERROR == ERROR == ERROR");
+                Alt.LogError(e.ToString());
+            }
         }
+
+        public static void CreateBPlayerAccount()
+        {
+            try
+            {
+
+            }
+            catch (Exception e)
+            {
+                Alt.LogError("ERROR == ERROR == ERROR");
+                Alt.LogError(e.ToString());
+            }
+        }
+
         public static void UpdateBPlayerData()
         {
 

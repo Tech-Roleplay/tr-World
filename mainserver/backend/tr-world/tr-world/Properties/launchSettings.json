@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "tr-world": {
+      "commandName": "Project"
+    },
+    "Alt:V-Server": {
+      "commandName": "Executable",
+      "executablePath": "S:\\tr-world\\mainserver\\altv-server.exe",
+      "workingDirectory": "S:\\tr-world\\mainserver"
+    }
+  }
+}

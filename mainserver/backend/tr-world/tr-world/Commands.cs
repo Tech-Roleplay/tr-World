@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using tr_world.Player;
+using tr_world.Vehicle;
 
 namespace tr_world
 {
@@ -24,13 +25,20 @@ namespace tr_world
         {
             if (VehicleName != null)
             {
-                IVehicle veh = Alt.CreateVehicle(Alt.Hash(VehicleName), new Position(player.Position.X, player.Position.Y + 1.5f, player.Position.Z), player.Rotation);
+                BVehicle veh = (BVehicle)Alt.CreateVehicle(Alt.Hash(VehicleName), new Position(player.Position.X, player.Position.Y + 1.5f, player.Position.Z), player.Rotation);
                 veh.NumberplateText = player.Name;
                 veh.EngineOn = true;
+
+                //set keyfunc here
+                veh.CreateVehicleKey();
+
+                //Log
+                player.SendChatMessage($"[Vehicle] The {VehicleName} spawned.");
+                Utility.DClog($"{player.Name}(<@{player.DiscordId}>) has spawned a new vehicle: a/an {VehicleName}", "Vehicle Spawner", Config.secret.URL_VehSpawner, "", true);
             }
             else
             {
-                player.SendChatMessage($"Vehicle Name: {VehicleName} was not founded.");
+                player.SendChatMessage("{FF0000}" + $"Vehicle Name: {VehicleName} was not founded.");
             }
             
         }
@@ -46,7 +54,7 @@ namespace tr_world
             }
             else
             {
-                player.SendChatMessage("You are not in a vehicle.");
+                player.SendChatMessage("{FF0000}You are not in a vehicle.");
             }
         }
 
@@ -65,13 +73,31 @@ namespace tr_world
         public void CMD_addmoneycash(BPlayer player, int amount)
         {
             player.AddMoneyToCash(amount, "");
-            Player.PlayerFuntions.AddMoneyToCash(player, amount, "");
         }
+
         [Command ("showcash")]
         public void CMD_showcash(BPlayer player, string[] args)
         {
             player.SendChatMessage($"Your Cash Balance is: {player.CashBalance}");
         }
 
+        [Command("setjob")]
+        public void CMD_set(BPlayer player, int targetid, string jobname, int jobgrade)
+        {
+            foreach (BPlayer p in Alt.GetAllPlayers())
+            {
+                if (targetid == p.Id)
+                {
+                    p.SetJob(jobname, jobgrade);
+                }
+            }
+
+        }
+
+        [Command("showjob")]
+        public void CMD_showJob(BPlayer player, string[] args)
+        {
+            player.SendChatMessage($"Your Job is: {player.Job.Label} with Grade {player.Job.Grade_Label}");
+        }
     }
 }

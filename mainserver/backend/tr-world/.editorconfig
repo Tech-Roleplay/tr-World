@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# IDE0058: Der Ausdruckswert wird niemals verwendet.
+csharp_style_unused_value_expression_statement_preference = unused_local_variable
+
+# CA1305: IFormatProvider angeben
+dotnet_diagnostic.CA1305.severity = silent

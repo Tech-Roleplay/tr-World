@@ -1,5 +1,4 @@
 ﻿using AltV.Net;
-
 using AltV.Net.Elements.Entities;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static tr_world.Player.BPlayer;
 
 namespace tr_world.Player
 {
@@ -61,12 +59,21 @@ namespace tr_world.Player
         /// </summary>
         public string Backstory { get; set; }
 
+        /// <summary>
+        /// This property is used to store the id_card of a player.
+        /// </summary>
+        public string id_card { get; set; }
         #endregion
 
         #region Interfaces Job & Gang
-
+        /// <summary>
+        /// This property is used to store the job of a player.
+        /// </summary>
         public IJob Job { get; set; }
 
+        /// <summary>
+        /// This property is used to store the gang activity of a player.
+        /// </summary>
         public IGang Gang { get; set; }
 
         #endregion
@@ -85,12 +92,23 @@ namespace tr_world.Player
 
         #endregion
 
-        #region Invenotry
+        #region Inventory
+        /// <summary>
+        /// This property is used to store the inventory of a player.
+        /// </summary>
         public string Inventory { get; set; }
         #endregion
-
+        #region Vehicle
+        /// <summary>
+        /// This property is used to store the vehicle keys of a player.
+        /// </summary>
         public string[] VehKeysIDs { get; set; }
 
+        /// <summary>
+        /// This property is used to store the driver license of a player.
+        /// </summary>
+        public string Driver_License { get; set; }
+        #endregion
         #region Detailed Metas
         #region Booleans
         public bool IsCuffed { get; set; }
@@ -109,7 +127,9 @@ namespace tr_world.Player
 
         #endregion
 
+
         #endregion
+        public string Skin { get; set; }
 
         #region Basic Constructor
 
@@ -158,7 +178,7 @@ namespace tr_world.Player
 
         #region Money functions
 
-        [Obsolete]
+        [Obsolete("Use instate AddMoneyToCash, AddMoneyToBank", UrlFormat ="")]
         public static void AddMoney(BPlayer player, int amount, string reason, string moneytype)
         {
 

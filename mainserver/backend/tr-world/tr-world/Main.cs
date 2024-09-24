@@ -13,6 +13,9 @@ namespace tr_world
     public class Main : Resource
     {
         // Start Func
+        /// <summary>
+        /// On the start of the script.
+        /// </summary>
         public override void OnStart()
         {
 
