@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
@@ -11,7 +12,7 @@ namespace tr_world.Player
 {
     public static class PlayerFuntions
     {
-
+        private static Random random = new Random();
 
         #region Money functions
 
@@ -216,6 +217,15 @@ namespace tr_world.Player
             }
         }
         /// <summary>
+        /// Pays the Player for his work
+        /// </summary>
+        /// <param name="player">The target player.</param>
+        public static void PaymentJob(this BPlayer player)
+        {
+            AddMoneyToBank(player, (int)player.Job.Payment, $"Salary by {player.Job.Label}");
+        }
+
+        /// <summary>
         /// Reset Job for Player.
         /// </summary>
         /// <param name="player">The target player.</param>
@@ -223,6 +233,51 @@ namespace tr_world.Player
         {
             player.SetJob("unemployed", 0);
         }
+
+        //gets
+        /// <summary>
+        /// Gets if the player isBoss
+        /// </summary>
+        /// <param name="player">The target player.</param>
+        /// <returns>boolean of the isBoss State</returns>
+        public static bool IsPlayerBoss(this BPlayer player)
+        {
+            return player.Job.IsBoss;
+        }
+
+        /// <summary>
+        /// Gets the players Job Type
+        /// </summary>
+        /// <param name="player">The target player.</param>
+        /// <returns>string of the type</returns>
+        public static string GetPlayerJobType(this BPlayer player)
+        {
+            return player.Job.Type;
+        }
+
+        /// <summary>
+        /// TEMP: Gets the Skin for the player
+        /// </summary>
+        /// <param name="player">The target player.</param>
+        /// <returns>string of the players skin</returns>
+        public static string GetSkinForJob(this BPlayer player)
+        {
+            if (player.Sex == 'm')
+            {
+                return player.Job.Skin_Male;
+            } 
+            else if (player.Sex == 'f')
+            {
+                return player.Job.Skin_Female;
+            }
+            else
+            {
+                return string.Empty;
+            }
+
+        }
+
+
         #endregion
         // all from 
 

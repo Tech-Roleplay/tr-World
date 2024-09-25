@@ -6,12 +6,14 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace tr_world
 {
     public class Utility : IScript
     {
+        [Obsolete]
         public static void ScriptLog(string message)
         {
             Alt.Log($"Script: [{Alt.Resource.Name}] " + message);
@@ -24,6 +26,7 @@ namespace tr_world
                 return webClient.UploadValues(url, pairs);
             }
         }
+        [Obsolete]
         public static string DC_Url(string nameofURL)
         {
             string url;
@@ -104,5 +107,33 @@ namespace tr_world
             }
 
         }
+
+        /// <summary>
+        /// Sending Webhook with Embed to Discord.
+        /// </summary>
+        /// <param name="message">The Text</param>
+        /// <param name="username">Username of webhook</param>
+        /// <param name="url">URL of the webhook</param>
+        /// <param name="picurl">Picture's URL of the webhook</param>
+        /// <param name="suppress_Notifycation">Have it to do a sound?</param>
+        /// <param name="discordEmbed1">A Discord Embed</param>
+        /// <param name="discordEmbed2">A Discord Embed</param>
+        public static void DClog_with_Embed(string message, string username, string url, string picurl, DiscordEmbed discordEmbed1, DiscordEmbed discordEmbed2 = null, bool suppress_Notifycation = false)
+        {
+            if (!suppress_Notifycation)
+            {
+                Post(url, new System.Collections.Specialized.NameValueCollection()
+                {
+
+                });
+            } else
+            {
+
+            }
+        }
+    }
+    public class DiscordEmbed
+    {
+        
     }
 }
