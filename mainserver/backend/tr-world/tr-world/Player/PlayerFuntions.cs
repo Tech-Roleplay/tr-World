@@ -197,6 +197,7 @@ namespace tr_world.Player
             player.Job.Skin_Male = (string)jobgradeobj[3];
             player.Job.Skin_Female = (string)jobgradeobj[4];
         }
+        
         /// <summary>
         /// Change the state of the Player's JobDuty
         /// </summary>
@@ -216,6 +217,7 @@ namespace tr_world.Player
                 }
             }
         }
+
         /// <summary>
         /// Pays the Player for his work
         /// </summary>

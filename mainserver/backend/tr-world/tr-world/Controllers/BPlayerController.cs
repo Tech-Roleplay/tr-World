@@ -130,7 +130,7 @@ namespace tr_world.Controllers
 
         }
 
-        private const string UpdateString = "UPDATE users SET charid=@charid, discordid=@discordid, group=@group, fname=@fname, lname=@lname, bank_money=@bank_money, cash_money=@cash_money, sex=@sex, height=@height, skin=@skin, status=@status, position=@position, metadata=@metadata, inventory=@inventory, backstory=@backstory, is_dead=@is_dead, is_downed=@is_downed, is_cuffed=@is_cuffed, is_headshotted=@is_headshotted, is_logout=@is_logout, is_inprision=@is_inprision, disabled=@disabled, main_property=@main_property, created=@created, last_seen=@last_seen, job=@job, jobgrade=@jobgrade, gang=@gang, ganggrade=@ganggrade, phone_number=@phone_number, phone_pic_url=@phone_pic_url, phone_background=@phone_background, iban=@iban, callsign=@callsign";
+        private const string UpdateString = "UPDATE users SET charid=@charid, discordid=@discordid, group=@group, fname=@fname, lname=@lname, bank_money=@bank_money, cash_money=@cash_money, sex=@sex, height=@height, skin=@skin, status=@status, position=@position, metadata=@metadata, inventory=@inventory, backstory=@backstory, is_dead=@is_dead, is_downed=@is_downed, is_cuffed=@is_cuffed, is_headshotted=@is_headshotted, is_logout=@is_logout, is_inprision=@is_inprision, disabled=@disabled, main_property=@main_property, created=@created, last_seen=@last_seen, job=@job, jobgrade=@jobgrade, gang=@gang, ganggrade=@ganggrade, phone_number=@phone_number, phone_pic_url=@phone_pic_url, phone_background=@phone_background, iban=@iban, callsign=@callsign WHERE charid=@charid";
 
         public static void SaveBPlayerData(BPlayer player)
         {
@@ -166,6 +166,10 @@ namespace tr_world.Controllers
         {
             try
             {
+                MySqlCommand cmd = Databank.Connection.CreateCommand();
+                cmd.CommandText = "INSERT INTO users (charid) VALUES (charid)";
+
+                
 
             }
             catch (Exception e)

@@ -1,18 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>tr_world</RootNamespace>
-	  <OutputType>Library</OutputType>
-	  
-	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-	  <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-	  <PlatformTarget>x64</PlatformTarget>
-	  <BaseOutputPath>S:\tr-world\mainserver\resources\tr-world\server</BaseOutputPath>
-
+    <OutputType>Library</OutputType>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <BaseOutputPath>S:\tr-world\mainserver\resources\tr-world\server</BaseOutputPath>
   </PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<OutputPath>S:\tr-world\mainserver\resources\tr-world\server</OutputPath>
-	</PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>S:\tr-world\mainserver\resources\tr-world\server</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AltV.Net" Version="16.2.5" />
     <PackageReference Include="AltV.Net.Resources.Chat.Api" Version="16.2.5" />
@@ -21,7 +19,5 @@
   </ItemGroup>
   <ItemGroup>
     <AllOutputFiles Include="$(OutputPath)\publish\*.*" />
-</ItemGroup>
-
-
+  </ItemGroup>
 </Project>
