@@ -22,6 +22,9 @@ namespace tr_world.Player
         /// <summary>
         public string CharId { get; set; }
 
+        public CharList CharList {get; set;}
+
+
         /// <summary>
         /// This property is used to store Group of a player.
         /// <summary>
@@ -200,3 +203,14 @@ namespace tr_world.Player
         #endregion
     }
 }
+
+#region CharList 
+public class CharList
+{
+    string char1 { get; set;}
+    string char2 { get; set;}
+    string char3 { get; set;}
+    string char4 { get; set;}
+    string char5 { get; set;}
+}
+#endregion

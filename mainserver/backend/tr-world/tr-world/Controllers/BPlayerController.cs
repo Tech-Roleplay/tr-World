@@ -153,7 +153,7 @@ namespace tr_world.Controllers
                 cmd.Parameters.AddWithValue("@inventory", player.Inventory);
                 cmd.Parameters.AddWithValue("@backstory", player.Backstory);
 
-
+                cmd.ExecuteNonQuery();
             }
             catch (Exception e)
             {
