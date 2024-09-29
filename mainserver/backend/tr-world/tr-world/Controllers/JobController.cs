@@ -12,7 +12,7 @@ namespace tr_world.Controllers
 {
     public class JobController : IScript
     {
-        public static object[] LoadJobDetailsFromDB(string jobname)
+        public static object[] LoadJobDetailsFromDb(string jobname)
         {
 			try
 			{
@@ -29,11 +29,11 @@ namespace tr_world.Controllers
                     bool requireInvitation = reader.GetBoolean("is_required_to_be_invited");
                     bool whitlistedjob = reader.GetBoolean("whitelisted");
 
-                    object[] BackArray = new object[] {label,  requireInvitation, whitlistedjob};
+                    object[] backArray = new object[] {label,  requireInvitation, whitlistedjob};
 
                     reader.Close();
 
-                    return BackArray;                    
+                    return backArray;                    
                 }
             }
             catch (Exception e)
@@ -44,7 +44,7 @@ namespace tr_world.Controllers
                 return null;
             }
         }
-        public static object[] LoadJobGradeFromDB(string jobname, int grade)
+        public static object[] LoadJobGradeFromDb(string jobname, int grade)
         {
             try
             {
@@ -60,14 +60,14 @@ namespace tr_world.Controllers
                     string name = reader.GetString("name");
                     string label = reader.GetString("label");
                     int salary = reader.GetInt32("salary");
-                    string skin_male = reader.GetString("skin_male");
-                    string skin_female = reader.GetString("skin_female");
+                    string skinMale = reader.GetString("skin_male");
+                    string skinFemale = reader.GetString("skin_female");
 
-                    object[] BackArray = new object[] { name, label, salary, skin_male, skin_female};
+                    object[] backArray = new object[] { name, label, salary, skinMale, skinFemale};
 
                     reader.Close();
 
-                    return BackArray;
+                    return backArray;
                 }
             }
             catch (Exception e)

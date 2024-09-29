@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using AltV.Net.Resources.Chat.Api;
 using AltV.Net.Elements.Entities;
 using System.Data;
+using System.Text.Json;
+using AltV.Net.Data;
 using tr_world.Player;
 
 namespace tr_world.Controllers
@@ -53,19 +55,17 @@ namespace tr_world.Controllers
                         player.Backstory = reader.GetString("backstory");
 
                         // Booleans
-                        player.IsPlyDead = reader.GetBoolean("is_dead");
-                        player.IsPlyDown = reader.GetBoolean("is_downed");
-                        player.IsPlyHeadshotted = reader.GetBoolean("is_headshotted");
-                        player.IsPlyLogout = reader.GetBoolean("is_logout");
-                        player.IsInPrison = reader.GetBoolean("is_inprision");
+                        string jsonMetadata = reader.GetString("metadata");
+                        player.Metadata = JsonSerializer.Deserialize<TMetadata>(jsonMetadata);
+                        
                         bool disabled = reader.GetBoolean("disabled");
 
                         // Jobs
                         string jobname = reader.GetString("job");
                         int jobgrade = reader.GetUInt16("jobgrade");
 
-                        object[] jobobj = JobController.LoadJobDetailsFromDB(jobname);
-                        object[] jobgradeobj = JobController.LoadJobGradeFromDB(jobname, jobgrade);
+                        object[] jobobj = JobController.LoadJobDetailsFromDb(jobname);
+                        object[] jobgradeobj = JobController.LoadJobGradeFromDb(jobname, jobgrade);
 
                         player.Job.Name = jobname;
                         player.Job.Grade_level = (uint)jobgrade;
@@ -130,7 +130,7 @@ namespace tr_world.Controllers
 
         }
 
-        private const string UpdateString = "UPDATE users SET charid=@charid, discordid=@discordid, group=@group, fname=@fname, lname=@lname, bank_money=@bank_money, cash_money=@cash_money, sex=@sex, height=@height, skin=@skin, status=@status, position=@position, metadata=@metadata, inventory=@inventory, backstory=@backstory, is_dead=@is_dead, is_downed=@is_downed, is_cuffed=@is_cuffed, is_headshotted=@is_headshotted, is_logout=@is_logout, is_inprision=@is_inprision, disabled=@disabled, main_property=@main_property, created=@created, last_seen=@last_seen, job=@job, jobgrade=@jobgrade, gang=@gang, ganggrade=@ganggrade, phone_number=@phone_number, phone_pic_url=@phone_pic_url, phone_background=@phone_background, iban=@iban, callsign=@callsign WHERE charid=@charid";
+        private const string UpdateString = "UPDATE users SET charid=@charid, discordid=@discordid, group=@group, fname=@fname, lname=@lname, bank_money=@bank_money, cash_money=@cash_money, sex=@sex, height=@height, skin=@skin, status=@status, position=@position, metadata=@metadata, inventory=@inventory, backstory=@backstory, is_dead=@is_dead, is_downed=@is_downed, is_cuffed=@is_cuffed, is_headshotted=@is_headshotted, is_logout=@is_logout, is_inprision=@is_inprision, disabled=@disabled, main_property=@main_property, created=@created, last_seen=@last_seen, job=@job, jobgrade=@jobgrade, gang=@gang, ganggrade=@ganggrade, phone_number=@phone_number, phone_pic_url=@phone_pic_url, phone=@phone, iban=@iban, callsign=@callsign WHERE charid=@charid";
 
         public static void SaveBPlayerData(BPlayer player)
         {
@@ -149,7 +149,7 @@ namespace tr_world.Controllers
                 cmd.Parameters.AddWithValue("@sex", player.Sex);
                 cmd.Parameters.AddWithValue("@height", player.Height);
                 cmd.Parameters.AddWithValue("@skin", player.Skin);
-                cmd.Parameters.AddWithValue("@position", player.Position.ToString());
+                cmd.Parameters.AddWithValue("@position", JsonSerializer.Serialize<Position>(player.Position));
                 cmd.Parameters.AddWithValue("@inventory", player.Inventory);
                 cmd.Parameters.AddWithValue("@backstory", player.Backstory);
 

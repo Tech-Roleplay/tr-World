@@ -30,7 +30,15 @@ namespace tr_world
 
             Utility.DClog($"[{player.Id}] The Player {player.Name} has joined the Server. Welcome. Discord-ID is: <@{player.DiscordId}>.", "Join-Log", secret.URL_Join, "https://altv.mp/img/branding/logo_black.png", true);
 
-
+            if (AccountsController.HasAccount(player)) 
+            {
+                AccountsController.LoadAccount(player);
+            }
+            else 
+            {
+                AccountsController.CreateAccount(player);
+            }
+            
             //BPlayerController.LoadBPlayerData(player, );
         }
 
@@ -49,7 +57,7 @@ namespace tr_world
 
         // death handle || only for dev
         [ScriptEvent(ScriptEventType.PlayerDead)]
-        public void PlayerDead(BPlayer player, IEntity killer, uint weapon)
+        public static void PlayerDead(BPlayer player, IEntity killer, uint weapon)
         {
             player.Spawn(new AltV.Net.Data.Position(0, 0, 72), 100);
             //Alt.Log($"")

@@ -186,8 +186,8 @@ namespace tr_world.Player
         {
             // Jobs
            
-            object[] jobobj = JobController.LoadJobDetailsFromDB(jobname);
-            object[] jobgradeobj = JobController.LoadJobGradeFromDB(jobname, jobgrade);
+            object[] jobobj = JobController.LoadJobDetailsFromDb(jobname);
+            object[] jobgradeobj = JobController.LoadJobGradeFromDb(jobname, jobgrade);
 
             player.Job.Name = jobname;
             player.Job.Grade_level = (uint)jobgrade;

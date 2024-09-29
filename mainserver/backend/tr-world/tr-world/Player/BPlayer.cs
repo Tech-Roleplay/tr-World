@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using tr_world.Models;
+using tr_world.Player;
 
 namespace tr_world.Player
 {
@@ -17,23 +19,20 @@ namespace tr_world.Player
     {
         #region Metadata
 
-        /// <summary>
         /// This property is used to store Character's ID of a player.
-        /// <summary>
         public string CharId { get; set; }
 
+        /// <summary>
+        /// This property is used to store Character's IDs of a player.
+        /// </summary>
         public CharList CharList {get; set;}
 
 
-        /// <summary>
         /// This property is used to store Group of a player.
-        /// <summary>
         public string Group { get; set; }
 
 
-        /// <summary>
         /// This property is used to store the first name of a player.
-        /// <summary>
         public string Firstname { get; set; }
 
         /// <summary>
@@ -63,8 +62,9 @@ namespace tr_world.Player
         public string Backstory { get; set; }
 
         /// <summary>
-        /// This property is used to store the id_card of a player.
+        /// This property is used to store the id_card of a player. Next moved to MetadData
         /// </summary>
+        [Obsolete]
         public string id_card { get; set; }
         #endregion
         
@@ -114,20 +114,15 @@ namespace tr_world.Player
         public string Driver_License { get; set; }
         #endregion
         #region Detailed Metas
+        public TMetadata Metadata { get; set; }
+        
         #region Booleans
-        public bool IsCuffed { get; set; }
-        public bool IsInPrison { get; set; }
-        public bool IsPlyDead { get; set; }
-        public bool IsPlyDown { get; set; }
-        public bool IsPlyHeadshotted { get; set; }
-        public bool IsPlyLogout { get; set; }
 
         #endregion
 
         #region phone infos
-        public int phonenumber { get; set; }
-        public string phone_profilpic_url { get; set; }
-        public string phone_name { get; set; }
+
+        public Phone Phone { get; set; }
 
         #endregion
 
@@ -145,16 +140,13 @@ namespace tr_world.Player
         /// <param name="id"> The unique ID of the player.</param>
         public BPlayer(ICore core, IntPtr nativePointer, uint id) : base(core, nativePointer, id)
         {
-            /**
-             * Initialize the default instance with default values.
-             */
-
             Job = new TJob();
             Gang = new TGang();
+            Metadata = new TMetadata();
 
             Group = "Player";
 
-            // 1-1 Change for custome values
+            // 1-1 Change for custom values
             Job.Name = "unemployed";
             Job.Label = "Civilian";
             Job.IsBoss = false;
@@ -174,6 +166,13 @@ namespace tr_world.Player
 
             Firstname = "ABC";
             Surname = "DEF";
+            
+            
+
+            Phone.ProfilePicUrl = "https://cdn.icon-icons.com/icons2/3553/PNG/512/account_profile_user_ecommerce_icon_224942.png";
+            Phone.Number = 0;
+            
+
         }
 
         #endregion
@@ -192,14 +191,6 @@ namespace tr_world.Player
         #endregion
 
         // all from job
-        #region job functions
-
-        #endregion
-        // all from 
-
-        #region gang functions
-
-        #endregion
 
         #endregion
     }
