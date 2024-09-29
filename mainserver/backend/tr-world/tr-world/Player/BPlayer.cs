@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace tr_world.Player
 {
-    /**
-     * BPlayer Class:
-     * This class extends the Player class and adds additional functionality.
-     */
+    /// <summary>
+    /// BPlayer Class:
+    /// This class extends the Player class and adds additional functionality.
+    /// </summary>
     public class BPlayer : AltV.Net.Elements.Entities.Player
     {
         #region Metadata
@@ -67,7 +67,7 @@ namespace tr_world.Player
         /// </summary>
         public string id_card { get; set; }
         #endregion
-
+        
         #region Interfaces Job & Gang
         /// <summary>
         /// This property is used to store the job of a player.
@@ -80,6 +80,7 @@ namespace tr_world.Player
         public IGang Gang { get; set; }
 
         #endregion
+
 
         #region Money
 

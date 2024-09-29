@@ -6,6 +6,7 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using tr_world.Controllers;
+using tr_world.Models;
 using tr_world.Player;
 
 namespace tr_world.Player
@@ -287,6 +288,26 @@ namespace tr_world.Player
 
         #endregion
 
+        #region Skin
 
+        public static void SetCloth(this BPlayer player, ComponentIDs componet, int drawable, int texture,
+            int? pallette)
+        {
+            
+        }
+
+        public static string GetCloth(this BPlayer player)
+        {
+            //temp return "Cloth";
+            return "Cloth";
+        }
+        
+        public static void SetDlcCloth(this BPlayer player, int dlc, ComponentIDs componet, int drawable, int texture,
+            int? pallette)
+        {
+            
+        }
+
+        #endregion
     }
 }

@@ -15,7 +15,8 @@ namespace tr_world.Player
         public bool OnDuty { get; set; }
         public uint Grade_level { get; set; }
         public string Grade_name { get; set; }
-        public string Skin { get; set; }
+        public string Skin_Male { get; set; } // Change to skin_Model!
+        public string Skin_Female { get; set; }
     }
 
     public class TGang : IGang
@@ -27,7 +28,8 @@ namespace tr_world.Player
         public uint Grade_level { get; set; }
         public string Grade_name { get; set; }
         public bool OnDuty { get; set; }
-        string IGang.Skin { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Skin_Male { get; set; } // Change to skin_Model!
+        public string Skin_Female { get; set; }
 
         public TGang()
         {

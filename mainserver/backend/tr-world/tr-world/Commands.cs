@@ -70,7 +70,7 @@ namespace tr_world
         }
 
         [Command("addmoneycash")]
-        public void CMD_addmoneycash(BPlayer player, int amount)
+        public void CMD_AddMoneyCash(BPlayer player, int amount)
         {
             player.AddMoneyToCash(amount, "");
         }
