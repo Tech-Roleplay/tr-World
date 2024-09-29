@@ -412,3 +412,4 @@ mainserver/server.toml
 /mainserver/backend/tr-world/tr-world/.env
 /mainserver/backend/tr-world/tr-world/secret.cs
 /mainserver/backend/tr-world/tr-world/Config/secret.cs
+/mainserver/backend/tr-world/.idea/.idea.tr-world/.idea
