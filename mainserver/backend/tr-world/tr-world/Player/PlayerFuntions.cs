@@ -64,7 +64,7 @@ namespace tr_world.Player
         /// </summary>
         /// <param name="player">The target player.</param>
         /// <param name="amount">How much to subtract?</param>
-        /// <param name="reason">Why are you subtract Money?</param>
+        /// <param name="reason">Why are you subtracting Money?</param>
         public static void SubMoneyToCash(this BPlayer player, int amount, string reason)
         {
             // Temporäres Geld erstellen
@@ -89,7 +89,7 @@ namespace tr_world.Player
         /// </summary>
         /// <param name="player">The target player.</param>
         /// <param name="amount">How much to subtract?</param>
-        /// <param name="reason">Why are you subtract Money?</param>
+        /// <param name="reason">Why are you subtracting Money?</param>
         public static void SubMoneyToBank(this BPlayer player, int amount, string reason)
         {
             // Temporäres Geld erstellen
@@ -288,6 +288,157 @@ namespace tr_world.Player
 
         #endregion
 
+        // Metadata
+        #region Metadata
+        /// <summary>
+        /// Gets if player is cuffed
+        /// </summary>
+        /// <param name="player">The target player</param>
+        /// <returns>Cuffed-State for the player</returns>
+        public static bool GetIsPlayerCuffed(this BPlayer player)
+        {
+            return player.Metadata.IsCuffed;
+        }
+
+        /// <summary>
+        /// Sets 
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="value"></param>
+        public static void SetIsPlayerCuffed(this BPlayer player, bool value)
+        {
+            player.Metadata.IsCuffed = value;
+        }
+
+        public static bool GetIsPlayerInPrison(this BPlayer player)
+        {
+            return player.Metadata.IsInPrison;
+        }
+
+        public static void SetIsPlayerInPrison(this BPlayer player, bool value)
+        {
+            player.Metadata.IsInPrison = value;
+        }
+
+        public static bool GetIsPlayerDead(this BPlayer player)
+        {
+            return player.Metadata.IsPlyDead;
+        }
+
+        public static void SetIsPlayerDead(this BPlayer player, bool value)
+        {
+            player.Metadata.IsPlyDead = value;
+        }
+
+        public static bool GetISPlayerDown(this BPlayer player)
+        {
+            return player.Metadata.IsPlyDown;
+        }
+
+        public static void SetISPlayerDown(this BPlayer player, bool value)
+        {
+            player.Metadata.IsPlyDown = value;    
+        }
+
+        public static bool GetIsPlayerHeadshotted(this BPlayer player)
+        {
+            return player.Metadata.IsPlyHeadshotted;
+        }
+
+        public static void SetIsPlayerHeadshotted(this BPlayer player, bool value)
+        {
+            player.Metadata.IsPlyHeadshotted = value;
+        }
+
+        public static bool GetIsPlayerLogout(this BPlayer player)
+        {
+            return player.Metadata.IsPlyLogout;
+        }
+
+        public static void SetIsPlayerLogout(this BPlayer player, bool value)
+        {
+            player.Metadata.IsPlyLogout = value;
+        }
+
+        public static void SetHunger(this BPlayer player, float value)
+        {
+            if (value is <= 100f and >= 0f) return;
+            player.Metadata.Hunger = value;
+        }
+
+        public static float GetHunger(this BPlayer player)
+        {
+            return player.Metadata.Hunger;
+        }
+
+        public static void SetThirst(this BPlayer player, float value)
+        {
+            if (value is <= 100f and >= 0f) return;
+            player.Metadata.Thirst = value;
+        }
+
+        public static float GetThirst(this BPlayer player)
+        {
+            return player.Metadata.Thirst;
+        }
+
+        public static void SetArmor(this BPlayer player, float value)
+        {
+            if (value is <= 100f and >= 0f) return;
+            player.Metadata.Armor = value;
+        }
+
+        public static float GetArmor(this BPlayer player)
+        {
+            return player.Metadata.Armor;
+        }
+
+        public static void SetStress(this BPlayer player, float value)
+        {
+            if (value is <= 100f and >= 0f) return;
+            player.Metadata.Stress = value;
+        }
+
+        public static float GetStress(this BPlayer player)
+        {
+            return player.Metadata.Stress;
+        }
+
+        public static void SetJailTime(this BPlayer player, float value)
+        {
+            if (value is <= 100f and >= 0f) return;
+            player.Metadata.JailTime = value;
+        }
+
+        public static float GetJailTime(this BPlayer player)
+        {
+            return player.Metadata.JailTime;
+        }
+
+        public static void UpdateLastUpdate(this BPlayer player)
+        {
+            player.Metadata.LastUpdate = DateTime.Now;
+        }
+
+        public static DateTime GetLastUpdate(this BPlayer player)
+        {
+            return player.Metadata.LastUpdate;
+        }
+
+        public static void CreateCreateDate(this BPlayer player)
+        {
+            player.Metadata.CreateDate = DateTime.Now;
+        }
+
+        public static DateTime GetCreateDate(this BPlayer player)
+        {
+            return player.Metadata.CreateDate;
+        }
+        
+        #endregion
+        
+        
+        
         #region Skin
 
         public static void SetCloth(this BPlayer player, ComponentIDs componet, int drawable, int texture,
