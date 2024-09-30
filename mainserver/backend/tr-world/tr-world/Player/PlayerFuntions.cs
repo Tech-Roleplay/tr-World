@@ -93,13 +93,13 @@ namespace tr_world.Player
         public static void SubMoneyToBank(this BPlayer player, int amount, string reason)
         {
             // Temporäres Geld erstellen
-            var TempMoney = player.BankBalance;
+            int tempMoney = player.BankBalance;
 
             // Temporäres Geld mit amount subtrahieren, ohne Schutz
-            TempMoney -= amount;
+            tempMoney -= amount;
 
             // Temporäres Geld dem Spieler Aufladen
-            player.BankBalance = TempMoney;
+            player.BankBalance = tempMoney;
 
             // Log erstellen des Transfers
             // ND
@@ -114,13 +114,13 @@ namespace tr_world.Player
         public static void SetMoneyToCash(this BPlayer player, int amount, string reason)
         {
             // Temporäres Geld erstellen
-            var TempMoney = player.CashBalance;
+            int tempMoney = player.CashBalance;
 
             // Temporäres Geld mit amount gesetzt
-            TempMoney = amount;
+            tempMoney = amount;
 
             // Temporäres Geld dem Spieler Aufladen
-            player.CashBalance = TempMoney;
+            player.CashBalance = tempMoney;
 
             // Log erstellen des Transfers
             // ND
@@ -135,13 +135,13 @@ namespace tr_world.Player
         public static void SetMoneyToBank(this BPlayer player, int amount, string reason)
         {
             // Temporäres Geld erstellen
-            var TempMoney = player.BankBalance;
+            int tempMoney = player.BankBalance;
 
             // Temporäres Geld mit amount gesetzt
-            TempMoney = amount;
+            tempMoney = amount;
 
             // Temporäres Geld dem Spieler Aufladen
-            player.BankBalance = TempMoney;
+            player.BankBalance = tempMoney;
 
             // Log erstellen des Transfers
             // ND
@@ -460,5 +460,15 @@ namespace tr_world.Player
         }
 
         #endregion
+
+        
+        public static string GetRandomCharid(this BPlayer player)
+        {
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var finalString = (Enumerable.Repeat(chars, 3)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+            string result = finalString + "-" + random.Next(101, 999);
+            return result;
+        }
     }
 }

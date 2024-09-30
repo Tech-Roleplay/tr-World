@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using tr_world.Controllers;
 using tr_world.Player;
 using tr_world.Vehicle;
 
@@ -98,6 +99,33 @@ namespace tr_world
         public void CMD_showJob(BPlayer player, string[] args)
         {
             player.SendChatMessage($"Your Job is: {player.Job.Label} with Grade {player.Job.Grade_Label}");
+        }
+
+        [Command("createBPlayer")]
+        public void CMD_createBPlayer(BPlayer player)
+        {
+            BPlayerController.CreateBPlayerAccount(player, player.GetRandomCharid());
+            
+        }
+
+        [Command("loadBPlayer")]
+        public void CMD_loadBPlayer(BPlayer player, string charid)
+        {
+            if (BPlayerController.HasBPlayerAccount(player, charid))
+            {
+                BPlayerController.LoadBPlayerData(player, charid);
+                player.SendChatMessage("Loaded B Player Account: " + charid);
+            }
+            else
+            {
+                player.SendChatMessage("{FF0000}Account was not founded: " + charid);
+            }
+        }
+
+        [Command("saveBPlayer")]
+        public static void CMD_saveBPlayer(BPlayer player)
+        {
+            BPlayerController.SaveBPlayerData(player);
         }
     }
 }

@@ -129,7 +129,9 @@ namespace tr_world.Player
 
         #endregion
         public string Skin { get; set; }
-
+        public string MainProperty { get; set; }
+        
+        
         #region Basic Constructor
 
         /// <summary>
@@ -143,6 +145,7 @@ namespace tr_world.Player
             Job = new TJob();
             Gang = new TGang();
             Metadata = new TMetadata();
+            Phone = new Phone();
 
             Group = "Player";
 
