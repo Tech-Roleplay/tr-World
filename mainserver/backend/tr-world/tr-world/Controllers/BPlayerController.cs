@@ -64,17 +64,7 @@ namespace tr_world.Controllers
                         string jobname = reader.GetString("job");
                         int jobgrade = reader.GetUInt16("jobgrade");
 
-                        object[] jobobj = JobController.LoadJobDetailsFromDb(jobname);
-                        object[] jobgradeobj = JobController.LoadJobGradeFromDb(jobname, jobgrade);
 
-                        player.Job.Name = jobname;
-                        player.Job.Grade_level = (uint)jobgrade;
-                        player.Job.Label = (string)jobobj[0];
-                        player.Job.Grade_name = (string)jobgradeobj[0];
-                        player.Job.Grade_Label = (string)jobgradeobj[1];
-                        player.Job.Payment = (uint)jobgradeobj[2];
-                        player.Job.Skin_Male = (string)jobgradeobj[3];
-                        player.Job.Skin_Female = (string)jobgradeobj[4];
 
                         // gang
                         
@@ -91,8 +81,23 @@ namespace tr_world.Controllers
 
                         
 
-                        Alt.Log($"Sucessfully loading playerdata for (${player.Name})!");
+                        
                         reader.Close();
+                        
+                        object[] jobobj = JobController.LoadJobDetailsFromDb(jobname);
+                        object[] jobgradeobj = JobController.LoadJobGradeFromDb(jobname, jobgrade);
+                        
+                        
+                        player.Job.Name = jobname;
+                        player.Job.Grade_level = (uint)jobgrade;
+                        player.Job.Label = (string)jobobj[0];
+                        player.Job.Grade_name = (string)jobgradeobj[0];
+                        player.Job.Grade_Label = (string)jobgradeobj[1];
+                        player.Job.Payment = (uint)jobgradeobj[2];
+                        player.Job.Skin_Male = (string)jobgradeobj[3];
+                        player.Job.Skin_Female = (string)jobgradeobj[4];
+                        
+                        Alt.Log($"Sucessfully loading playerdata for (${player.Name})!");
                     }
                 }
 

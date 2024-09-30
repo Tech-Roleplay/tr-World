@@ -59,7 +59,7 @@ namespace tr_world.Controllers
 
                     string name = reader.GetString("name");
                     string label = reader.GetString("label");
-                    int salary = reader.GetInt32("salary");
+                    uint salary = reader.GetUInt32("salary");
                     string skinMale = reader.GetString("skin_male");
                     string skinFemale = reader.GetString("skin_female");
 
