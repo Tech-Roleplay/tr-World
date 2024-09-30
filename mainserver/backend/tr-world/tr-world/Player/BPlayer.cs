@@ -146,6 +146,7 @@ namespace tr_world.Player
             Gang = new TGang();
             Metadata = new TMetadata();
             Phone = new Phone();
+            CharList = new CharList();
 
             Group = "Player";
 
@@ -202,10 +203,14 @@ namespace tr_world.Player
 #region CharList 
 public class CharList
 {
-    string char1 { get; set;}
-    string char2 { get; set;}
-    string char3 { get; set;}
-    string char4 { get; set;}
-    string char5 { get; set;}
+    public string char1 { get; set;}
+    public string char2 { get; set;}
+    public string char3 { get; set;}
+    public string char4 { get; set;}
+    public string char5 { get; set;}
+    public CharList()
+    {
+
+    }
 }
 #endregion

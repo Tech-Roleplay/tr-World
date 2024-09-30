@@ -63,8 +63,20 @@ namespace tr_world
             //Alt.Log($"")
         }
 
-        
-    
-        // Server Events
+
+
+        /*// Server Events
+        [ClientEvent("Char.LoadPlayer")]
+        public static void CharLoadPlayer(BPlayer player, string arg)
+        {
+            switch (arg)
+            {
+                case "Character 1":
+                    player.
+                    break;
+                default:
+                    break;
+            }
+        }*/
     }
 }

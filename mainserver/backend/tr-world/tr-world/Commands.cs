@@ -127,5 +127,12 @@ namespace tr_world
         {
             BPlayerController.SaveBPlayerData(player);
         }
+        [Command("nativeuicharload")]
+        public static void CMD_NativeUiCharLoad(BPlayer player)
+        {
+            
+mit("CharSect.Show",player.CharList.char1, player.CharList.char2, player.CharList.char3, player.CharList.char4, player.CharList.char5);
+
+        }            player.E
     }
 }
