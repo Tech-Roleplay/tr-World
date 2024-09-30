@@ -98,27 +98,21 @@ namespace tr_world
         [Command("showjob")]
         public void CMD_showJob(BPlayer player, string[] args)
         {
-            player.SendChatMessage($"Your Job is: {player.Job.Label} with Grade {player.Job.Grade_Label}");
-        }
-
-        [Command("createBPlayer")]
-        public void CMD_createBPlayer(BPlayer player)
-        {
-            BPlayerController.CreateBPlayerAccount(player, player.GetRandomCharid());
-            
+            player.SendChatMessage($"Your Job is: {player.Job.Label} with Grade: {player.Job.Grade_Label}");
         }
 
         [Command("loadBPlayer")]
-        public void CMD_loadBPlayer(BPlayer player, string charid)
+        public void CMD_loadBPlayer(BPlayer player)
         {
-            if (BPlayerController.HasBPlayerAccount(player, charid))
+            if (BPlayerController.HasBPlayerAccount(player))
             {
-                BPlayerController.LoadBPlayerData(player, charid);
-                player.SendChatMessage("Loaded B Player Account: " + charid);
+                BPlayerController.LoadBPlayerData(player);
+                player.SendChatMessage("Loaded BPlayer Account");
             }
             else
             {
-                player.SendChatMessage("{FF0000}Account was not founded: " + charid);
+                BPlayerController.CreateBPlayerAccount(player);
+                player.SendChatMessage("{FF0000}Account was not founded, creating a new one");
             }
         }
 
@@ -127,12 +121,6 @@ namespace tr_world
         {
             BPlayerController.SaveBPlayerData(player);
         }
-        [Command("nativeuicharload")]
-        public static void CMD_NativeUiCharLoad(BPlayer player)
-        {
-            
-mit("CharSect.Show",player.CharList.char1, player.CharList.char2, player.CharList.char3, player.CharList.char4, player.CharList.char5);
-
-        }            player.E
+        
     }
 }

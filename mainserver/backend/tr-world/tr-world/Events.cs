@@ -30,14 +30,7 @@ namespace tr_world
 
             Utility.DClog($"[{player.Id}] The Player {player.Name} has joined the Server. Welcome. Discord-ID is: <@{player.DiscordId}>.", "Join-Log", secret.URL_Join, "https://altv.mp/img/branding/logo_black.png", true);
 
-            if (AccountsController.HasAccount(player)) 
-            {
-                AccountsController.LoadAccount(player);
-            }
-            else 
-            {
-                AccountsController.CreateAccount(player);
-            }
+            
             
             //BPlayerController.LoadBPlayerData(player, );
         }

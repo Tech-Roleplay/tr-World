@@ -19,14 +19,7 @@ namespace tr_world.Player
     {
         #region Metadata
 
-        /// This property is used to store Character's ID of a player.
-        public string CharId { get; set; }
-
-        /// <summary>
-        /// This property is used to store Character's IDs of a player.
-        /// </summary>
-        public CharList CharList {get; set;}
-
+       
 
         /// This property is used to store Group of a player.
         public string Group { get; set; }
@@ -146,7 +139,6 @@ namespace tr_world.Player
             Gang = new TGang();
             Metadata = new TMetadata();
             Phone = new Phone();
-            CharList = new CharList();
 
             Group = "Player";
 
@@ -200,17 +192,3 @@ namespace tr_world.Player
     }
 }
 
-#region CharList 
-public class CharList
-{
-    public string char1 { get; set;}
-    public string char2 { get; set;}
-    public string char3 { get; set;}
-    public string char4 { get; set;}
-    public string char5 { get; set;}
-    public CharList()
-    {
-
-    }
-}
-#endregion
