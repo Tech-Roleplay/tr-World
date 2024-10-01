@@ -22,7 +22,8 @@ namespace tr_world.Player
        
 
         /// This property is used to store Group of a player.
-        public string Group { get; set; }
+        //public string Group { get; set; }
+        public int Permission { get; set; }
 
 
         /// This property is used to store the first name of a player.
@@ -140,7 +141,7 @@ namespace tr_world.Player
             Metadata = new TMetadata();
             Phone = new Phone();
 
-            Group = "Player";
+            Permission = (int)TPermission.Player;
 
             // 1-1 Change for custom values
             Job.Name = "unemployed";

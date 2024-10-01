@@ -38,14 +38,14 @@ namespace tr_world.Controllers
                         //player.DiscordId;
 
                         //player.SetMetaData("user:discordid", reader.GetInt64("discordid"));
-
-                        player.Group = reader.GetString("pgroup");
+                        //player.Name = reader.GetString("name");
+                        player.Permission = reader.GetInt32("permissionlevel");
 
                         player.Firstname = reader.GetString("fname");
                         player.Surname = reader.GetString("lname");
 
-                        player.CashBalance = reader.GetInt16("cash_money");
-                        player.BankBalance = reader.GetInt16("bank_money");
+                        player.CashBalance = reader.GetInt32("cash_money");
+                        player.BankBalance = reader.GetInt32("bank_money");
 
                         player.Sex = reader.GetChar("sex");
                         player.Height = reader.GetByte("height");
@@ -77,11 +77,7 @@ namespace tr_world.Controllers
                         
                         //iban
                         //callsign
-                        
 
-                        
-
-                        
                         reader.Close();
                         
                         object[] jobobj = JobController.LoadJobDetailsFromDb(jobname);
@@ -110,8 +106,11 @@ namespace tr_world.Controllers
 
         }
 
-        private const string UpdateString = "UPDATE users SET discordid=@discordid, `group`=@pgroup, fname=@fname, lname=@lname, bank_money=@bank_money, cash_money=@cash_money, sex=@sex, height=@height, skin=@skin, status=@status, position=@position, metadata=@metadata, inventory=@inventory, backstory=@backstory, is_dead=@is_dead, is_downed=@is_downed, is_cuffed=@is_cuffed, is_headshotted=@is_headshotted, is_logout=@is_logout, is_inprision=@is_inprision, disabled=@disabled, main_property=@main_property, created=@created, last_seen=@last_seen, job=@job, jobgrade=@jobgrade, gang=@gang, ganggrade=@ganggrade, phone_number=@phone_number, phone_pic_url=@phone_pic_url, phone=@phone, iban=@iban, callsign=@callsign WHERE charid=@charid";
-
+        private const string UpdateString = "UPDATE users SET discordid=@discordid, name=@name, `permissionlevel`=@permissionlevel, fname=@fname, lname=@lname, bank_money=@bank_money, cash_money=@cash_money, sex=@sex, height=@height, skin=@skin, status=@status, position=@position, metadata=@metadata, inventory=@inventory, backstory=@backstory, disabled=@disabled, main_property=@main_property, job=@job, jobgrade=@jobgrade, gang=@gang, ganggrade=@ganggrade, phone_number=@phone_number, phone=@phone, iban=@iban, callsign=@callsign WHERE discordid=@discordid LIMIT 1";
+        /// <summary>
+        /// Save the player-data
+        /// </summary>
+        /// <param name="player">the target player</param>
         public static void SaveBPlayerData(BPlayer player)
         {
             try
@@ -119,7 +118,8 @@ namespace tr_world.Controllers
                 MySqlCommand cmd = Databank.Connection.CreateCommand();
                 cmd.CommandText = UpdateString;
                 cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
-                cmd.Parameters.AddWithValue("@pgroup", player.Group);
+                cmd.Parameters.AddWithValue("@name", player.Name);
+                cmd.Parameters.AddWithValue("@permissionlevel", player.Permission);
                 cmd.Parameters.AddWithValue("@fname", player.Firstname);
                 cmd.Parameters.AddWithValue("@lname", player.Surname);
                 cmd.Parameters.AddWithValue("@cash_money", player.CashBalance);
@@ -128,7 +128,9 @@ namespace tr_world.Controllers
                 cmd.Parameters.AddWithValue("@height", player.Height);
                 cmd.Parameters.AddWithValue("@skin", player.Skin);
 //              cmd.Parameters.AddWithValue("@status", player.Status);
-                cmd.Parameters.AddWithValue("@position", JsonSerializer.Serialize<Position>(player.Position));
+                string jsonPosition = JsonSerializer.Serialize(player.Position.Normalized);
+                cmd.Parameters.AddWithValue("@position", jsonPosition);
+                player.Metadata.LastUpdate = DateTime.Now;
                 string jsonMetadata = JsonSerializer.Serialize(player.Metadata);
                 cmd.Parameters.AddWithValue("@backstory", jsonMetadata);
                 cmd.Parameters.AddWithValue("@inventory", player.Inventory);
@@ -156,10 +158,11 @@ namespace tr_world.Controllers
             try
             {
                 MySqlCommand cmd = Databank.Connection.CreateCommand();
-                cmd.CommandText = "INSERT INTO users (discordid, `group`, fname, lname, cash_money, bank_money, sex, height, skin, status, position, metadata, inventory, backstory, job, jobgrade, gang, ganggrade, phone_number, phone) VALUES (@discordid, @pgroup, @fname, @lname, @cash_money, @bank_money, @sex, @height, @skin, @status, @position, @metadata, @inventory, @backstory, @job, @jobgrade, @gang, @ganggrade, @phone_number, @phone)";
+                cmd.CommandText = "INSERT INTO users (discordid, name, `permissionlevel`, fname, lname, cash_money, bank_money, sex, height, skin, status, position, metadata, inventory, backstory, job, jobgrade, gang, ganggrade, phone_number, phone) VALUES (@discordid, @name, @permissionlevel, @fname, @lname, @cash_money, @bank_money, @sex, @height, @skin, @status, @position, @metadata, @inventory, @backstory, @job, @jobgrade, @gang, @ganggrade, @phone_number, @phone)";
                 
                 cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
-                cmd.Parameters.AddWithValue("@pgroup", player.Group);
+                cmd.Parameters.AddWithValue("@name", player.Name);
+                cmd.Parameters.AddWithValue("@permissionlevel", player.Permission);
                 cmd.Parameters.AddWithValue("@fname", player.Firstname);
                 cmd.Parameters.AddWithValue("@lname", player.Surname);
                 cmd.Parameters.AddWithValue("@cash_money", player.CashBalance);

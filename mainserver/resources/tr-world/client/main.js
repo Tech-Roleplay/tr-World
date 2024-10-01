@@ -10,12 +10,14 @@ let DISCORD_APP_ID = ""
 
 
 // functions
-
+//#region Connection
 alt.on("connectionComplete", () => {
     alt.log("Client-side loaded.");
-
 })
 
+//#endregion
+
+//#region OAuth2
 async function getOAuth2Token() {
     try {
         let token = await alt.Discord.requestOAuth2Token(DISCORD_APP_ID)
@@ -25,8 +27,9 @@ async function getOAuth2Token() {
 
 }
 
+//#endregion
 
-
+//#region static Blips
 function loadBlips() {
     createBlip(-609.01495, -599.91205, 34.67566, 835, 53, 0.7, true, "Parlament");
     createBlip(-692.8296, -636.38007, 31.55694, 855, 53, 0.7, true, "Whitehouse");
@@ -113,6 +116,7 @@ function loadBlips() {
  * @param {boolean} [shortRange=false] - Whether this is a short range blip.
  * @param {string} [name=''] - The name for the blip.
  */
+
 function createBlip(x, y, z, sprite, color, scale = 1.0, shortRange = false, name = "") {
     let tempBlip = new alt.PointBlip(x, y, z);
 
@@ -125,3 +129,4 @@ function createBlip(x, y, z, sprite, color, scale = 1.0, shortRange = false, nam
     }
 
 }
+//#endregion

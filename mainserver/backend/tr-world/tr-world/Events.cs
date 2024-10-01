@@ -26,12 +26,17 @@ namespace tr_world
 
             AltChat.SendBroadcast($"[{player.Id}] The Player {player.Name} has joined the Server. Welcome.");
             Alt.Log($"[{player.Id}] The Player {player.Name} has joined the Server. Discord-ID is: {player.DiscordId}. Welcome.");
-
-
+            
             Utility.DClog($"[{player.Id}] The Player {player.Name} has joined the Server. Welcome. Discord-ID is: <@{player.DiscordId}>.", "Join-Log", secret.URL_Join, "https://altv.mp/img/branding/logo_black.png", true);
-
             
-            
+            if (BPlayerController.HasBPlayerAccount(player))
+            {
+                BPlayerController.LoadBPlayerData(player);
+            }
+            else
+            {
+                BPlayerController.CreateBPlayerAccount(player);
+            }
             //BPlayerController.LoadBPlayerData(player, );
         }
 
@@ -46,6 +51,8 @@ namespace tr_world
             Alt.Log($"[{player.Id}] The Player {player.Name} has left the Server. Discord-ID is: {player.DiscordId}. Bye. Of Reason: {reason}.");
 
             Utility.DClog($"[{player.Id}] The Player {player.Name} has left the Server. Discord-ID is: <@{player.DiscordId}>. Bye. Of Reason: {reason}.", "Disconnect-Log", secret.URL_Join, "https://altv.mp/img/branding/logo_black.png", true);
+            
+            BPlayerController.SaveBPlayerData(player);
         }
 
         // death handle || only for dev

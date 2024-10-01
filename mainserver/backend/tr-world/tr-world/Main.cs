@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using AltV.Net;
 using AltV.Net.Elements.Entities;
-
 using tr_world.Base;
+using tr_world.Controllers;
+using tr_world.Player;
 
 namespace tr_world
 {
@@ -18,13 +19,26 @@ namespace tr_world
         /// </summary>
         public override void OnStart()
         {
-
-
-
             Alt.Log("Server-C#-backend is starting!");
 
             Databank.InitConnection();
+
+            // Timer
+            Timer saveTimer = new Timer(OnSaveTimer, null, 1000, 120000);
         }
+
+        // Timers
+        public static void OnSaveTimer(object state)
+        {
+            foreach (var bplayer in Alt.GetAllPlayers())
+            {
+                var player = (BPlayer)bplayer;
+                BPlayerController.SaveBPlayerData(player);
+            }
+            Alt.LogInfo("All players have been saved!");
+        }
+
+       
 
         // Player Factory
         public override IEntityFactory<IPlayer> GetPlayerFactory()
@@ -43,7 +57,8 @@ namespace tr_world
         // Close Func
         public override void OnStop()
         {
-            Alt.Log("Server-C#-backend is stopping!");
+            Alt.LogWarning("Server-C#-backend is stopping!");
+            OnSaveTimer( null );
         }
     }
 }
