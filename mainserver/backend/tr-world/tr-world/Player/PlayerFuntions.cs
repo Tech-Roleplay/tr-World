@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using AltV.Net;
+using AltV.Net.Resources.Chat.Api;
 using tr_world.Controllers;
 using tr_world.Models;
 using tr_world.Player;
@@ -14,6 +16,16 @@ namespace tr_world.Player
     public static class PlayerFuntions
     {
         private static Random random = new Random();
+
+        public static bool HasPlayerPermission(this BPlayer player, int RequiredPermission)
+        {
+            if (player.Permission >= RequiredPermission)
+            {
+                return true;
+            }
+            player.SendChatMessage("You do not have the permission to use this command.");
+            return false;
+        }
 
         #region Money functions
 
@@ -461,7 +473,7 @@ namespace tr_world.Player
 
         #endregion
 
-        
+        [Obsolete]
         public static string GetRandomCharid(this BPlayer player)
         {
             var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

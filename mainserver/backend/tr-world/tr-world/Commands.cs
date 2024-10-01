@@ -16,32 +16,35 @@ namespace tr_world
     public class Commands : IScript
     {
         [CommandEvent(CommandEventType.CommandNotFound)]
-        public void CommandNotFound(BPlayer player, string cmd) 
+        public void CommandNotFound(BPlayer player, string cmd)
         {
-            player.SendChatMessage("{FF0000}Command not found: " +  cmd);
+            player.SendChatMessage("{FF0000}Command not found: " + cmd);
         }
 
         [Command("veh")]
         public void CMD_veh(BPlayer player, string VehicleName)
         {
-            if (VehicleName != null)
+            if (player.HasPlayerPermission((int)TPermission.Moderator))
             {
-                BVehicle veh = (BVehicle)Alt.CreateVehicle(Alt.Hash(VehicleName), new Position(player.Position.X, player.Position.Y + 1.5f, player.Position.Z), player.Rotation);
-                veh.NumberplateText = player.Name;
-                veh.EngineOn = true;
+                if (VehicleName != null)
+                {
+                    BVehicle veh = (BVehicle)Alt.CreateVehicle(Alt.Hash(VehicleName), new Position(player.Position.X, player.Position.Y + 1.5f, player.Position.Z), player.Rotation);
+                    veh.NumberplateText = player.Name;
+                    veh.EngineOn = true;
 
-                //set keyfunc here
-                veh.CreateVehicleKey();
+                    //set keyfunc here
+                    veh.CreateVehicleKey();
 
-                //Log
-                player.SendChatMessage($"[Vehicle] The {VehicleName} spawned.");
-                Utility.DClog($"{player.Name}(<@{player.DiscordId}>) has spawned a new vehicle: a/an {VehicleName}", "Vehicle Spawner", Config.secret.URL_VehSpawner, "", true);
+                    //Log
+                    player.SendChatMessage($"[Vehicle] The {VehicleName} spawned.");
+                    Utility.DClog($"{player.Name}(<@{player.DiscordId}>) has spawned a new vehicle: a/an {VehicleName}", "Vehicle Spawner", Config.secret.URL_VehSpawner, "", true);
+                }
+                else
+                {
+                    player.SendChatMessage("{FF0000}" + $"Vehicle Name: {VehicleName} was not founded.");
+                }
             }
-            else
-            {
-                player.SendChatMessage("{FF0000}" + $"Vehicle Name: {VehicleName} was not founded.");
-            }
-            
+
         }
 
         [Command("repair")]
@@ -49,7 +52,7 @@ namespace tr_world
         {
             IVehicle veh = player.Vehicle;
 
-            if ( veh != null )
+            if (veh != null)
             {
                 veh.Repair();
             }
@@ -60,7 +63,8 @@ namespace tr_world
         }
 
         [Command("pos", true)]
-        public void CMD_pos(BPlayer player, string name){
+        public void CMD_pos(BPlayer player, string name)
+        {
             player.SendChatMessage($"X: {player.Position.X} Y: {player.Position.Y} Z: {player.Position.Z} and with Name: {name}.");
 
             Alt.Log("==POS==");
@@ -76,7 +80,7 @@ namespace tr_world
             player.AddMoneyToCash(amount, "");
         }
 
-        [Command ("showcash")]
+        [Command("showcash")]
         public void CMD_showcash(BPlayer player, string[] args)
         {
             player.SendChatMessage($"Your Cash Balance is: {player.CashBalance}");
@@ -121,6 +125,6 @@ namespace tr_world
         {
             BPlayerController.SaveBPlayerData(player);
         }
-        
+
     }
 }
