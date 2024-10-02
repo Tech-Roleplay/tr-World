@@ -202,13 +202,13 @@ namespace tr_world.Player
             object[] jobgradeobj = JobController.LoadJobGradeFromDb(jobname, jobgrade);
 
             player.Job.Name = jobname;
-            player.Job.Grade_level = (uint)jobgrade;
+            player.Job.GradeLevel = (uint)jobgrade;
             player.Job.Label = (string)jobobj[0];
-            player.Job.Grade_name = (string)jobgradeobj[0];
-            player.Job.Grade_Label = (string)jobgradeobj[1];
+            player.Job.GradeName = (string)jobgradeobj[0];
+            player.Job.GradeLabel = (string)jobgradeobj[1];
             player.Job.Payment = (uint)jobgradeobj[2];
-            player.Job.Skin_Male = (string)jobgradeobj[3];
-            player.Job.Skin_Female = (string)jobgradeobj[4];
+            player.Job.SkinMale = (string)jobgradeobj[3];
+            player.Job.SkinFemale = (string)jobgradeobj[4];
         }
         
         /// <summary>
@@ -279,11 +279,11 @@ namespace tr_world.Player
         {
             if (player.Sex == 'm')
             {
-                return player.Job.Skin_Male;
+                return player.Job.SkinMale;
             } 
             else if (player.Sex == 'f')
             {
-                return player.Job.Skin_Female;
+                return player.Job.SkinFemale;
             }
             else
             {

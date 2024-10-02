@@ -71,8 +71,9 @@ namespace tr_world.Player
         /// <summary>
         /// This property is used to store the gang activity of a player.
         /// </summary>
+        #nullable enable
         public IGang Gang { get; set; }
-
+        
         #endregion
 
 
@@ -100,7 +101,7 @@ namespace tr_world.Player
         /// <summary>
         /// This property is used to store the vehicle keys of a player.
         /// </summary>
-        public string[] VehKeysIDs { get; set; }
+        public string[] VehKeysID { get; set; }
 
         /// <summary>
         /// This property is used to store the driver license of a player.
@@ -150,16 +151,16 @@ namespace tr_world.Player
             Job.OnDuty = true;
             Job.Type = "none";
             Job.Payment = 420;
-            Job.Grade_level = 0;
-            Job.Grade_name = "No Grades";
+            Job.GradeLevel = 0;
+            Job.GradeName = "No Grades";
 
             Gang.Name = "none";
             Gang.Label = "No Gang Affiliaton";
             Gang.IsBoss = false;
             Gang.OnDuty = false;
             Gang.Type = "none";
-            Gang.Grade_level = 0;
-            Gang.Grade_name = "No Grades";
+            Gang.GradeLevel = 0;
+            Gang.GradeName = "No Grades";
 
             Firstname = "ABC";
             Surname = "DEF";

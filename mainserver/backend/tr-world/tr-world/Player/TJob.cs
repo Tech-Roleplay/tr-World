@@ -15,11 +15,11 @@ namespace tr_world.Player
         public bool IsBoss { get; set; }
         public bool OnDuty { get; set; }
         public string? Unit {  get; set; }
-        public uint Grade_level { get; set; }
-        public string Grade_name { get; set; }
-        public string Grade_Label { get; set; }
-        public string Skin_Male { get; set; } // Change to skin_Model!
-        public string Skin_Female { get; set; }
+        public uint GradeLevel { get; set; }
+        public string GradeName { get; set; }
+        public string GradeLabel { get; set; }
+        public string SkinMale { get; set; } // Change to skin_Model!
+        public string SkinFemale { get; set; }
     }
 
     public class TJob : IJob
@@ -28,14 +28,14 @@ namespace tr_world.Player
         public string Name { get; set; }
         public string Label { get; set; }
         public bool IsBoss { get; set; }
-        public uint Grade_level { get; set; }
-        public string Grade_name { get; set; }
-        public string Grade_Label { get; set; }
+        public uint GradeLevel { get; set; }
+        public string GradeName { get; set; }
+        public string GradeLabel { get; set; }
         public bool OnDuty { get; set; }
         public string? Unit { get; set; }
         public uint Payment { get; set; }
-        string IJob.Skin_Male { get; set; }
-        string IJob.Skin_Female { get; set; }
+        string IJob.SkinMale { get; set; }
+        string IJob.SkinFemale { get; set; }
 
 
 
@@ -45,9 +45,9 @@ namespace tr_world.Player
             Name = "unemployed";
             Label = "Civilian";
             IsBoss = false;
-            Grade_level = 0;
-            Grade_name = "unemployed";
-            Grade_Label = "Freelancer";
+            GradeLevel = 0;
+            GradeName = "unemployed";
+            GradeLabel = "Freelancer";
             OnDuty = true;
             Payment = 800;
         }

@@ -12,14 +12,14 @@ namespace tr_world.Controllers
 {
     public class JobController : IScript
     {
-        public static object[] LoadJobDetailsFromDb(string jobname)
+        public static object[] LoadJobDetailsFromDb(string jobName)
         {
 			try
 			{
                 MySqlCommand cmd = Databank.Connection.CreateCommand();
 
                 cmd.CommandText = "SELECT * FROM jobs WHERE name=@name LIMIT 1";
-                cmd.Parameters.AddWithValue("@name", jobname);
+                cmd.Parameters.AddWithValue("@name", jobName);
 
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {

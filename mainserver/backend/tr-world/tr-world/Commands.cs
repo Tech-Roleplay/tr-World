@@ -116,7 +116,7 @@ namespace tr_world
         [Command("showjob")]
         public void CMD_showJob(BPlayer player, string[] args)
         {
-            player.SendChatMessage($"Your Job is: {player.Job.Label} with Grade: {player.Job.Grade_Label}");
+            player.SendChatMessage($"Your Job is: {player.Job.Label} with Grade: {player.Job.GradeLabel}");
         }
 
     }
