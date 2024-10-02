@@ -24,11 +24,14 @@ namespace tr_world
         [Command("veh")]
         public void CMD_veh(BPlayer player, string VehicleName)
         {
-            if (player.HasPlayerPermission((int)TPermission.Moderator))
+            if (!player.HasPlayerPermission((int)TPermission.Moderator))
             {
-                if (VehicleName != null)
+                return;
+            }
+
+            if (VehicleName != null)
                 {
-                    BVehicle veh = (BVehicle)Alt.CreateVehicle(Alt.Hash(VehicleName), new Position(player.Position.X, player.Position.Y + 1.5f, player.Position.Z), player.Rotation);
+                    BVehicle veh = (BVehicle)Alt.CreateVehicle(Alt.Hash(VehicleName), new Position(player.Position.X, player.Position.Y + 1.5f, player.Position.Z + 0.5f), player.Rotation);
                     veh.NumberplateText = player.Name;
                     veh.EngineOn = true;
 
@@ -38,18 +41,24 @@ namespace tr_world
                     //Log
                     player.SendChatMessage($"[Vehicle] The {VehicleName} spawned.");
                     Utility.DClog($"{player.Name}(<@{player.DiscordId}>) has spawned a new vehicle: a/an {VehicleName}", "Vehicle Spawner", Config.secret.URL_VehSpawner, "", true);
+                    player.Emit("SetPlayerIntoVehicle", veh, 1);
+                    player.SetIntoVehicle(veh, 1);
                 }
                 else
                 {
                     player.SendChatMessage("{FF0000}" + $"Vehicle Name: {VehicleName} was not founded.");
                 }
-            }
+            
 
         }
 
         [Command("repair")]
         public void CMD_repair(BPlayer player, string[] args)
         {
+            if (!player.HasPlayerPermission((int)TPermission.Moderator))
+            {
+                return;
+            }
             IVehicle veh = player.Vehicle;
 
             if (veh != null)
@@ -65,11 +74,15 @@ namespace tr_world
         [Command("pos", true)]
         public void CMD_pos(BPlayer player, string name)
         {
+            if (!player.HasPlayerPermission((int)TPermission.Developer))
+            {
+                return;
+            }
             player.SendChatMessage($"X: {player.Position.X} Y: {player.Position.Y} Z: {player.Position.Z} and with Name: {name}.");
 
             Alt.Log("==POS==");
             Alt.Log($"{player.Position.X}, {player.Position.Y}, {player.Position.Z} and with Name: {name}.");
-            Alt.Log("");
+            Alt.Log("==   ==");
 
             Utility.DClog($"X/Y/Z: {player.Position.X}, {player.Position.Y}, {player.Position.Z} and with Name: {name}.", "Position Save", "https://ptb.discord.com/api/webhooks/1217755784172015686/8-B8A7rFN3E6PE_W-H5mZuQMRI6Q5BMfRv7jR4PvL7L5y-epGr1bLfwGEc8hlMdRK-oI", "https://cdn.discordapp.com/avatars/1217755784172015686/2f17a9989ab2dc3869219a803d3dda10.webp?size=1024");
         }
@@ -77,6 +90,7 @@ namespace tr_world
         [Command("addmoneycash")]
         public void CMD_AddMoneyCash(BPlayer player, int amount)
         {
+            
             player.AddMoneyToCash(amount, "");
         }
 
@@ -103,27 +117,6 @@ namespace tr_world
         public void CMD_showJob(BPlayer player, string[] args)
         {
             player.SendChatMessage($"Your Job is: {player.Job.Label} with Grade: {player.Job.Grade_Label}");
-        }
-
-        [Command("loadBPlayer")]
-        public void CMD_loadBPlayer(BPlayer player)
-        {
-            if (BPlayerController.HasBPlayerAccount(player))
-            {
-                BPlayerController.LoadBPlayerData(player);
-                player.SendChatMessage("Loaded BPlayer Account");
-            }
-            else
-            {
-                BPlayerController.CreateBPlayerAccount(player);
-                player.SendChatMessage("{FF0000}Account was not founded, creating a new one");
-            }
-        }
-
-        [Command("saveBPlayer")]
-        public static void CMD_saveBPlayer(BPlayer player)
-        {
-            BPlayerController.SaveBPlayerData(player);
         }
 
     }

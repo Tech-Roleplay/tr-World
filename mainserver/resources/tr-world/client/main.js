@@ -130,3 +130,11 @@ function createBlip(x, y, z, sprite, color, scale = 1.0, shortRange = false, nam
 
 }
 //#endregion
+
+alt.onServer("SetPlayerIntoVehicle", (vehicle, seat) => {
+    if (!vehicle) return // it was destroyed
+
+    native.setPedIntoVehicle(
+        alt.Player.local, vehicle, -1 // altv and game natives seat offset
+    )
+})
