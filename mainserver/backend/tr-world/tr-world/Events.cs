@@ -67,7 +67,7 @@ namespace tr_world
             player.Spawn(new AltV.Net.Data.Position(0, 0, 72), 100);
             //Alt.Log($"")
         }
-
+        
 
 
         /*// Server Events

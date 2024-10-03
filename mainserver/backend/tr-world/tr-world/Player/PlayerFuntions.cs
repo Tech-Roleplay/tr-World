@@ -6,10 +6,12 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using AltV.Net;
+using AltV.Net.Elements.Entities;
 using AltV.Net.Resources.Chat.Api;
 using tr_world.Controllers;
 using tr_world.Models;
 using tr_world.Player;
+using tr_world.Vehicle;
 
 namespace tr_world.Player
 {
@@ -17,6 +19,12 @@ namespace tr_world.Player
     {
         private static Random random = new Random();
 
+        /// <summary>
+        /// Checks if the player haves the permission to do something
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="RequiredPermission">the minimun, use (int)TPermission.[...]</param>
+        /// <returns>if true then return true, if false then return false and send a chat message</returns>
         public static bool HasPlayerPermission(this BPlayer player, int RequiredPermission)
         {
             if (player.Permission >= RequiredPermission)
@@ -26,25 +34,93 @@ namespace tr_world.Player
             player.SendChatMessage("You do not have the permission to use this command.");
             return false;
         }
+        
+        /// <summary>
+        /// Search the nearest player to the player
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="distance">a max distance between both, standard is 5</param>
+        /// <returns>Gives player back (in Form of BPlayer)</returns>
+        public static BPlayer GetClosestPlayer(this BPlayer player, float distance = 5.0f)
+        {
+            BPlayer tPlayer = null;
+            foreach (BPlayer ply in Alt.GetAllPlayers())
+            {
+                AltV.Net.Data.Position plyPos = ply.Position;
+                float plyDist = player.Position.Distance(plyPos);
+                if (plyDist < distance && player.Dimension == ply.Dimension)
+                {
+                    distance = plyDist;
+                    tPlayer = ply;
+                }
+            }
+            return tPlayer;
+        }
+        
+        /// <summary>
+        /// Search the nearest vehicle to the player 
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="distance">a max distance between both, a standard is 5</param>
+        /// <returns>Gives vehicle back (in Form of BVehicle)</returns>
+        public static BVehicle GetClosestVehicle(this BPlayer player, float distance = 5.0f)
+        {
+            BVehicle tVehicle = null;
+            foreach (BVehicle veh in Alt.GetAllVehicles())
+            {
+                AltV.Net.Data.Position vehPos = veh.Position;
+                float vehDist = player.Position.Distance(vehPos);
+                if (vehDist < distance && player.Dimension == veh.Dimension)
+                {
+                    distance = vehDist;
+                    tVehicle = veh;
+                }
+            }
+            return tVehicle;
+        }
+        
+        /// <summary>
+        /// Search the nearest ped to the player
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="distance">a max distance between both, a standard is 5</param>
+        /// <returns></returns>
+        public static Ped  GetClosestPed(this BPlayer player, float distance = 5.0f)
+        {
+            Ped tPed = null;
+            foreach (Ped ped in Alt.GetAllPeds())
+            {
+                AltV.Net.Data.Position pedPos = ped.Position;
+                float pedDist = player.Position.Distance(pedPos);
+                if (pedDist < distance && player.Dimension == ped.Dimension)
+                {
+                    distance = pedDist;
+                    tPed = ped;
+                }
+            }
+            return tPed;
+        }
+        
+        
 
         #region Money functions
 
         /// <summary>
         /// Adding Money to the Player's Cash Balance.
         /// </summary>
-        /// <param name="player">The target player.</param>
-        /// <param name="amount">How much to add?</param>
-        /// <param name="reason">Why are you adding Money?</param>
+        /// <param name="player">The player</param>
+        /// <param name="amount">The amount how much to add</param>
+        /// <param name="reason">The reason why,e.g. Payment or Income by ...</param>
         public static void AddMoneyToCash(this BPlayer player, int amount, string reason)
         {
             // Temporäres Geld erstellen
-            var TempMoney = player.CashBalance;
+            var tempMoney = player.CashBalance;
 
             // Temporäres Geld mit amount addieren
-            TempMoney += amount;
+            tempMoney += amount;
 
             // Temporäres Geld dem Spieler Aufladen
-            player.CashBalance = TempMoney;
+            player.CashBalance = tempMoney;
 
             // Log erstellen des Transfers
             // ND
@@ -53,19 +129,19 @@ namespace tr_world.Player
         /// <summary>
         /// Adding Money to the Player's Bank Balance.
         /// </summary>
-        /// <param name="player">The target player.</param>
-        /// <param name="amount">How much to add?</param>
-        /// <param name="reason">Why are you adding Money?</param>
+        /// <param name="player">The player</param>
+        /// <param name="amount">The amount how much to add</param>
+        /// <param name="reason">The reason why,e.g. Payment or Income by ...</param>
         public static void AddMoneyToBank(this BPlayer player, int amount, string reason)
         {
             // Temporäres Geld erstellen
-            var TempMoney = player.BankBalance;
+            var tempMoney = player.BankBalance;
 
             // Temporäres Geld mit amount addieren
-            TempMoney += amount;
+            tempMoney += amount;
 
             // Temporäres Geld dem Spieler Aufladen
-            player.BankBalance = TempMoney;
+            player.BankBalance = tempMoney;
 
             // Log erstellen des Transfers
             // ND
@@ -74,23 +150,22 @@ namespace tr_world.Player
         /// <summary>
         /// Subtract Money from the Player's Cash Balance.
         /// </summary>
-        /// <param name="player">The target player.</param>
-        /// <param name="amount">How much to subtract?</param>
-        /// <param name="reason">Why are you subtracting Money?</param>
+        /// <param name="player">The player</param>
+        /// <param name="amount">The amount how much to subtract</param>
+        /// <param name="reason">The reason why,e.g. paying the rent or paying bills ...</param>
         public static void SubMoneyToCash(this BPlayer player, int amount, string reason)
         {
             // Temporäres Geld erstellen
-            var TempMoney = player.CashBalance;
+            var tempMoney = player.CashBalance;
 
             // Temporäres Geld mit amount subtrahieren, mit Schutz
-            if (TempMoney >= amount && TempMoney > 0)
+            if (tempMoney >= amount && tempMoney > 0)
             {
-                TempMoney -= amount;
+                tempMoney -= amount;
             }
 
-
             // Temporäres Geld dem Spieler Aufladen
-            player.CashBalance = TempMoney;
+            player.CashBalance = tempMoney;
 
             // Log erstellen des Transfers
             // ND
@@ -99,9 +174,9 @@ namespace tr_world.Player
         /// <summary>
         /// Subtract Money from the Player's Bank Balance.
         /// </summary>
-        /// <param name="player">The target player.</param>
-        /// <param name="amount">How much to subtract?</param>
-        /// <param name="reason">Why are you subtracting Money?</param>
+        /// <param name="player">The player</param>
+        /// <param name="amount">The amount how much to subtract</param>
+        /// <param name="reason">The reason why,e.g. paying the rent or paying bills ...</param>
         public static void SubMoneyToBank(this BPlayer player, int amount, string reason)
         {
             // Temporäres Geld erstellen
@@ -120,13 +195,13 @@ namespace tr_world.Player
         /// <summary>
         /// Set Money for the Player's Cash Balance.
         /// </summary>
-        /// <param name="player">The target player.</param>
-        /// <param name="amount">How much to set?</param>
-        /// <param name="reason">Why are you setting Money?</param>
+        /// <param name="player">The player</param>
+        /// <param name="amount">The value how much a player money have</param>
+        /// <param name="reason">The reason why,e.g. setting money back after cheating or after spwan</param>
         public static void SetMoneyToCash(this BPlayer player, int amount, string reason)
         {
             // Temporäres Geld erstellen
-            int tempMoney = player.CashBalance;
+            int tempMoney;
 
             // Temporäres Geld mit amount gesetzt
             tempMoney = amount;
@@ -141,13 +216,13 @@ namespace tr_world.Player
         /// <summary>
         /// Set Money for the Player's Bank Balance.
         /// </summary>
-        /// <param name="player">The target player.</param>
-        /// <param name="amount">How much to set?</param>
-        /// <param name="reason">Why are you setting Money?</param>
+        /// <param name="player">The player</param>
+        /// <param name="amount">The value how much a player money have</param>
+        /// <param name="reason">The reason why,e.g. setting money back after cheating or after spwan</param>
         public static void SetMoneyToBank(this BPlayer player, int amount, string reason)
         {
             // Temporäres Geld erstellen
-            int tempMoney = player.BankBalance;
+            int tempMoney;
 
             // Temporäres Geld mit amount gesetzt
             tempMoney = amount;
@@ -162,7 +237,7 @@ namespace tr_world.Player
         /// <summary>
         /// Return the Player's Cash Balance.
         /// </summary>
-        /// <param name="player">The target player.</param>
+        /// <param name="player">The player</param>
         /// <returns>A Int of the Player's Cash Balance</returns>
         public static int GetMoneyFromCash(this BPlayer player)
         {
@@ -172,7 +247,7 @@ namespace tr_world.Player
         /// <summary>
         /// Return the Player's Bank Balance.
         /// </summary>
-        /// <param name="player">The target player.</param>
+        /// <param name="player">The player</param>
         /// <returns>A Int of the Player's Bank Balance</returns>
         public static int GetMoneyFromBank(this BPlayer player)
         {
@@ -188,12 +263,12 @@ namespace tr_world.Player
         #region job functions
 
         /// <summary>
-        /// Set Job for Player.
+        /// Set the Job for Player.
         /// </summary>
-        /// <param name="player">The target player.</param>
-        /// <param name="jobname">Name of the Job</param>
+        /// <param name="player">The player</param>
+        /// <param name="jobname">Name(handling-name) of the Job</param>
         /// <param name="jobgrade">Grade Level of the Job</param>
-        /// <example><code>SetJob("police", 4)</code></example>
+        /// <example><code lang="cs">SetJob("police", 4)</code></example>
         public static void SetJob(this BPlayer player, string jobname, int jobgrade)
         {
             // Jobs
@@ -214,7 +289,7 @@ namespace tr_world.Player
         /// <summary>
         /// Change the state of the Player's JobDuty
         /// </summary>
-        /// <param name="player">The target player.</param>
+        /// <param name="player">The player</param>
         public static void ChangeDuty(this BPlayer player)
         {
             if (player != null)
@@ -234,7 +309,7 @@ namespace tr_world.Player
         /// <summary>
         /// Pays the Player for his work
         /// </summary>
-        /// <param name="player">The target player.</param>
+        /// <param name="player">The player</param>
         public static void PaymentJob(this BPlayer player)
         {
             AddMoneyToBank(player, (int)player.Job.Payment, $"Salary by {player.Job.Label}");
@@ -243,7 +318,7 @@ namespace tr_world.Player
         /// <summary>
         /// Reset Job for Player.
         /// </summary>
-        /// <param name="player">The target player.</param>
+        /// <param name="player">The player</param>
         public static void ResetJob(this BPlayer player)
         {
             player.SetJob("unemployed", 0);
@@ -253,7 +328,7 @@ namespace tr_world.Player
         /// <summary>
         /// Gets if the player isBoss
         /// </summary>
-        /// <param name="player">The target player.</param>
+        /// <param name="player">The player</param>
         /// <returns>boolean of the isBoss State</returns>
         public static bool IsPlayerBoss(this BPlayer player)
         {
@@ -263,7 +338,7 @@ namespace tr_world.Player
         /// <summary>
         /// Gets the players Job Type
         /// </summary>
-        /// <param name="player">The target player.</param>
+        /// <param name="player">The player</param>
         /// <returns>string of the type</returns>
         public static string GetPlayerJobType(this BPlayer player)
         {
@@ -273,7 +348,7 @@ namespace tr_world.Player
         /// <summary>
         /// TEMP: Gets the Skin for the player
         /// </summary>
-        /// <param name="player">The target player.</param>
+        /// <param name="player">The player</param>
         /// <returns>string of the players skin</returns>
         public static string GetSkinForJob(this BPlayer player)
         {
@@ -298,6 +373,19 @@ namespace tr_world.Player
 
         #region gang functions
 
+        public static void SetGang(this BPlayer player, string gangname, int ganggrade)
+        {
+            object[] gangObject = GangController.LoadGangDetailsFromDb(gangname);
+            object[] gangGradeObject = GangController.LoadGangGradeFromDb(gangname, ganggrade);
+
+            player.Gang.Name = gangname;
+            player.Gang.GradeLevel = (uint)ganggrade;
+            player.Gang.Label = (string)gangObject[0];
+            player.Gang.GradeName = (string)gangGradeObject[0];
+            player.Gang.GradeLabel = (string)gangGradeObject[1];
+            player.Gang.SkinMale = (string)gangGradeObject[2];
+            player.Gang.SkinFemale = (string)gangGradeObject[3];
+        }
         #endregion
 
         // Metadata

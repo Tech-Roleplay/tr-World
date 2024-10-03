@@ -83,7 +83,7 @@ namespace tr_world
 
             Alt.Log("==POS==");
             Alt.Log($"{player.Position.X}, {player.Position.Y}, {player.Position.Z} and with Name: {name}.");
-            Alt.Log("==   ==");
+            Alt.Log("====");
 
             Utility.DClog($"X/Y/Z: {player.Position.X}, {player.Position.Y}, {player.Position.Z} and with Name: {name}.", "Position Save", secret.URL_Position, "https://cdn.discordapp.com/avatars/1217755784172015686/2f17a9989ab2dc3869219a803d3dda10.webp?size=1024");
         }
@@ -124,8 +124,31 @@ namespace tr_world
         [Command("showjob")]
         public void CMD_showJob(BPlayer player, string[] args)
         {
-            player.SendChatMessage($"Your Job is: {player.Job.Label} with Grade: {player.Job.GradeLabel}");
+            player.SendChatMessage($"Your Job is at: {player.Job.Label} with Grade: {player.Job.GradeLabel}");
         }
+
+        [Command("setgang")]
+        public void CMD_setGang(BPlayer player, int targetid, string gangname, int ganggrade)
+        {
+            if (!player.HasPlayerPermission((int)TPermission.Moderator))
+            {
+                return;
+            }
+            foreach (BPlayer p in Alt.GetAllPlayers())
+            {
+                if (targetid == p.Id)
+                {
+                    p.SetGang(gangname, ganggrade);
+                }
+            }
+        }
+        [Command("showgang")]
+        public void CMD_showGang(BPlayer player, string[] args)
+        {
+            player.SendChatMessage($"Your Gang-Activity is at: {player.Gang.Label} with Grade: {player.Gang.GradeLabel}");
+        }
+        
+        
 
         [Command("testAdminmenu")]
         public void CMD_testAdminMenu(BPlayer player)
