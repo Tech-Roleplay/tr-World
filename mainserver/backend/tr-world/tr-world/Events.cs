@@ -21,6 +21,11 @@ namespace tr_world
         [ScriptEvent(ScriptEventType.PlayerConnect)]
         public void PlayerConnect(BPlayer player, string reason)
         {
+            if (player.DiscordId == 0)
+            {
+                player.Kick("No Discord Account founded.");
+            }
+            
             player.Model = (uint)PedModel.FreemodeMale01;
             player.Spawn(new AltV.Net.Data.Position(0, 0, 72), 0);
 

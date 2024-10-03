@@ -7,12 +7,13 @@ import * as native from 'natives';
 
 //variabels
 let DISCORD_APP_ID = ""
-
+let adminmenuwebview;
 
 // functions
 //#region Connection
 alt.on("connectionComplete", () => {
     alt.log("Client-side loaded.");
+    loadBlips();
 })
 
 //#endregion
@@ -131,6 +132,7 @@ function createBlip(x, y, z, sprite, color, scale = 1.0, shortRange = false, nam
 }
 //#endregion
 
+//#region SetPlayerIntoVehicle
 alt.onServer("SetPlayerIntoVehicle", (vehicle, seat) => {
     if (!vehicle) return // it was destroyed
 
@@ -138,3 +140,25 @@ alt.onServer("SetPlayerIntoVehicle", (vehicle, seat) => {
         alt.Player.local, vehicle, -1 // altv and game natives seat offset
     )
 })
+
+//#endregion
+
+//#region AdminMenu
+alt.onServer("adminmenu:Show", () => {
+    if (!adminmenuwebview) {
+        adminmenuwebview = new alt.WebView('http://resource/client/adminmenu/adminmenu.html');
+        adminmenuwebview.on('adminmenu:Close:Webview', CloseWebview)
+    }
+
+    adminmenuwebview.focus();
+    alt.showCursor(true);
+
+})
+
+function CloseWebview() {
+    alt.showCursor(false);
+    adminmenuwebview.unfocus();
+    adminmenuwebview.destroy();
+    adminmenuwebview = undefined;
+}
+//#endregion
