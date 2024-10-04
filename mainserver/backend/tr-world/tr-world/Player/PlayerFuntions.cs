@@ -85,7 +85,7 @@ namespace tr_world.Player
         /// <param name="player">the player</param>
         /// <param name="distance">a max distance between both, a standard is 5</param>
         /// <returns></returns>
-        public static Ped  GetClosestPed(this BPlayer player, float distance = 5.0f)
+        public static Ped GetClosestPed(this BPlayer player, float distance = 5.0f)
         {
             Ped tPed = null;
             foreach (Ped ped in Alt.GetAllPeds())
@@ -393,7 +393,7 @@ namespace tr_world.Player
         /// <summary>
         /// Gets if player is cuffed
         /// </summary>
-        /// <param name="player">The target player</param>
+        /// <param name="player">The player</param>
         /// <returns>Cuffed-State for the player</returns>
         public static bool GetIsPlayerCuffed(this BPlayer player)
         {
@@ -401,45 +401,80 @@ namespace tr_world.Player
         }
 
         /// <summary>
-        /// Sets 
+        /// Set the cuffed player state
         /// </summary>
-        /// <param name="player"></param>
-        /// <param name="value"></param>
+        /// <param name="player">the player</param>
+        /// <param name="value">Is cuffed or not.</param>
         public static void SetIsPlayerCuffed(this BPlayer player, bool value)
         {
             player.Metadata.IsCuffed = value;
         }
 
+        /// <summary>
+        /// Get the value of the player is prison
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <returns>bool of of in prision</returns>
         public static bool GetIsPlayerInPrison(this BPlayer player)
         {
             return player.Metadata.IsInPrison;
         }
 
+        /// <summary>
+        /// Set the player into prision
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="value">state to be in prision</param>
         public static void SetIsPlayerInPrison(this BPlayer player, bool value)
         {
             player.Metadata.IsInPrison = value;
         }
 
+        /// <summary>
+        /// Get if the player is in prision
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <returns>bool a palyer is dead</returns>
         public static bool GetIsPlayerDead(this BPlayer player)
         {
             return player.Metadata.IsPlyDead;
         }
 
+        /// <summary>
+        /// Set is the player is dead
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="value">state of death</param>
         public static void SetIsPlayerDead(this BPlayer player, bool value)
         {
             player.Metadata.IsPlyDead = value;
         }
 
+        /// <summary>
+        /// Gets the state of the player is onGround
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <returns>bool a player is down</returns>
         public static bool GetISPlayerDown(this BPlayer player)
         {
             return player.Metadata.IsPlyDown;
         }
 
-        public static void SetISPlayerDown(this BPlayer player, bool value)
+        /// <summary>
+        /// Sets is the player onGround
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="value">state of ground</param>
+        public static void SetIsPlayerDown(this BPlayer player, bool value)
         {
             player.Metadata.IsPlyDown = value;    
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public static bool GetIsPlayerHeadshotted(this BPlayer player)
         {
             return player.Metadata.IsPlyHeadshotted;
