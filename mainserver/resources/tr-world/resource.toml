@@ -3,8 +3,8 @@ main = "server/tr-world.dll"
 deps = [
     'chat'
 ]
-client-type = "js"
-client-main = "client/main.js"
+client-type = "csharp"
+client-main = "client.old/main.js"
 client-files = [
-    "client/*"
+    "client.old/*"
 ]

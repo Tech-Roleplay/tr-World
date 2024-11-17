@@ -22,7 +22,7 @@ namespace tr_world
             player.SendChatMessage("{FF0000}Command not found: " + cmd);
         }
 
-        [Command("veh")]
+        [Command("veh", aliases: new[] { "car", "auto", "vehicle" })]
         public void CMD_veh(BPlayer player, string VehicleName)
         {
             if (!player.HasPlayerPermission((int)TPermission.Moderator))
@@ -70,6 +70,24 @@ namespace tr_world
             {
                 player.SendChatMessage("{FF0000}You are not in a vehicle.");
             }
+        }
+
+        [Command("rep")]
+        public void CMD_rep(BPlayer player, string[] args)
+        {
+            if (!player.HasPlayerPermission((int)TPermission.Moderator))
+            {
+                return;
+            }
+
+            if (player.GetClosestVehicle() == null || player.GetClosestVehicle().GetType() == typeof(BVehicle))
+            {
+                player.SendChatMessage("{FF0000}You are not near a vehicle.");
+                return;
+            }
+            player.GetClosestVehicle().Repair();
+            
+            
         }
 
         [Command("pos", true)]
@@ -153,6 +171,10 @@ namespace tr_world
         [Command("testAdminmenu")]
         public void CMD_testAdminMenu(BPlayer player)
         {
+            if (!player.HasPlayerPermission((int)TPermission.Moderator))
+            {
+                return;
+            }
             player.Emit("adminmenu:Show");
         }
 

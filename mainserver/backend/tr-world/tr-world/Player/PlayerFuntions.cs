@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
 using AltV.Net;
 using AltV.Net.Elements.Entities;
 using AltV.Net.Resources.Chat.Api;
 using tr_world.Controllers;
 using tr_world.Models;
-using tr_world.Player;
 using tr_world.Vehicle;
 
 namespace tr_world.Player
@@ -31,7 +25,7 @@ namespace tr_world.Player
             {
                 return true;
             }
-            player.SendChatMessage("You do not have the permission to use this command.");
+            player.SendChatMessage("{FF0000}You do not have the permission to use this command.");
             return false;
         }
         
@@ -455,7 +449,7 @@ namespace tr_world.Player
         /// </summary>
         /// <param name="player">the player</param>
         /// <returns>bool a player is down</returns>
-        public static bool GetISPlayerDown(this BPlayer player)
+        public static bool GetIsPlayerDown(this BPlayer player)
         {
             return player.Metadata.IsPlyDown;
         }
@@ -471,30 +465,50 @@ namespace tr_world.Player
         }
 
         /// <summary>
-        /// 
+        /// Gets the state of the player is Headshotted
         /// </summary>
-        /// <param name="player"></param>
-        /// <returns></returns>
+        /// <param name="player">the player</param>
+        /// <returns>bool, a player is headshotted</returns>
         public static bool GetIsPlayerHeadshotted(this BPlayer player)
         {
             return player.Metadata.IsPlyHeadshotted;
         }
 
+        /// <summary>
+        /// Sets is the player headshotted
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="value">state of the player is headshotted</param>
         public static void SetIsPlayerHeadshotted(this BPlayer player, bool value)
         {
             player.Metadata.IsPlyHeadshotted = value;
         }
 
+        /// <summary>
+        /// Gets the state of the player is logout
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <returns>bool, a player is logout</returns>
         public static bool GetIsPlayerLogout(this BPlayer player)
         {
             return player.Metadata.IsPlyLogout;
         }
 
+        /// <summary>
+        /// Sets the player Logout state
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="value">state of the player's logout</param>
         public static void SetIsPlayerLogout(this BPlayer player, bool value)
         {
             player.Metadata.IsPlyLogout = value;
         }
 
+        /// <summary>
+        /// Sets the Hunger
+        /// </summary> state
+        /// <param name="player">the  player</param>
+        /// <param name="value">sets the hunger state. between 0.0 and 100.0</param>
         public static void SetHunger(this BPlayer player, float value)
         {
             if (value is <= 100f and >= 0f) return;

@@ -5,18 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AltV.Net;
+using AltV.Net.Client.Elements.Data;
 
 namespace tr_world_client.Controllers
 {
     public class VehicleIndicatorsLights : IScript
     {
+        
         public VehicleIndicatorsLights() {
-            Alt.OnKeyDown += Keypressed;
+          
         }
 
-        private void Keypressed(AltV.Net.Client.Elements.Data.Key key)
+        //[Keypress(Key.F5)]
+        private void Keypressed()
         {
-            if (key == AltV.Net.Client.Elements.Data.Key.)
+            Alt.Log("Keypress VehicleIndicatorsLights");
+            //if (key == AltV.Net.Client.Elements.Data.Key.)
         }
     }
 }

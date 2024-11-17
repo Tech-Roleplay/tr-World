@@ -10,7 +10,7 @@ using tr_world.Base;
 
 namespace tr_world.Controllers
 {
-    public class JobController : IScript
+    public abstract class JobController : IScript
     {
         public static object[] LoadJobDetailsFromDb(string jobName)
         {
@@ -77,6 +77,16 @@ namespace tr_world.Controllers
 
                 return null;
             }
+        }
+        public static void GetInventoryForJob()
+        {
+
+        }
+
+        
+        public static void GetVehicleListForJob()
+        {
+
         }
     }
 }

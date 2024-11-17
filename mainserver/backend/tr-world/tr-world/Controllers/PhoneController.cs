@@ -17,6 +17,9 @@ namespace tr_world.Controllers
         /// <returns>If the number is Registered true, otherwise false</returns>
         public static bool IsPhoneRegistered(BPlayer player, int phoneNumber)
         {
+            // adding mysql check
+            if (phoneNumber == 911) return true;
+            
             return phoneNumber > 1000000;
         }
     }

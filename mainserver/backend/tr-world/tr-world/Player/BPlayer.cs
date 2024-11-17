@@ -179,7 +179,7 @@ namespace tr_world.Player
 
         #region Money functions
 
-        [Obsolete("Use instate AddMoneyToCash, AddMoneyToBank", UrlFormat ="")]
+        [Obsolete("Use instate AddMoneyToCash, AddMoneyToBank", error: true)]
         public static void AddMoney(BPlayer player, int amount, string reason, string moneytype)
         {
 
