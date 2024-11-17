@@ -414,3 +414,5 @@ mainserver/server.toml
 /mainserver/backend/tr-world/tr-world/Config/secret.cs
 /mainserver/backend/tr-world/.idea/.idea.tr-world/.idea
 /.vscode/
+mainserver/modules/
+/mainserver/modules
