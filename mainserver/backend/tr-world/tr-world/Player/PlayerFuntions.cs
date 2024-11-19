@@ -7,6 +7,8 @@ using tr_world.Controllers;
 using tr_world.Models;
 using tr_world.Vehicle;
 
+// TODO: Adding ban/freez func
+
 namespace tr_world.Player
 {
     public static class PlayerFuntions

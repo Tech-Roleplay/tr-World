@@ -22,6 +22,52 @@ namespace tr_world
             player.SendChatMessage("{FF0000}Command not found: " + cmd);
         }
 
+        // Very basic Commands for Administration
+        [Command("warn")]
+        public void CMD_warn(BPlayer player, uint targetid, string Reason)
+        {
+            if (!player.HasPlayerPermission((int)TPermission.Admin))
+            {
+                return;
+            }
+
+            // emit event
+        }
+
+        [Command("kick")]
+        public void CMD_kick(BPlayer player, uint targetid, string reason)
+        {
+            if (!player.HasPlayerPermission((int)TPermission.Admin))
+            {
+                return;
+            }
+
+            foreach (BPlayer p in Alt.GetAllPlayers())
+            {
+                if (targetid == p.Id)
+                {
+                    p.Kick(reason);
+                }
+            }
+        }
+        [Command("ban")]
+        public void CMD_ban(BPlayer player, uint targetid, string reason)
+        {
+            if (!player.HasPlayerPermission((int)TPermission.Admin))
+            {
+                return;
+            }
+
+            foreach (BPlayer p in Alt.GetAllPlayers())
+            {
+                if (targetid == p.Id)
+                {
+                    ///p.Ban(reason);
+                }
+            }
+        }
+
+
         [Command("veh", aliases: new[] { "car", "auto", "vehicle" })]
         public void CMD_veh(BPlayer player, string VehicleName)
         {
@@ -113,7 +159,7 @@ namespace tr_world
             {
                 return;
             }   
-            player.AddMoneyToCash(amount, "");
+            player.AddMoneyToCash(amount, "Admin giving.");
         }
 
         [Command("showcash")]
