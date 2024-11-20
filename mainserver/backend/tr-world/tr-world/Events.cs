@@ -25,6 +25,8 @@ namespace tr_world
             {
                 player.Kick("No Discord Account founded.");
             }
+
+            if (BPlayerController.IsPlayerBanned(player))
             
             player.Model = (uint)PedModel.FreemodeMale01;
             player.Spawn(new AltV.Net.Data.Position(0, 0, 72), 0);

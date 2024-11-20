@@ -13,7 +13,7 @@ namespace tr_world.Models
         public string Label { get; set; }
         public bool IsForJob => !string.IsNullOrEmpty(JobGarage);
         public string JobGarage { get; set; }
-        public TGagVehicleList VehicleList {  get; set; } 
+        public TGagVehicleList[] VehicleList {  get; set; } 
     }
     public class TGagVehicleList
     {

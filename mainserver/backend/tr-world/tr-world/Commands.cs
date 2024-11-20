@@ -67,7 +67,6 @@ namespace tr_world
             }
         }
 
-
         [Command("veh", aliases: new[] { "car", "auto", "vehicle" })]
         public void CMD_veh(BPlayer player, string VehicleName)
         {

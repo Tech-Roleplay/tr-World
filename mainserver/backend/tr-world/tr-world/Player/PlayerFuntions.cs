@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.Serialization;
 using AltV.Net;
 using AltV.Net.Elements.Entities;
 using AltV.Net.Resources.Chat.Api;
@@ -96,8 +97,58 @@ namespace tr_world.Player
             }
             return tPed;
         }
-        
-        
+
+        #region Adminstration
+        /// <summary>
+        /// freeze the player
+        /// </summary>
+        /// <param name="player">the player</param>
+        public static void Freeze(this BPlayer player)
+        {
+            player.Emit("admin:player:freeze", !player.Frozen);
+            
+
+            //DCLog
+        }
+
+        /// <summary>
+        /// gives the player a warning
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="reason">the reason why the player is doing this</param>
+        public static void Warn(this BPlayer player, string reason)
+        {
+            player.Emit("admin:player:warn", reason);
+
+            // DCLog
+        }
+
+        /// <summary>
+        /// kicks the player from the server
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="reason">the reason why the player is doing this</param>
+        public static void Kicking(this BPlayer player, string reason)
+        {
+            player.Kick(reason);
+
+            //DCLog
+        }
+
+        /// <summary>
+        /// Ban the playes from the server
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="reason">the reason why the player is doing this</param>
+        public static void Ban(this BPlayer player, string reason)
+        {
+            // BanFunc
+            BPlayerController.AddPlayerToBanList(player, reason);
+            player.Kick("Ban: " + reason);
+
+            //DCLog
+        }
+        #endregion
 
         #region Money functions
 

@@ -239,6 +239,54 @@ namespace tr_world.Controllers
                 return false;
             }
         }
-        
+
+        public static bool IsPlayerBanned(BPlayer player)
+        {
+            try
+            {
+                MySqlCommand cmd = Databank.Connection.CreateCommand();
+                cmd.CommandText = "SELECT * FROM ban_list WHERE discordid=@discordid LIMIT 1";
+                cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (!reader.HasRows)
+                    {
+                        reader.Close();
+                        return false;
+                    }
+                    player.Kick("You are already banned. Reason was: " + reader.GetString("reason"));
+                    reader.Close();
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Alt.LogError("ERROR == ERROR == ERROR");
+                Alt.LogError(e.ToString());
+                player.Kick("Internal Error in system");
+
+                return false;
+            }
+        }
+
+        public static void AddPlayerToBanList(BPlayer player, string reason)
+        {
+            try
+            {
+                MySqlCommand cmd = Databank.Connection.CreateCommand();
+                cmd.CommandText = "INSERT INTO ban_list (discordid, reason) VALUES (@discordid, @reason)";
+                cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
+                cmd.Parameters.AddWithValue("@reason", reason);
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Alt.LogError("ERROR == ERROR == ERROR");
+                Alt.LogError(e.ToString());
+                player.Kick("Internal Error in system.");
+                
+            }
+        }
     }
 }
