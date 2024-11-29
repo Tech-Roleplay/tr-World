@@ -50,7 +50,7 @@ namespace tr_world.Controllers
                         player.Sex = reader.GetChar("sex");
                         player.Height = reader.GetByte("height");
 
-                        player.Inventory = reader.GetString("inventory");
+                        player.sInventory = reader.GetString("inventory");
 
                         player.Backstory = reader.GetString("backstory");
 
@@ -100,16 +100,15 @@ namespace tr_world.Controllers
                         player.Job.SkinFemale = (string)jobgradeobj[4];
                         
                         // gang 2
-                        object[] gangObjects = GangController.LoadGangDetailsFromDb(gangname);
-                        object[] gangGradeObjects = GangController.LoadGangGradeFromDb(gangname, ganggrade);
+                        ReturnGangClass returnGangClass = GangController.LoadGangGradeFromDb(gangname, ganggrade);
                         
                         player.Gang.Name = gangname;
                         player.Gang.GradeLevel = (uint)ganggrade;
-                        player.Gang.Label = (string)gangObjects[0];
-                        player.Gang.GradeName = (string)gangGradeObjects[0];
-                        player.Gang.GradeLabel = (string)gangGradeObjects[1];
-                        player.Gang.SkinMale = (string)gangGradeObjects[2];
-                        player.Gang.SkinFemale = (string)gangGradeObjects[3];
+                        player.Gang.Label = GangController.LoadGangDetailsFromDb(gangname);
+                        player.Gang.GradeName = returnGangClass.Name;
+                        player.Gang.GradeLabel = returnGangClass.Label;
+                        player.Gang.SkinMale = returnGangClass.SkinMale;
+                        player.Gang.SkinFemale = returnGangClass.SkinFemale;
                         
                         
                         Alt.Log($"Sucessfully loading playerdata for (${player.Name})!");
@@ -152,7 +151,7 @@ namespace tr_world.Controllers
                 player.Metadata.LastUpdate = DateTime.Now;
                 string jsonMetadata = JsonSerializer.Serialize(player.Metadata);
                 cmd.Parameters.AddWithValue("@backstory", jsonMetadata);
-                cmd.Parameters.AddWithValue("@inventory", player.Inventory);
+                cmd.Parameters.AddWithValue("@inventory", player.sInventory);
                 cmd.Parameters.AddWithValue("@backstory", player.Backstory);
                 cmd.Parameters.AddWithValue("@job", player.Job.Name);
                 cmd.Parameters.AddWithValue("@jobgrade", player.Job.GradeLevel);
@@ -190,19 +189,24 @@ namespace tr_world.Controllers
                 cmd.Parameters.AddWithValue("@height", player.Height);
                 cmd.Parameters.AddWithValue("@skin", player.Skin);
                 cmd.Parameters.AddWithValue("@status", "n/n");
-                string jsonPostion = JsonSerializer.Serialize(player.Position.X + player.Position.Y + player.Position.Z);
-                cmd.Parameters.AddWithValue("@position", jsonPostion);
+                // Serialize position as a JSON object
+                string jsonPosition = JsonSerializer.Serialize(new { X = player.Position.X, Y = player.Position.Y, Z = player.Position.Z });
+                cmd.Parameters.AddWithValue("@position", jsonPosition);
+
+                // Serialize metadata and phone as JSON
                 string jsonMetadata = JsonSerializer.Serialize(player.Metadata);
                 cmd.Parameters.AddWithValue("@metadata", jsonMetadata);
-                cmd.Parameters.AddWithValue("@inventory", player.Inventory);
+
+                string jsonPhone = JsonSerializer.Serialize(player.Phone);
+                cmd.Parameters.AddWithValue("@phone", jsonPhone);
+
+                cmd.Parameters.AddWithValue("@inventory", player.sInventory);
                 cmd.Parameters.AddWithValue("@backstory", player.Backstory);
                 cmd.Parameters.AddWithValue("@job", player.Job.Name);
                 cmd.Parameters.AddWithValue("@jobgrade", player.Job.GradeLevel);
                 cmd.Parameters.AddWithValue("@gang", player.Gang.Name);
                 cmd.Parameters.AddWithValue("@ganggrade", player.Gang.GradeLevel);
-                cmd.Parameters.AddWithValue("@phone_number", player.Phone.Number);
-                string jsonPhone = JsonSerializer.Serialize(player.Phone);
-                cmd.Parameters.AddWithValue("@phone", jsonPhone);    
+                cmd.Parameters.AddWithValue("@phone_number", player.Phone.Number);    
                 
                 cmd.ExecuteNonQuery();
             }

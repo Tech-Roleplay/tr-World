@@ -14,6 +14,7 @@ namespace tr_world.Player
         public uint Payment { get; set; }
         public bool IsBoss { get; set; }
         public bool OnDuty { get; set; }
+        #nullable enable
         public string? Unit {  get; set; }
         public uint GradeLevel { get; set; }
         public string GradeName { get; set; }

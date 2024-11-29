@@ -18,8 +18,15 @@ namespace tr_world.Controllers
         public static bool IsPhoneRegistered(BPlayer player, int phoneNumber)
         {
             // adding mysql check
-            if (phoneNumber == 911) return true;
-            
+            switch (phoneNumber)
+            {
+                case 911:
+
+                    return true;
+                default:
+                    break;
+            }
+
             return phoneNumber > 1000000;
         }
     }

@@ -95,7 +95,9 @@ namespace tr_world.Player
         /// <summary>
         /// This property is used to store the inventory of a player.
         /// </summary>
-        public string Inventory { get; set; }
+        [Obsolete]
+        public string sInventory { get; set; }
+        public Inventory Inventory { get; set; }
         #endregion
         #region Vehicle
         /// <summary>
@@ -162,10 +164,11 @@ namespace tr_world.Player
             Gang.GradeLevel = 0;
             Gang.GradeName = "No Grades";
 
-            Firstname = "ABC";
-            Surname = "DEF";
-            
-            
+            Firstname = "CHANGE";
+            Surname = "CHANGE";
+
+
+
 
             Phone.ProfilePicUrl = "https://cdn.icon-icons.com/icons2/3553/PNG/512/account_profile_user_ecommerce_icon_224942.png";
             Phone.Number = 0;

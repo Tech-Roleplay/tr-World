@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>tr_world</RootNamespace>
     <OutputType>Library</OutputType>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
@@ -12,9 +12,9 @@
     <OutputPath>S:\tr-world\mainserver\resources\tr-world\server</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AltV.Net" Version="16.3.4" />
-    <PackageReference Include="AltV.Net.Resources.Chat.Api" Version="16.3.4" />
-    <PackageReference Include="MySqlConnector" Version="2.3.7" />
+    <PackageReference Include="AltV.Net" Version="16.4.1" />
+    <PackageReference Include="AltV.Net.Resources.Chat.Api" Version="16.4.1" />
+    <PackageReference Include="MySqlConnector" Version="2.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
   <ItemGroup>

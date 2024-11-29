@@ -4,10 +4,20 @@ using MySqlConnector;
 
 namespace tr_world.Controllers;
 
+
+public class ReturnGangClass
+{
+   public string Name { get; set; }
+   public string Label { get; set; }
+   public string SkinMale { get; set; }
+   public string SkinFemale { get; set; }
+}
+
 public class GangController : IScript
 {
-    public static object[] LoadGangDetailsFromDb(string gangName)
+    public static string LoadGangDetailsFromDb(string gangName)
     {
+        
         try
         {
             MySqlCommand cmd = Databank.Connection.CreateCommand();
@@ -20,11 +30,12 @@ public class GangController : IScript
                 reader.Read();
                 
                 string label = reader.GetString("label");
-                object[] backArray = new object[] { label };
                 
+                if (label != null) { label = "No Gang"; }
+
                 reader.Close();
                 
-                return backArray;
+                return label;
             }
         }
         catch (Exception e)
@@ -36,8 +47,11 @@ public class GangController : IScript
         }
     }
 
-    public static object[] LoadGangGradeFromDb(string gangName, int grade)
+
+
+    public static ReturnGangClass LoadGangGradeFromDb(string gangName, int grade)
     {
+        ReturnGangClass returnGangClass = new();
         try
         {
             MySqlCommand cmd = Databank.Connection.CreateCommand();
@@ -48,17 +62,15 @@ public class GangController : IScript
             using (MySqlDataReader reader = cmd.ExecuteReader())
             {
                 reader.Read();
-                
-                string name = reader.GetString("name");
-                string label = reader.GetString("label");
-                string skinMale = reader.GetString("skin_male");
-                string skinFemale = reader.GetString("skin_female");
-                
-                object[] backArray = new object[] { name, label, skinMale, skinFemale};
+
+                returnGangClass.Name = reader.GetString("name");
+                returnGangClass.Label = reader.GetString("label");
+                returnGangClass.SkinMale = reader.GetString("skin_male");
+                returnGangClass.SkinFemale = reader.GetString("skin_female");
                 
                 reader.Close();
                 
-                return backArray;
+                return returnGangClass;
             }
         }
         catch (Exception e)

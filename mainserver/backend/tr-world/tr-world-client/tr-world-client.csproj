@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>tr_world_client</RootNamespace>
 	  <OutputType>Library</OutputType>
 
@@ -15,7 +15,7 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AltV.Net.Client" Version="16.0.15" />
+    <PackageReference Include="AltV.Net.Client" Version="16.4.1" />
   </ItemGroup>
 
 </Project>

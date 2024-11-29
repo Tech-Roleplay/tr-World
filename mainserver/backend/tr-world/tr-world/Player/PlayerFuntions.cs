@@ -422,16 +422,16 @@ namespace tr_world.Player
 
         public static void SetGang(this BPlayer player, string gangname, int ganggrade)
         {
-            object[] gangObject = GangController.LoadGangDetailsFromDb(gangname);
-            object[] gangGradeObject = GangController.LoadGangGradeFromDb(gangname, ganggrade);
+            string gangObject = GangController.LoadGangDetailsFromDb(gangname);
+            ReturnGangClass returnGangClass = GangController.LoadGangGradeFromDb(gangname, ganggrade);
 
             player.Gang.Name = gangname;
             player.Gang.GradeLevel = (uint)ganggrade;
-            player.Gang.Label = (string)gangObject[0];
-            player.Gang.GradeName = (string)gangGradeObject[0];
-            player.Gang.GradeLabel = (string)gangGradeObject[1];
-            player.Gang.SkinMale = (string)gangGradeObject[2];
-            player.Gang.SkinFemale = (string)gangGradeObject[3];
+            player.Gang.Label = gangObject;
+            player.Gang.GradeName = returnGangClass.Name;
+            player.Gang.GradeLabel = returnGangClass.Label;
+            player.Gang.SkinMale = returnGangClass.SkinMale;
+            player.Gang.SkinFemale = returnGangClass.SkinFemale;
         }
         #endregion
 
