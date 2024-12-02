@@ -28,8 +28,8 @@ namespace tr_world
 
             if (BPlayerController.IsPlayerBanned(player))
             
-            player.Model = (uint)PedModel.FreemodeMale01;
-            player.Spawn(new AltV.Net.Data.Position(0, 0, 72), 0);
+            
+            player.Spawn((uint)PedModel.FreemodeMale01, new AltV.Net.Data.Position(0, 0, 72), 0);
 
             AltChat.SendBroadcast($"[{player.Id}] The Player {player.Name} has joined the Server. Welcome.");
             Alt.Log($"[{player.Id}] The Player {player.Name} has joined the Server. Discord-ID is: {player.DiscordId}. Welcome.");

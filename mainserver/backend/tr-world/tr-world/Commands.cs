@@ -75,7 +75,7 @@ namespace tr_world
                 return;
             }
 
-            if (VehicleName != null)
+            if (!string.IsNullOrWhiteSpace(VehicleName))
                 {
                     BVehicle veh = (BVehicle)Alt.CreateVehicle(Alt.Hash(VehicleName), new Position(player.Position.X, player.Position.Y + 1.5f, player.Position.Z + 0.5f), player.Rotation);
                     veh.NumberplateText = player.Name;

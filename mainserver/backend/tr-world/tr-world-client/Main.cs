@@ -35,6 +35,76 @@ namespace tr_world_client
         {
             createPublicBlip(-609.01495f, -599.91205f, 34.67566f, 835, 53, 0.7f, true, "Parlament");
             createPublicBlip(-692.8296f, -636.38007f, 31.55694f, 855, 53, 0.7f, true, "Whitehouse");
+            createPublicBlip(-609.01495f, -599.91205f, 34.67566f, 835, 53, 0.7f, true, "Parlament");
+            createPublicBlip(-692.8296f, -636.38007f, 31.55694f, 855, 53, 0.7f, true, "Whitehouse");
+
+            createPublicBlip(-1277.3447f, -560.0572f, 30.241001f, 764, 23, 0.7f, true, "LS Townhall");
+
+            // IAA
+            createPublicBlip(91.77598f, -669.6379f, 44.22036f, 788, 7, 0.7f, true, "IAA & SIU");
+            createPublicBlip(99.99243f, -744.5883f, 45.754734f, 419, 7, 0.7f, true, "FIB");
+            createPublicBlip(236.9338f, -407.2875f, 47.924366f, 419, 0, 0.7f, true, "Department of Justice - San Andreas");
+
+            //DOJ
+            createPublicBlip(433.15298f, -981.9341f, 30.710115f, 526, 29, 0.7f, true, "LSPD");
+            createPublicBlip(359.48407f, -1583.4907f, 29.291954f, 526, 28, 0.7f, true, "LSSD");
+            createPublicBlip(1858.5795f, 3677.6748f, 33.69357f, 526, 28, 0.7f, true, "BCSO");
+            createPublicBlip(-1110.2585f, -846.3497f, 19.31684f, 526, 29, 0.7f, true, "LSPD");
+            createPublicBlip(-1629.9904f, -1010.5518f, 13.101151f, 526, 29, 0.7f, true, "LSPD");
+            createPublicBlip(-1311.5162f, -1530.3833f, 4.558398f, 526, 29, 0.7f, true, "LSPD");
+            createPublicBlip(917.5098f, 3576.8838f, 33.56183f, 526, 26, 0.7f, true, "SNPD");
+            createPublicBlip(-440.7782f, 6018.8945f, 31.492304f, 526, 3, 0.7f, true, "PBPD");
+            createPublicBlip(641.17017f, 0.6331002f, 82.7864f, 526, 63, 0.7f, true, "SASP"); //Vinewood
+            createPublicBlip(822.751f, -1289.806f, 28.240631f, 526, 39, 0.7f, true, "SAHP");
+            createPublicBlip(1852.4473f, 2585.813f, 45.672016f, 285, 62, 0.7f, true, "SA Prison");
+            createPublicBlip(376.33688f, 779.18384f, 185.17918f, 526, 52, 0.7f, true, "SAPR");
+            createPublicBlip(-560.2198f, -135.14146f, 38.152267f, 526, 29, 0.7f, true, "LSPD");
+
+            // Fire Department
+            createPublicBlip(-379.78036f, 6118.821f, 31.210928f, 648, 1, 0.7f, true, "Fire Station");
+            createPublicBlip(1697.5897f, 3586.9915f, 35.089474f, 648, 1, 0.7f, true, "Fire Station");
+            createPublicBlip(213.33661f, -1645.3972f, 29.803219f, 648, 1, 0.7f, true, "Fire Station");
+            createPublicBlip(1202.7572f, -1463.9777f, 34.876827f, 648, 1, 0.7f, true, "Fire Station");
+            createPublicBlip(-1035.6283f, -2383.6064f, 14.094898f, 648, 1, 0.7f, true, "Fire Station");
+            createPublicBlip(-661.1193f, -75.9205f, 38.591236f, 648, 1, 0.7f, true, "Fire Station");
+
+            // EMS
+            createPublicBlip(299.1843f, -584.83685f, 43.260838f, 61, 11, 0.7f, true, "Hospital");
+            createPublicBlip(343.9636f, -1398.7815f, 32.509254f, 61, 11, 0.7f, true, "Hospital");
+            createPublicBlip(-449.8421f, -341.88446f, 33.979736f, 61, 11, 0.7f, true, "Hospital");
+            createPublicBlip(1839.3762f, 3672.352f, 33.754364f, 61, 11, 0.7f, true, "Hospital");
+            createPublicBlip(-248.05325f, 6331.792f, 31.904264f, 61, 11, 0.7f, true, "Hospital");
+            createPublicBlip(1151.2819f, -1529.2511f, 35.36556f, 61, 11, 0.7f, true, "Hospital");
+
+            //Bus
+            createPublicBlip(454.01633f, -658.4551f, 27.866255f, 513, 47, 0.7f, true, "Bus Station");
+
+            // MEtro
+            createPublicBlip(-1084.2657f, -2719.5398f, -7.410132f, 607, 49, 0.6f, true, "Metro LSIA Terminal");
+            createPublicBlip(-883.624f, -2314.9814f, -11.732785f, 607, 49, 0.6f, true, "Metro LSIA Parking");
+            createPublicBlip(-539.3826f, -1283.5278f, 26.901606f, 607, 49, 0.6f, true, "Metro Puerto del Sol");
+            createPublicBlip(278.6903f, -1201.9535f, 38.896255f, 607, 49, 0.6f, true, "Metro Strawberry");
+            createPublicBlip(-292.98038f, -332.386f, 10.063103f, 607, 49, 0.6f, true, "Metro Burton");
+            createPublicBlip(-815.5151f, -135.68059f, 19.950294f, 607, 49, 0.6f, true, "Metro Portola Drive");
+            createPublicBlip(-1353.9574f, -464.19272f, 15.04531f, 607, 49, 0.6f, true, "Metro Del Perro");
+            createPublicBlip(-503.02167f, -674.93274f, 11.808959f, 607, 49, 0.6f, true, "Metro Little Seoul");
+            createPublicBlip(-212.7016f, -1035.0039f, 30.139433f, 607, 49, 0.6f, true, "Metro Pillbox South");
+            createPublicBlip(115.049774f, -1727.3262f, 30.110792f, 607, 49, 0.6f, true, "Metro Davis");
+
+            //RecyleJob
+            createPublicBlip(115.049774f, -1727.3262f, 30.110792f, 607, 49, 0.6f, true, "Metro Davis");
+
+            // AmmoNation
+
+            //LS Coustomes
+            createPublicBlip(-342.38242f, -136.14066f, 38.3114f, 72, 4, 0.6f, true, "LS Customs");
+            createPublicBlip(732.34283f, -1085.4066f, 21.461548f, 72, 4, 0.6f, true, "LS Customs");
+            createPublicBlip(-1154.7296f, -2006.3077f, 12.480591f, 72, 4, 0.6f, true, "LS Customs");
+            createPublicBlip(110.4f, 6626.0176f, 31.082764f, 72, 4, 0.6f, true, "Beekers Garage & Parts");
+            createPublicBlip(1174.8264f, 2640.844f, 37.064453f, 72, 4, 0.6f, true, "Auto Repairs");
+
+            // PDM
+            createPublicBlip(-38.795605f, -1109.6835f, 26.432251f, 369, 13, 0.6f, true, "Premium Deluxe Motorsport");
         }
 
         public static void createPublicBlip(float x, float y, float z, uint sprite, uint color, float scale = 1.0f, bool shortRange = false, string name = "")
