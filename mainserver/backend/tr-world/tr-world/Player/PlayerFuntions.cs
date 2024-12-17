@@ -135,6 +135,12 @@ namespace tr_world.Player
             //DCLog
         }
 
+        public static void TempBan(this BPlayer player, int duration, string timeformat, string reason)
+        {
+            
+        }
+        
+
         /// <summary>
         /// Ban the playes from the server
         /// </summary>
@@ -558,8 +564,8 @@ namespace tr_world.Player
         }
 
         /// <summary>
-        /// Sets the Hunger
-        /// </summary> state
+        /// Sets the hunger state
+        /// </summary> 
         /// <param name="player">the  player</param>
         /// <param name="value">sets the hunger state. between 0.0 and 100.0</param>
         public static void SetHunger(this BPlayer player, float value)
@@ -568,44 +574,84 @@ namespace tr_world.Player
             player.Metadata.Hunger = value;
         }
 
+        /// <summary>
+        /// Get the state of the hunger
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <returns>floating the hunger state</returns>
         public static float GetHunger(this BPlayer player)
         {
             return player.Metadata.Hunger;
         }
 
+        /// <summary>
+        /// Sets the thirst state
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="value">sets the thirst state. It is between 0.0 and 100.0</param>
         public static void SetThirst(this BPlayer player, float value)
         {
             if (value is <= 100f and >= 0f) return;
             player.Metadata.Thirst = value;
         }
 
+        /// <summary>
+        /// Get the state of the thirst
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <returns>floating the hunger state</returns>
         public static float GetThirst(this BPlayer player)
         {
             return player.Metadata.Thirst;
         }
 
+        /// <summary>
+        /// Sets the armor state
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="value">sets the armor state. It is between 0.0 and 100.0</param>
         public static void SetArmor(this BPlayer player, float value)
         {
             if (value is <= 100f and >= 0f) return;
             player.Metadata.Armor = value;
         }
 
+        /// <summary>
+        /// Gets the state of the armor
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <returns>floating the armor state</returns>
         public static float GetArmor(this BPlayer player)
         {
             return player.Metadata.Armor;
         }
 
+        /// <summary>
+        /// Sets the stress state
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <param name="value">sets the stress state. It is between 0.0 and 100.0</param>
         public static void SetStress(this BPlayer player, float value)
         {
             if (value is <= 100f and >= 0f) return;
             player.Metadata.Stress = value;
         }
 
+        /// <summary>
+        /// Gets the stress state
+        /// </summary>
+        /// <param name="player">the player</param>
+        /// <returns>floating the stress state</returns>
         public static float GetStress(this BPlayer player)
         {
             return player.Metadata.Stress;
         }
 
+        /// <summary>
+        /// Sets the jailtime
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="value"></param>
         public static void SetJailTime(this BPlayer player, float value)
         {
             if (value is <= 100f and >= 0f) return;

@@ -26,7 +26,7 @@ namespace tr_world
         [Command("warn")]
         public void CMD_warn(BPlayer player, uint targetid, string Reason)
         {
-            if (!player.HasPlayerPermission((int)TPermission.Admin))
+            if (!player.HasPlayerPermission((int)TPermission.Administrator))
             {
                 return;
             }
@@ -37,32 +37,60 @@ namespace tr_world
         [Command("kick")]
         public void CMD_kick(BPlayer player, uint targetid, string reason)
         {
-            if (!player.HasPlayerPermission((int)TPermission.Admin))
+            if (!player.HasPlayerPermission((int)TPermission.Administrator))
             {
                 return;
             }
 
-            foreach (BPlayer p in Alt.GetAllPlayers())
+            foreach (var player1 in Alt.GetAllPlayers())
             {
+                var p = (BPlayer)player1;
                 if (targetid == p.Id)
                 {
                     p.Kick(reason);
                 }
             }
         }
+
+        [Command("tempban")]
+        public void CMD_tempban(BPlayer player, uint targetid, int amount, string timevalue ,string reason)
+        {
+            if (!player.HasPlayerPermission((int)TPermission.Administrator))
+            {
+                return;
+            }
+            
+            foreach (var player1 in Alt.GetAllPlayers())
+            {
+                var p = (BPlayer)player1;
+                if (targetid == p.Id)
+                {
+                    p.TempBan(amount, timevalue, reason);
+                }
+            }
+            
+        }
+        
+        /// <summary>
+        /// Bans player forever
+        /// </summary>
+        /// <param name="player">the owner</param>
+        /// <param name="targetid">the target id</param>
+        /// <param name="reason">The reason behind it</param>
         [Command("ban")]
         public void CMD_ban(BPlayer player, uint targetid, string reason)
         {
-            if (!player.HasPlayerPermission((int)TPermission.Admin))
+            if (!player.HasPlayerPermission((int)TPermission.Owner))
             {
                 return;
             }
 
-            foreach (BPlayer p in Alt.GetAllPlayers())
+            foreach (var player1 in Alt.GetAllPlayers())
             {
+                var p = (BPlayer)player1;
                 if (targetid == p.Id)
                 {
-                    ///p.Ban(reason);
+                    p.Ban(reason);
                 }
             }
         }
@@ -159,11 +187,11 @@ namespace tr_world
         [Command("addmoneycash")]
         public void CMD_AddMoneyCash(BPlayer player, int amount)
         {
-            if (!player.HasPlayerPermission((int)TPermission.Admin))
+            if (!player.HasPlayerPermission((int)TPermission.Administrator))
             {
                 return;
             }
-            player.AddMoneyToCash(amount, "Admin giving.");
+            player.AddMoneyToCash(amount, "Administrator giving.");
         }
 
         [Command("showcash")]
