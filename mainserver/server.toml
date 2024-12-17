@@ -134,18 +134,7 @@ collision = true
 
 # Settings related to js-module
 [js-module]
-# "https://nodejs.org/api/cli.html#--enable-source-maps"
-source-maps = true
-# "https://nodejs.org/api/cli.html#--heap-prof"
-heap-profiler = true
-# Enable profiler
-profiler = true
-# "https://nodejs.org/api/cli.html#--experimental-global-webcrypto"
-global-webcrypto = true
-# "https://nodejs.org/api/cli.html#--experimental-network-imports"
-network-imports = false
-# Add extra cli arguments to the node environment "https://nodejs.org/api/cli.html"
-extra-cli-args = ["--max-old-space-size=8192"]
+
 
 # Settings related to c#-module
 [csharp-module]

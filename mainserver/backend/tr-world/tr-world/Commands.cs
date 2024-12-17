@@ -76,8 +76,11 @@ namespace tr_world
             }
 
             if (!string.IsNullOrWhiteSpace(VehicleName))
+            {
+
+                BVehicle veh = (BVehicle)Alt.CreateVehicle(Alt.Hash(VehicleName), new Position(player.Position.X, player.Position.Y + 1.5f, player.Position.Z + 0.5f), player.Rotation);
+                if (veh != null)
                 {
-                    BVehicle veh = (BVehicle)Alt.CreateVehicle(Alt.Hash(VehicleName), new Position(player.Position.X, player.Position.Y + 1.5f, player.Position.Z + 0.5f), player.Rotation);
                     veh.NumberplateText = player.Name;
                     veh.EngineOn = true;
 
@@ -94,7 +97,9 @@ namespace tr_world
                 {
                     player.SendChatMessage("{FF0000}" + $"Vehicle Name: {VehicleName} was not founded.");
                 }
-            
+            }
+
+
 
         }
 
@@ -131,8 +136,8 @@ namespace tr_world
                 return;
             }
             player.GetClosestVehicle().Repair();
-            
-            
+
+
         }
 
         [Command("pos", true)]
@@ -157,7 +162,7 @@ namespace tr_world
             if (!player.HasPlayerPermission((int)TPermission.Admin))
             {
                 return;
-            }   
+            }
             player.AddMoneyToCash(amount, "Admin giving.");
         }
 
@@ -210,8 +215,8 @@ namespace tr_world
         {
             player.SendChatMessage($"Your Gang-Activity is at: {player.Gang.Label} with Grade: {player.Gang.GradeLabel}");
         }
-        
-        
+
+
 
         [Command("testAdminmenu")]
         public void CMD_testAdminMenu(BPlayer player)
