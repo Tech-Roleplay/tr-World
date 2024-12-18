@@ -1,26 +1,13 @@
-﻿using System;
-using AltV.Net.Client;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AltV.Net;
-using AltV.Net.Client.Elements.Data;
+﻿using AltV.Net;
 
-namespace tr_world_client.Controllers
+namespace tr_world_client.Controllers;
+
+public class VehicleIndicatorsLights : IScript
 {
-    public class VehicleIndicatorsLights : IScript
+    //[Keypress(Key.F5)]
+    private void Keypressed()
     {
-        
-        public VehicleIndicatorsLights() {
-          
-        }
-
-        //[Keypress(Key.F5)]
-        private void Keypressed()
-        {
-            Alt.Log("Keypress VehicleIndicatorsLights");
-            //if (key == AltV.Net.Client.Elements.Data.Key.)
-        }
+        Alt.Log("Keypress VehicleIndicatorsLights");
+        //if (key == AltV.Net.Client.Elements.Data.Key.)
     }
 }

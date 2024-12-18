@@ -7,6 +7,4 @@ public class Phone
     public string Color { get; set; }
     public string BackgroundImgUrl { get; set; }
     public string ProfilePicUrl { get; set; }
-    
-    
 }

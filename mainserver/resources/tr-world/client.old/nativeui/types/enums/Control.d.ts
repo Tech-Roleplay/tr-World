@@ -346,4 +346,5 @@ declare enum Control {
     VehicleFlyCounter = 344,
     VehicleFlyTransform = 345
 }
+
 export default Control;

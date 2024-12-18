@@ -1,4 +1,4 @@
 ## Task of <ins>Models<ins>
 
--  base for obejct in the server
+- base for obejct in the server
 

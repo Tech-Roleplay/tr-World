@@ -608,6 +608,7 @@ class Color {
         this.A = a;
     }
 }
+
 Color.Empty = new Color(0, 0, 0, 0);
 Color.Transparent = new Color(0, 0, 0, 0);
 Color.Black = new Color(0, 0, 0, 255);
@@ -628,16 +629,15 @@ class Point {
         this.X = x;
         this.Y = y;
     }
+
     static Parse(arg) {
         if (typeof arg === "object") {
             if (arg.length) {
                 return new Point(arg[0], arg[1]);
-            }
-            else if (arg.X && arg.Y) {
+            } else if (arg.X && arg.Y) {
                 return new Point(arg.X, arg.Y);
             }
-        }
-        else if (typeof arg === "string") {
+        } else if (typeof arg === "string") {
             if (arg.indexOf(",") !== -1) {
                 const arr = arg.split(",");
                 return new Point(parseFloat(arr[0]), parseFloat(arr[1]));
@@ -663,6 +663,24 @@ class Text extends IElement {
         this.Font = font || 0;
         this.Centered = centered || false;
     }
+
+    static AddLongString(text) {
+        if (!text.length)
+            return;
+        const maxStringLength = 99;
+        for (let i = 0, position; i < text.length; i += maxStringLength) {
+            let currentText = text.substr(i, i + maxStringLength);
+            let currentIndex = i;
+            if ((currentText.match(/~/g) || []).length % 2 !== 0) {
+                position = currentText.lastIndexOf('~');
+                i -= (maxStringLength - position);
+            } else {
+                position = Math.min(maxStringLength, text.length - currentIndex);
+            }
+            game__default.addTextComponentSubstringPlayerName(text.substr(currentIndex, position));
+        }
+    }
+
     Draw(caption, pos, scale, color, font, centered) {
         if (caption && !pos && !scale && !color && !font && !centered) {
             pos = new Point(this.Pos.X + caption.Width, this.Pos.Y + caption.Height);
@@ -681,32 +699,17 @@ class Text extends IElement {
         Text.AddLongString(caption);
         game__default.endTextCommandDisplayText(x, y, 0);
     }
-    static AddLongString(text) {
-        if (!text.length)
-            return;
-        const maxStringLength = 99;
-        for (let i = 0, position; i < text.length; i += maxStringLength) {
-            let currentText = text.substr(i, i + maxStringLength);
-            let currentIndex = i;
-            if ((currentText.match(/~/g) || []).length % 2 !== 0) {
-                position = currentText.lastIndexOf('~');
-                i -= (maxStringLength - position);
-            }
-            else {
-                position = Math.min(maxStringLength, text.length - currentIndex);
-            }
-            game__default.addTextComponentSubstringPlayerName(text.substr(currentIndex, position));
-        }
-    }
 }
 
 const gameScreen = game__default.getActualScreenResolution(0, 0);
+
 class Screen {
     static get ResolutionMaintainRatio() {
         const ratio = Screen.Width / Screen.Height;
         const width = 1080.0 * ratio;
         return new Size(width, 1080.0);
     }
+
     static MousePosition(relative = false) {
         const res = Screen.ResolutionMaintainRatio;
         const cursor = alt.getCursorPos();
@@ -718,12 +721,14 @@ class Screen {
             Y: mouseY
         };
     }
+
     static IsMouseInBounds(topLeft, boxSize) {
         const mousePosition = Screen.MousePosition();
         return (mousePosition.X >= topLeft.X &&
             mousePosition.X <= topLeft.X + boxSize.Width &&
             (mousePosition.Y > topLeft.Y && mousePosition.Y < topLeft.Y + boxSize.Height));
     }
+
     static GetTextWidth(text, font, scale) {
         game__default.beginTextCommandGetScreenWidthOfDisplayText("CELL_EMAIL_BCON");
         Text.AddLongString(text);
@@ -733,6 +738,7 @@ class Screen {
         const res = Screen.ResolutionMaintainRatio;
         return res.Width * width;
     }
+
     static GetLineCount(text, position, font, scale, wrap) {
         game__default.beginTextCommandGetNumberOfLinesForString("CELL_EMAIL_BCON");
         Text.AddLongString(text);
@@ -750,6 +756,7 @@ class Screen {
         return lineCount;
     }
 }
+
 Screen.Width = gameScreen[1];
 Screen.Height = gameScreen[2];
 
@@ -763,9 +770,26 @@ class Sprite {
         this.Color = color;
         this.Visible = true;
     }
-    LoadTextureDictionary() {
-        this.requestTextureDictPromise(this._textureDict).then((succ) => { });
+
+    get TextureDict() {
+        return this._textureDict;
     }
+
+    set TextureDict(v) {
+        this._textureDict = v;
+        if (!this.IsTextureDictionaryLoaded)
+            this.LoadTextureDictionary();
+    }
+
+    get IsTextureDictionaryLoaded() {
+        return game__default.hasStreamedTextureDictLoaded(this._textureDict);
+    }
+
+    LoadTextureDictionary() {
+        this.requestTextureDictPromise(this._textureDict).then((succ) => {
+        });
+    }
+
     requestTextureDictPromise(textureDict) {
         return new Promise((resolve, reject) => {
             game__default.requestStreamedTextureDict(textureDict, true);
@@ -777,17 +801,7 @@ class Sprite {
             }, 10);
         });
     }
-    set TextureDict(v) {
-        this._textureDict = v;
-        if (!this.IsTextureDictionaryLoaded)
-            this.LoadTextureDictionary();
-    }
-    get TextureDict() {
-        return this._textureDict;
-    }
-    get IsTextureDictionaryLoaded() {
-        return game__default.hasStreamedTextureDictLoaded(this._textureDict);
-    }
+
     Draw(textureDictionary, textureName, pos, size, heading, color, loadTexture) {
         textureDictionary = textureDictionary || this.TextureDict;
         textureName = textureName || this.TextureName;
@@ -821,6 +835,7 @@ class Rectangle extends IElement {
         this.Size = size;
         this.Color = color;
     }
+
     Draw(pos, size, color) {
         if (!pos)
             pos = new Size(0, 0);
@@ -841,6 +856,7 @@ class ResRectangle extends Rectangle {
     constructor(pos, size, color) {
         super(pos, size, color);
     }
+
     Draw(pos, size, color) {
         if (!pos)
             pos = new Size();
@@ -870,12 +886,15 @@ class ResText extends Text {
         if (centered)
             this.TextAlignment = centered;
     }
+
     get WordWrap() {
         return new Size(this.Wrap, 0);
     }
+
     set WordWrap(value) {
         this.Wrap = value.Width;
     }
+
     Draw(arg1, pos, scale, color, font, arg2, dropShadow, outline, wordWrap) {
         let caption = arg1;
         let centered = arg2;
@@ -891,8 +910,7 @@ class ResText extends Text {
             font = this.Font;
             if (centered == true || centered == false) {
                 centered = this.Centered;
-            }
-            else {
+            } else {
                 centered = undefined;
                 dropShadow = this.DropShadow;
                 outline = this.Outline;
@@ -911,8 +929,7 @@ class ResText extends Text {
         game__default.setTextColour(color.R, color.G, color.B, color.A);
         if (centered !== undefined) {
             game__default.setTextCentre(centered);
-        }
-        else {
+        } else {
             if (dropShadow)
                 game__default.setTextDropshadow(2, 0, 0, 0, 0);
             if (outline)
@@ -982,21 +999,26 @@ class UIMenuItem {
         this._badgeRight = new Sprite("commonmenu", "", new Point(0, 0), new Size(40, 40));
         this._labelText = new ResText("", new Point(0, 0), 0.35, Color.White, 0, Alignment$1.Right);
     }
+
     get Text() {
         return this._text.Caption;
     }
+
     set Text(text) {
         this._text.Caption = text;
     }
+
     get Description() {
         return this._description;
     }
+
     set Description(text) {
         this._description = text;
         if (this != undefined && this.Parent != undefined) {
             this.Parent.UpdateDescriptionCaption();
         }
     }
+
     SetVerticalPosition(y) {
         this._rectangle.Pos = new Point(this.Offset.X, y + 144 + this.Offset.Y);
         this._selectedSprite.Pos = new Point(0 + this.Offset.X, y + 144 + this.Offset.Y);
@@ -1005,14 +1027,17 @@ class UIMenuItem {
         this._badgeRight.Pos = new Point(385 + this.Offset.X, y + 142 + this.Offset.Y);
         this._labelText.Pos = new Point(420 + this.Offset.X, y + 148 + this.Offset.Y);
     }
+
     addEvent(event, ...args) {
-        this._event = { event: event, args: args };
+        this._event = {event: event, args: args};
     }
+
     fireEvent() {
         if (this._event) {
             alt.emit(this._event.event, ...this._event.args);
         }
     }
+
     Draw() {
         this._rectangle.Size = new Size(431 + this.Parent.WidthOffset, 38);
         this._selectedSprite.Size = new Size(431 + this.Parent.WidthOffset, 38);
@@ -1041,8 +1066,7 @@ class UIMenuItem {
                     : new Color(163, 159, 148)
                 : Color.White;
             this._badgeLeft.Draw();
-        }
-        else {
+        } else {
             this._text.Pos = new Point(8 + this.Offset.X, this._text.Pos.Y);
         }
         if (this.RightBadge != BadgeStyle$1.None) {
@@ -1070,15 +1094,19 @@ class UIMenuItem {
         }
         this._text.Draw();
     }
+
     SetLeftBadge(badge) {
         this.LeftBadge = badge;
     }
+
     SetRightBadge(badge) {
         this.RightBadge = badge;
     }
+
     SetRightLabel(text) {
         this.RightLabel = text;
     }
+
     BadgeToSpriteLib(badge) {
         switch (badge) {
             case BadgeStyle$1.Sale:
@@ -1093,6 +1121,7 @@ class UIMenuItem {
                 return "commonmenu";
         }
     }
+
     BadgeToSpriteName(badge, selected) {
         switch (badge) {
             case BadgeStyle$1.None:
@@ -1161,6 +1190,7 @@ class UIMenuItem {
                 return "";
         }
     }
+
     IsBagdeWhiteSprite(badge) {
         switch (badge) {
             case BadgeStyle$1.Lock:
@@ -1171,6 +1201,7 @@ class UIMenuItem {
                 return false;
         }
     }
+
     BadgeToColor(badge, selected) {
         switch (badge) {
             case BadgeStyle$1.Lock:
@@ -1184,6 +1215,7 @@ class UIMenuItem {
         }
     }
 }
+
 UIMenuItem.DefaultBackColor = Color.Empty;
 UIMenuItem.DefaultHighlightedBackColor = Color.White;
 UIMenuItem.DefaultForeColor = Color.WhiteSmoke;
@@ -1197,10 +1229,12 @@ class UIMenuCheckboxItem extends UIMenuItem {
         this._checkedSprite = new Sprite("commonmenu", "shop_box_blank", new Point(410, y + 95), new Size(50, 50));
         this.Checked = check;
     }
+
     SetVerticalPosition(y) {
         super.SetVerticalPosition(y);
         this._checkedSprite.Pos = new Point(380 + this.Offset.X + this.Parent.WidthOffset, y + 138 + this.Offset.Y);
     }
+
     Draw() {
         super.Draw();
         this._checkedSprite.Pos = this._checkedSprite.Pos = new Point(380 + this.Offset.X + this.Parent.WidthOffset, this._checkedSprite.Pos.Y);
@@ -1209,8 +1243,7 @@ class UIMenuCheckboxItem extends UIMenuItem {
             this._checkedSprite.TextureName = this.Checked
                 ? "shop_box_tickb"
                 : "shop_box_blankb";
-        }
-        else {
+        } else {
             this._checkedSprite.TextureName = this.Checked
                 ? "shop_box_tick"
                 : "shop_box_blank";
@@ -1222,9 +1255,11 @@ class UIMenuCheckboxItem extends UIMenuItem {
             : new Color(163, 159, 148);
         this._checkedSprite.Draw();
     }
+
     SetRightBadge(badge) {
         return this;
     }
+
     SetRightLabel(text) {
         return this;
     }
@@ -1244,19 +1279,19 @@ class ItemsCollection {
             throw new Error("ItemsCollection cannot be empty");
         this.items = items;
     }
+
     length() {
         return this.items.length;
     }
+
     getListItems() {
         const items = [];
         for (const item of this.items) {
             if (item instanceof ListItem) {
                 items.push(item);
-            }
-            else if (typeof item == "string") {
+            } else if (typeof item == "string") {
                 items.push(new ListItem(item));
-            }
-            else if (typeof item == "number") {
+            } else if (typeof item == "number") {
                 items.push(new ListItem(item.toString()));
             }
         }
@@ -1279,14 +1314,21 @@ class UIMenuListItem extends UIMenuItem {
         this._arrowRight = new Sprite("commonmenu", "arrowright", new Point(280, 105 + y), new Size(30, 30));
         this._itemText = new ResText("", new Point(290, y + 104), 0.35, Color.White, Font$1.ChaletLondon, Alignment$1.Right);
     }
+
     get Collection() {
         return this._itemsCollection;
     }
+
     set Collection(v) {
         if (!v)
             throw new Error("The collection can't be null");
         this._itemsCollection = v;
     }
+
+    get SelectedItem() {
+        return this.Collection.length > 0 ? this.Collection[this.Index] : null;
+    }
+
     set SelectedItem(v) {
         const idx = this.Collection.findIndex(li => li.Id === v.Id);
         if (idx > 0)
@@ -1294,9 +1336,7 @@ class UIMenuListItem extends UIMenuItem {
         else
             this.Index = 0;
     }
-    get SelectedItem() {
-        return this.Collection.length > 0 ? this.Collection[this.Index] : null;
-    }
+
     get SelectedValue() {
         return this.SelectedItem == null
             ? null
@@ -1304,6 +1344,7 @@ class UIMenuListItem extends UIMenuItem {
                 ? this.SelectedItem.DisplayText
                 : this.SelectedItem.Data;
     }
+
     get Index() {
         if (this.Collection == null)
             return -1;
@@ -1311,6 +1352,7 @@ class UIMenuListItem extends UIMenuItem {
             return -1;
         return this._index % this.Collection.length;
     }
+
     set Index(value) {
         if (this.Collection == null)
             return;
@@ -1322,9 +1364,11 @@ class UIMenuListItem extends UIMenuItem {
             : " ";
         this._currentOffset = Screen.GetTextWidth(caption, this._itemText && this._itemText.Font ? this._itemText.Font : 0, 0.35);
     }
+
     setCollection(collection) {
         this.Collection = collection.getListItems();
     }
+
     setCollectionItem(index, item, resetSelection = true) {
         if (index > this.Collection.length)
             throw new Error("Index out of bounds");
@@ -1334,18 +1378,22 @@ class UIMenuListItem extends UIMenuItem {
         if (resetSelection)
             this.Index = 0;
     }
+
     SetVerticalPosition(y) {
         this._arrowLeft.Pos = new Point(300 + this.Offset.X + this.Parent.WidthOffset, 147 + y + this.Offset.Y);
         this._arrowRight.Pos = new Point(400 + this.Offset.X + this.Parent.WidthOffset, 147 + y + this.Offset.Y);
         this._itemText.Pos = new Point(300 + this.Offset.X + this.Parent.WidthOffset, y + 147 + this.Offset.Y);
         super.SetVerticalPosition(y);
     }
+
     SetRightLabel(text) {
         return this;
     }
+
     SetRightBadge(badge) {
         return this;
     }
+
     Draw() {
         super.Draw();
         const caption = this.Collection.length >= this.Index
@@ -1373,8 +1421,7 @@ class UIMenuListItem extends UIMenuItem {
             this._arrowLeft.Draw();
             this._arrowRight.Draw();
             this._itemText.Pos = new Point(405 + this.Offset.X + this.Parent.WidthOffset, this._itemText.Pos.Y);
-        }
-        else {
+        } else {
             this._itemText.Pos = new Point(420 + this.Offset.X + this.Parent.WidthOffset, this._itemText.Pos.Y);
         }
         this._itemText.Draw();
@@ -1408,9 +1455,11 @@ class UIMenuAutoListItem extends UIMenuItem {
         this._arrowRight = new Sprite("commonmenu", "arrowright", new Point(280, 105 + y), new Size(30, 30));
         this._itemText = new ResText("", new Point(290, y + 104), 0.35, Color.White, Font$1.ChaletLondon, Alignment$1.Right);
     }
+
     get PreCaptionText() {
         return this._preCaptionText;
     }
+
     set PreCaptionText(text) {
         if (!text)
             throw new Error("The pre caption text can't be null");
@@ -1419,9 +1468,11 @@ class UIMenuAutoListItem extends UIMenuItem {
         this._preCaptionText = text;
         this._currentOffset = Screen.GetTextWidth(this.PreCaptionText + this._selectedValue.toString() + this.PostCaptionText, this._itemText && this._itemText.Font ? this._itemText.Font : 0, 0.35);
     }
+
     get PostCaptionText() {
         return this._postCaptionText;
     }
+
     set PostCaptionText(text) {
         if (!text)
             throw new Error("The post caption text can't be null");
@@ -1430,25 +1481,31 @@ class UIMenuAutoListItem extends UIMenuItem {
         this._postCaptionText = text;
         this._currentOffset = Screen.GetTextWidth(this.PreCaptionText + this._selectedValue.toString() + this.PostCaptionText, this._itemText && this._itemText.Font ? this._itemText.Font : 0, 0.35);
     }
+
     get LeftMoveThreshold() {
         return this._leftMoveThreshold;
     }
+
     set LeftMoveThreshold(value) {
         if (!value)
             throw new Error("The left threshold can't be null");
         this._leftMoveThreshold = value;
     }
+
     get RightMoveThreshold() {
         return this._rightMoveThreshold;
     }
+
     set RightMoveThreshold(value) {
         if (!value)
             throw new Error("The right threshold can't be null");
         this._rightMoveThreshold = value;
     }
+
     get LowerThreshold() {
         return this._lowerThreshold;
     }
+
     set LowerThreshold(value) {
         if (typeof value !== 'number' && !value)
             throw new Error("The lower threshold can't be null");
@@ -1457,9 +1514,11 @@ class UIMenuAutoListItem extends UIMenuItem {
             this.SelectedValue = value;
         }
     }
+
     get UpperThreshold() {
         return this._upperThreshold;
     }
+
     set UpperThreshold(value) {
         if (typeof value !== 'number' && !value)
             throw new Error("The upper threshold can't be null");
@@ -1468,27 +1527,33 @@ class UIMenuAutoListItem extends UIMenuItem {
             this.SelectedValue = value;
         }
     }
+
     get SelectedValue() {
         return this._selectedValue;
     }
+
     set SelectedValue(value) {
         if (value < this._lowerThreshold || value > this._upperThreshold)
             throw new Error("The value can not be outside the lower or upper limits");
         this._selectedValue = fixFloat(value);
         this._currentOffset = Screen.GetTextWidth(this.PreCaptionText + this._selectedValue.toString() + this.PostCaptionText, this._itemText && this._itemText.Font ? this._itemText.Font : 0, this._itemText && this._itemText.Scale ? this._itemText.Scale : 0.35);
     }
+
     SetVerticalPosition(y) {
         this._arrowLeft.Pos = new Point(300 + this.Offset.X + this.Parent.WidthOffset, 147 + y + this.Offset.Y);
         this._arrowRight.Pos = new Point(400 + this.Offset.X + this.Parent.WidthOffset, 147 + y + this.Offset.Y);
         this._itemText.Pos = new Point(300 + this.Offset.X + this.Parent.WidthOffset, y + 147 + this.Offset.Y);
         super.SetVerticalPosition(y);
     }
+
     SetRightLabel(text) {
         return this;
     }
+
     SetRightBadge(badge) {
         return this;
     }
+
     Draw() {
         super.Draw();
         const offset = this._currentOffset;
@@ -1513,8 +1578,7 @@ class UIMenuAutoListItem extends UIMenuItem {
             this._arrowLeft.Draw();
             this._arrowRight.Draw();
             this._itemText.Pos = new Point(405 + this.Offset.X + this.Parent.WidthOffset, this._itemText.Pos.Y);
-        }
-        else {
+        } else {
             this._itemText.Pos = new Point(420 + this.Offset.X + this.Parent.WidthOffset, this._itemText.Pos.Y);
         }
         this._itemText.Draw();
@@ -1532,18 +1596,20 @@ class UIMenuSliderItem extends UIMenuItem {
         this._rectangleSlider = new ResRectangle(new Point(0, 0), new Size(75, 9), new Color(57, 116, 200, 255));
         if (divider) {
             this._rectangleDivider = new ResRectangle(new Point(0, 0), new Size(2.5, 20), Color.WhiteSmoke);
-        }
-        else {
+        } else {
             this._rectangleDivider = new ResRectangle(new Point(0, 0), new Size(2.5, 20), Color.Transparent);
         }
         this.Index = index;
     }
+
     get Index() {
         return this._index % this._items.length;
     }
+
     set Index(value) {
         this._index = 100000000 - (100000000 % this._items.length) + value;
     }
+
     SetVerticalPosition(y) {
         this._rectangleBackground.Pos = new Point(250 + this.Offset.X + this.Parent.WidthOffset, y + 158.5 + this.Offset.Y);
         this._rectangleSlider.Pos = new Point(250 + this.Offset.X + this.Parent.WidthOffset, y + 158.5 + this.Offset.Y);
@@ -1552,9 +1618,11 @@ class UIMenuSliderItem extends UIMenuItem {
         this._arrowRight.Pos = new Point(400 + this.Offset.X + this.Parent.WidthOffset, 155.5 + y + this.Offset.Y);
         super.SetVerticalPosition(y);
     }
+
     IndexToItem(index) {
         return this._items[index];
     }
+
     Draw() {
         super.Draw();
         this._arrowLeft.Color = this.Enabled
@@ -1577,8 +1645,12 @@ class UIMenuSliderItem extends UIMenuItem {
         this._rectangleSlider.Draw();
         this._rectangleDivider.Draw();
     }
-    SetRightBadge(badge) { }
-    SetRightLabel(text) { }
+
+    SetRightBadge(badge) {
+    }
+
+    SetRightLabel(text) {
+    }
 }
 
 class Container extends Rectangle {
@@ -1586,9 +1658,11 @@ class Container extends Rectangle {
         super(pos, size, color);
         this.Items = [];
     }
+
     addItem(item) {
         this.Items.push(item);
     }
+
     Draw(offset) {
         if (!this.Enabled)
             return;
@@ -1618,18 +1692,23 @@ class LiteEvent {
     constructor() {
         this.handlers = [];
     }
+
     on(handler) {
         this.handlers.push(handler);
     }
+
     off(handler) {
         this.handlers = this.handlers.filter(h => h !== handler);
     }
+
     emit(...args) {
         this.handlers.slice(0).forEach(h => h(...args));
     }
+
     expose() {
         return this;
     }
+
     count() {
         return this.handlers.length;
     }
@@ -1643,10 +1722,15 @@ class InstructionalButton {
         this._usingControls = buttonString == null;
         this._buttonString = buttonString;
     }
-    get ItemBind() { return this._itemBind; }
+
+    get ItemBind() {
+        return this._itemBind;
+    }
+
     BindToItem(item) {
         this._itemBind = item;
     }
+
     GetButtonId() {
         return this._usingControls ? game__default.getControlInstructionalButtonsString(2, this._buttonControl, false) : "t_" + this._buttonString;
     }
@@ -1658,66 +1742,70 @@ class Scaleform {
         this.scaleForm = scaleForm;
         this._handle = game.requestScaleformMovie(this.scaleForm);
     }
+
     get handle() {
         return this._handle;
     }
+
     get isValid() {
         return this._handle != 0;
     }
+
     get isLoaded() {
         return game.hasScaleformMovieLoaded(this._handle);
     }
+
     callFunctionHead(funcName, ...args) {
         if (!this.isValid || !this.isLoaded)
             return;
         game.beginScaleformMovieMethod(this._handle, funcName);
         args.forEach((arg) => {
             switch (typeof arg) {
-                case "number":
-                    {
-                        if (Number(arg) === arg && arg % 1 !== 0) {
-                            game.scaleformMovieMethodAddParamFloat(arg);
-                        }
-                        else {
-                            game.scaleformMovieMethodAddParamInt(arg);
-                        }
+                case "number": {
+                    if (Number(arg) === arg && arg % 1 !== 0) {
+                        game.scaleformMovieMethodAddParamFloat(arg);
+                    } else {
+                        game.scaleformMovieMethodAddParamInt(arg);
                     }
-                case "string":
-                    {
-                        game.scaleformMovieMethodAddParamPlayerNameString(arg);
-                        break;
-                    }
-                case "boolean":
-                    {
-                        game.scaleformMovieMethodAddParamBool(arg);
-                        break;
-                    }
-                default:
-                    {
-                        alt.logError(`Unknown argument type ${typeof arg} = ${arg.toString()} passed to scaleform with handle ${this._handle}`);
-                    }
+                }
+                case "string": {
+                    game.scaleformMovieMethodAddParamPlayerNameString(arg);
+                    break;
+                }
+                case "boolean": {
+                    game.scaleformMovieMethodAddParamBool(arg);
+                    break;
+                }
+                default: {
+                    alt.logError(`Unknown argument type ${typeof arg} = ${arg.toString()} passed to scaleform with handle ${this._handle}`);
+                }
             }
         });
     }
+
     callFunction(funcName, ...args) {
         this.callFunctionHead(funcName, ...args);
         game.endScaleformMovieMethod();
     }
+
     callFunctionReturn(funcName, ...args) {
         this.callFunctionHead(funcName, ...args);
         return game.endScaleformMovieMethodReturnValue();
     }
+
     render2D() {
         if (!this.isValid || !this.isLoaded)
             return;
         game.drawScaleformMovieFullscreen(this._handle, 255, 255, 255, 255, 0);
     }
+
     recreate() {
         if (!this.isValid || !this.isLoaded)
             return;
         game.setScaleformMovieAsNoLongerNeeded(this._handle);
         this._handle = game.requestScaleformMovie(this.scaleForm);
     }
+
     destroy() {
         if (!this.isValid)
             return;
@@ -1727,43 +1815,49 @@ class Scaleform {
 }
 
 class Message {
+    static get IsVisible() {
+        return this._messageVisible;
+    }
+
+    static get Scaleform() {
+        return this._scaleform;
+    }
+
     static Initialize(scaleForm, transitionOutAnimName) {
         this._transitionOutAnimName = transitionOutAnimName;
         this._scaleform = new Scaleform(scaleForm);
     }
-    static get IsVisible() {
-        return this._messageVisible;
-    }
-    static get Scaleform() {
-        return this._scaleform;
-    }
+
     static Load() {
         if (this._delayedTransitionInTimeout != null) {
             alt.clearTimeout(this._delayedTransitionInTimeout);
             this._delayedTransitionInTimeout = null;
         }
     }
+
     static SetDelayedTransition(messageHandler, time) {
         this._delayedTransitionInTimeout = alt.setTimeout(() => {
             this._delayedTransitionInTimeout = null;
             this.TransitionIn(messageHandler, time);
         }, this._transitionOutTimeMs);
     }
+
     static ShowCustomShard(funcName, time = 5000, ...funcArgs) {
         this.ShowComplexCustomShard(() => {
             this._scaleform.callFunction(funcName, ...funcArgs);
         }, time);
     }
+
     static ShowComplexCustomShard(messageHandler, time = 5000) {
         this.Load();
         if (this._messageVisible) {
             this.TransitionOut();
             this.SetDelayedTransition(() => messageHandler(), time);
-        }
-        else {
+        } else {
             this.TransitionIn(messageHandler, time);
         }
     }
+
     static TransitionOut() {
         if (!this._messageVisible)
             return;
@@ -1781,23 +1875,27 @@ class Message {
             this._scaleform.recreate();
         }, this._transitionOutTimeMs);
     }
+
     static TransitionIn(messageHandler, transitionOutTime = 500) {
         this._messageVisible = true;
         messageHandler();
         this.SetTransitionOutTimer(transitionOutTime);
     }
+
     static SetTransitionOutTimer(time) {
         this._transitionOutTimeout = alt.setTimeout(() => {
             this._transitionOutTimeout = null;
             this.TransitionOut();
         }, time);
     }
+
     static Render() {
         if (this._messageVisible) {
             this._scaleform.render2D();
         }
     }
 }
+
 Message._messageVisible = false;
 Message._transitionOutTimeout = null;
 Message._transitionOutFinishedTimeout = null;
@@ -1811,30 +1909,39 @@ class BigMessage extends Message {
         super.Initialize(scaleForm, transitionOutAnimName);
         alt.everyTick(() => this.Render());
     }
+
     static ShowMissionPassedMessage(msg, subtitle = "", time = 5000) {
         this.ShowCustomShard("SHOW_MISSION_PASSED_MESSAGE", time, msg, subtitle, 100, true, 0, true);
     }
+
     static ShowColoredShard(msg, desc, textColor, bgColor, time = 5000) {
         this.ShowCustomShard("SHOW_SHARD_CENTERED_MP_MESSAGE", time, msg, desc, bgColor, textColor);
     }
+
     static ShowOldMessage(msg, time = 5000) {
         this.ShowCustomShard("SHOW_MISSION_PASSED_MESSAGE", time, msg);
     }
+
     static ShowSimpleShard(title, subtitle = "", time = 5000) {
         this.ShowCustomShard("SHOW_SHARD_CREW_RANKUP_MP_MESSAGE", time, title, subtitle);
     }
+
     static ShowRankupMessage(msg, subtitle, rank, time = 5000) {
         this.ShowCustomShard("SHOW_BIG_MP_MESSAGE", time, msg, subtitle, rank, "", "");
     }
+
     static ShowPlaneMessage(title, planeName, planeHash, time = 5000) {
         this.ShowCustomShard("SHOW_PLANE_MESSAGE", time, title, planeName, planeHash, "", "");
     }
+
     static ShowWeaponPurchasedMessage(bigMessage, weaponName, weaponHash, time = 5000) {
         this.ShowCustomShard("SHOW_WEAPON_PURCHASED", time, bigMessage, weaponName, weaponHash, "", 100);
     }
+
     static ShowWastedMessage(title, message, color, darkenBackground, time = 5000) {
         this.ShowCustomShard("SHOW_SHARD_WASTED_MP_MESSAGE", time, title, message, color, darkenBackground);
     }
+
     static ShowMpMessageLarge(msg, subtitle = "", time = 5000) {
         this.ShowComplexCustomShard(() => {
             this.Scaleform.callFunction("SHOW_CENTERED_MP_MESSAGE_LARGE", msg, subtitle, 100, true, 100);
@@ -1842,6 +1949,7 @@ class BigMessage extends Message {
         }, time);
     }
 }
+
 BigMessage.Initialize("MP_BIG_MESSAGE_FREEMODE", "TRANSITION_OUT");
 
 class MidsizedMessage extends Message {
@@ -1849,19 +1957,24 @@ class MidsizedMessage extends Message {
         super.Initialize(scaleForm, transitionOutAnimName);
         alt.everyTick(() => this.Render());
     }
+
     static ShowMidsizedMessage(title, message = "", time = 5000) {
         this.ShowCustomShard("SHOW_MIDSIZED_MESSAGE", time, title, message);
     }
+
     static ShowBridgesKnivesProgress(title, totalToDo, message, info, completed, time = 5000) {
         this.ShowCustomShard("SHOW_BRIDGES_KNIVES_PROGRESS", time, title, totalToDo, message, info, completed);
     }
+
     static ShowCondensedShardMessage(title, message, bgColor, useDarkerShard, time = 5000) {
         this.ShowCustomShard("SHOW_COND_SHARD_MESSAGE", time, title, message, bgColor, useDarkerShard);
     }
+
     static ShowMidsizedShardMessage(title, message, bgColor, useDarkerShard, useCondensedShard, time = 5000) {
         this.ShowCustomShard("SHOW_SHARD_MIDSIZED_MESSAGE", time, title, message, bgColor, useDarkerShard, useCondensedShard);
     }
 }
+
 MidsizedMessage.Initialize("MIDSIZED_MESSAGE", "SHARD_ANIM_OUT");
 
 class UIMenuDynamicListItem extends UIMenuItem {
@@ -1884,15 +1997,11 @@ class UIMenuDynamicListItem extends UIMenuItem {
         this._arrowRight = new Sprite("commonmenu", "arrowright", new Point(280, 105 + y), new Size(30, 30));
         this._itemText = new ResText("", new Point(290, y + 104), 0.35, Color.White, Font$1.ChaletLondon, Alignment$1.Right);
     }
-    SelectionChangeHandlerPromise(item, selectedValue, changeDirection) {
-        return new Promise((resolve, reject) => {
-            let newSelectedValue = this.SelectionChangeHandler(item, selectedValue, changeDirection);
-            resolve(newSelectedValue);
-        });
-    }
+
     get PreCaptionText() {
         return this._precaptionText;
     }
+
     set PreCaptionText(text) {
         if (!text)
             throw new Error("The pre caption text can't be null");
@@ -1901,34 +2010,46 @@ class UIMenuDynamicListItem extends UIMenuItem {
         this._precaptionText = text;
         this._currentOffset = Screen.GetTextWidth(this.PreCaptionText + this._selectedValue, this._itemText && this._itemText.Font ? this._itemText.Font : 0, 0.35);
     }
+
     get SelectedValue() {
         return this._selectedValue;
     }
+
     set SelectedValue(value) {
         this._selectedValue = value;
         if (value == undefined)
             return;
         this._currentOffset = Screen.GetTextWidth(this.PreCaptionText + this._selectedValue, this._itemText && this._itemText.Font ? this._itemText.Font : 0, this._itemText && this._itemText.Scale ? this._itemText.Scale : 0.35);
     }
+
+    SelectionChangeHandlerPromise(item, selectedValue, changeDirection) {
+        return new Promise((resolve, reject) => {
+            let newSelectedValue = this.SelectionChangeHandler(item, selectedValue, changeDirection);
+            resolve(newSelectedValue);
+        });
+    }
+
     SetVerticalPosition(y) {
         this._arrowLeft.Pos = new Point(300 + this.Offset.X + this.Parent.WidthOffset, 147 + y + this.Offset.Y);
         this._arrowRight.Pos = new Point(400 + this.Offset.X + this.Parent.WidthOffset, 147 + y + this.Offset.Y);
         this._itemText.Pos = new Point(300 + this.Offset.X + this.Parent.WidthOffset, y + 147 + this.Offset.Y);
         super.SetVerticalPosition(y);
     }
+
     SetRightLabel(text) {
         return this;
     }
+
     SetRightBadge(badge) {
         return this;
     }
+
     Draw() {
         super.Draw();
         if (this._selectedValue == undefined) {
             if (this._selectedStartValueHandler != null) {
                 this.SelectedValue = this._selectedStartValueHandler();
-            }
-            else {
+            } else {
                 this._selectedValue = "";
             }
         }
@@ -1954,18 +2075,19 @@ class UIMenuDynamicListItem extends UIMenuItem {
             this._arrowLeft.Draw();
             this._arrowRight.Draw();
             this._itemText.Pos = new Point(405 + this.Offset.X + this.Parent.WidthOffset, this._itemText.Pos.Y);
-        }
-        else {
+        } else {
             this._itemText.Pos = new Point(420 + this.Offset.X + this.Parent.WidthOffset, this._itemText.Pos.Y);
         }
         this._itemText.Draw();
     }
+
     isVariableFunction(functionToCheck) {
         return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
     }
 }
 
 let menuPool = [];
+
 class NativeUI {
     constructor(title, subtitle, offset, spriteLibrary, spriteName) {
         this._visible = true;
@@ -2046,40 +2168,40 @@ class NativeUI {
         this._visible = false;
         alt.everyTick(this.render.bind(this));
     }
-    GetSpriteBanner() {
-        return this._bannerSprite;
-    }
-    GetRectangleBanner() {
-        return this._bannerRectangle;
-    }
-    GetTitle() {
-        return this._titleResText;
-    }
+
     get MaxItemsVisible() {
         return this._maxItemsOnScreen;
     }
+
     set MaxItemsVisible(value) {
         this._maxItemsOnScreen = value;
         this._maxItem = value;
     }
+
     get Title() {
         return this._titleResText.Caption;
     }
+
     set Title(text) {
         this._titleResText.Caption = text;
     }
+
     get GetSubTitle() {
         return this._subtitleResText;
     }
+
     get SubTitle() {
         return this._subtitleResText.Caption;
     }
+
     set SubTitle(text) {
         this._subtitleResText.Caption = text;
     }
+
     get Visible() {
         return this._visible;
     }
+
     set Visible(toggle) {
         this._visible = toggle;
         Common.PlaySound(this.AUDIO_BACK, this.AUDIO_LIBRARY);
@@ -2104,8 +2226,7 @@ class NativeUI {
                     }
                 }
             }
-        }
-        else {
+        } else {
             if (this._justClosedFromPool === true) {
                 this._justClosedFromPool = false;
                 return;
@@ -2128,48 +2249,68 @@ class NativeUI {
             }
         }
     }
+
     get CurrentSelection() {
         return this._activeItem % this.MenuItems.length;
     }
+
     set CurrentSelection(v) {
         this.MenuItems[this._activeItem % this.MenuItems.length].Selected = false;
         this._activeItem = this._maxMenuItems - (this._maxMenuItems % this.MenuItems.length) + v;
         if (this.CurrentSelection > this._maxItem) {
             this._maxItem = this.CurrentSelection;
             this._minItem = this.CurrentSelection - this._maxItemsOnScreen;
-        }
-        else if (this.CurrentSelection < this._minItem) {
+        } else if (this.CurrentSelection < this._minItem) {
             this._maxItem = this._maxItemsOnScreen + this.CurrentSelection;
             this._minItem = this.CurrentSelection;
         }
         this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
         this.UpdateDescriptionCaption();
     }
+
+    GetSpriteBanner() {
+        return this._bannerSprite;
+    }
+
+    GetRectangleBanner() {
+        return this._bannerRectangle;
+    }
+
+    GetTitle() {
+        return this._titleResText;
+    }
+
     DisableInstructionalButtons(disable) {
         this._buttonsEnabled = !disable;
     }
+
     AddInstructionalButton(button) {
         this._instructionalButtons.push(button);
     }
+
     SetSpriteBannerType(spriteBanner) {
         this._bannerRectangle = null;
         this.AddSpriteBannerType(spriteBanner);
     }
+
     SetRectangleBannerType(rectangle) {
         this._bannerSprite = null;
         this._bannerRectangle = rectangle;
         this._bannerRectangle.Pos = new Point(this._offset.X, this._offset.Y);
         this._bannerRectangle.Size = new Size(431 + this.WidthOffset, 107);
     }
+
     AddSpriteBannerType(spriteBanner) {
         this._bannerSprite = spriteBanner;
         this._bannerSprite.Size = new Size(431 + this.WidthOffset, 107);
         this._bannerSprite.Pos = new Point(this._offset.X, this._offset.Y);
     }
+
     SetNoBannerType() {
         this._bannerSprite = null;
         this._bannerRectangle = new ResRectangle(new Point(this._offset.X, this._offset.Y), new Size(431 + this.WidthOffset, 107), new Color(0, 0, 0, 0));
     }
+
     RemoveInstructionalButton(button) {
         for (let i = 0; i < this._instructionalButtons.length; i++) {
             if (this._instructionalButtons[i] === button) {
@@ -2177,6 +2318,7 @@ class NativeUI {
             }
         }
     }
+
     RecalculateDescriptionPosition() {
         const count = (this.MenuItems.length > this._maxItemsOnScreen + 1) ? this._maxItemsOnScreen + 2 : this.MenuItems.length;
         this._descriptionBar.Size = new Size(431 + this.WidthOffset, 4);
@@ -2188,6 +2330,7 @@ class NativeUI {
         this._descriptionRectangle.Pos = new Point(this._offset.X, 38 * count + this._descriptionRectangle.Pos.Y);
         this._descriptionText.Pos = new Point(this._offset.X + 8, 38 * count + this._descriptionText.Pos.Y);
     }
+
     SetMenuWidthOffset(widthOffset) {
         this.WidthOffset = widthOffset;
         if (this._bannerSprite != null) {
@@ -2205,6 +2348,7 @@ class NativeUI {
             this._bannerRectangle.Size = new Size(431 + this.WidthOffset, 107);
         }
     }
+
     AddItem(item) {
         if (this._justOpened)
             this._justOpened = false;
@@ -2214,6 +2358,7 @@ class NativeUI {
         this.MenuItems.push(item);
         this.RefreshIndex();
     }
+
     RemoveItem(item) {
         for (let i = 0; i < this.MenuItems.length; i++) {
             if (this.MenuItems[i] === item) {
@@ -2223,6 +2368,7 @@ class NativeUI {
         }
         this.RefreshIndex();
     }
+
     RefreshIndex() {
         if (this.MenuItems.length == 0) {
             this._activeItem = this._maxMenuItems;
@@ -2239,13 +2385,16 @@ class NativeUI {
             this.UpdateDescriptionCaption();
         }
     }
+
     Clear() {
         this.MenuItems = [];
         this.RecalculateDescriptionPosition();
     }
+
     Open() {
         this.Visible = true;
     }
+
     CleanUp(closeChildren = false) {
         if (closeChildren) {
             this.Children.forEach(m => {
@@ -2257,11 +2406,13 @@ class NativeUI {
         });
         this.RefreshIndex();
     }
+
     Close(closeChildren = false) {
         this.Visible = false;
         this.CleanUp(closeChildren);
         this.MenuClose.emit(true);
     }
+
     GoLeft() {
         if (!(this.MenuItems[this.CurrentSelection] instanceof UIMenuListItem) &&
             !(this.MenuItems[this.CurrentSelection] instanceof UIMenuAutoListItem) &&
@@ -2277,20 +2428,17 @@ class NativeUI {
             Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
             this.ListChange.emit(it, it.Index);
             this.UpdateDescriptionCaption();
-        }
-        else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuAutoListItem) {
+        } else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuAutoListItem) {
             const it = this.MenuItems[this.CurrentSelection];
             if (it.SelectedValue <= it.LowerThreshold) {
                 it.SelectedValue = it.UpperThreshold;
-            }
-            else {
+            } else {
                 it.SelectedValue -= it.LeftMoveThreshold;
             }
             Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
             this.AutoListChange.emit(it, it.SelectedValue, ChangeDirection$1.Left);
             this.UpdateDescriptionCaption();
-        }
-        else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuDynamicListItem) {
+        } else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuDynamicListItem) {
             const it = this.MenuItems[this.CurrentSelection];
             it.SelectionChangeHandlerPromise(it, it.SelectedValue, ChangeDirection$1.Left).then((newSelectedValue) => {
                 it.SelectedValue = newSelectedValue;
@@ -2298,8 +2446,7 @@ class NativeUI {
             });
             Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
             this.UpdateDescriptionCaption();
-        }
-        else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem) {
+        } else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem) {
             const it = this.MenuItems[this.CurrentSelection];
             it.Index = it.Index - 1;
             Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
@@ -2307,6 +2454,7 @@ class NativeUI {
             this.UpdateDescriptionCaption();
         }
     }
+
     GoRight() {
         if (!(this.MenuItems[this.CurrentSelection] instanceof UIMenuListItem) &&
             !(this.MenuItems[this.CurrentSelection] instanceof UIMenuAutoListItem) &&
@@ -2322,20 +2470,17 @@ class NativeUI {
             Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
             this.ListChange.emit(it, it.Index);
             this.UpdateDescriptionCaption();
-        }
-        else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuAutoListItem) {
+        } else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuAutoListItem) {
             const it = this.MenuItems[this.CurrentSelection];
             if (it.SelectedValue >= it.UpperThreshold) {
                 it.SelectedValue = it.LowerThreshold;
-            }
-            else {
+            } else {
                 it.SelectedValue += it.RightMoveThreshold;
             }
             Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
             this.AutoListChange.emit(it, it.SelectedValue, ChangeDirection$1.Right);
             this.UpdateDescriptionCaption();
-        }
-        else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuDynamicListItem) {
+        } else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuDynamicListItem) {
             const it = this.MenuItems[this.CurrentSelection];
             it.SelectionChangeHandlerPromise(it, it.SelectedValue, ChangeDirection$1.Right).then((newSelectedValue) => {
                 it.SelectedValue = newSelectedValue;
@@ -2343,8 +2488,7 @@ class NativeUI {
             });
             Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
             this.UpdateDescriptionCaption();
-        }
-        else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem) {
+        } else if (this.MenuItems[this.CurrentSelection] instanceof UIMenuSliderItem) {
             const it = this.MenuItems[this.CurrentSelection];
             it.Index++;
             Common.PlaySound(this.AUDIO_LEFTRIGHT, this.AUDIO_LIBRARY);
@@ -2352,6 +2496,7 @@ class NativeUI {
             this.UpdateDescriptionCaption();
         }
     }
+
     SelectItem() {
         if (!this.MenuItems[this.CurrentSelection].Enabled) {
             Common.PlaySound(this.AUDIO_ERROR, this.AUDIO_LIBRARY);
@@ -2363,8 +2508,7 @@ class NativeUI {
         if (this.MenuItems[this.CurrentSelection] instanceof UIMenuCheckboxItem) {
             it.Checked = !it.Checked;
             this.CheckboxChange.emit(it, it.Checked);
-        }
-        else {
+        } else {
             if (this.Children.has(it.Id)) {
                 const subMenu = this.Children.get(it.Id);
                 this.Visible = false;
@@ -2374,6 +2518,7 @@ class NativeUI {
         }
         it.fireEvent();
     }
+
     HasCurrentSelectionChildren() {
         const it = this.MenuItems[this.CurrentSelection];
         if (this.MenuItems[this.CurrentSelection] instanceof UIMenuItem) {
@@ -2383,6 +2528,7 @@ class NativeUI {
         }
         return false;
     }
+
     IsMouseInListItemArrows(item, topLeft, safezone) {
         game__default.beginTextCommandGetScreenWidthOfDisplayText("jamyfafi");
         game__default.addTextComponentSubstringPlayerName(item.Text);
@@ -2401,6 +2547,7 @@ class NativeUI {
                 ? 2
                 : 0;
     }
+
     ProcessMouse() {
         if (!this.Visible || this._justOpened || this.MenuItems.length == 0 || !this.MouseControlsEnabled) {
             this.MenuItems.filter(i => i.Hovered).forEach(i => (i.Hovered = false));
@@ -2414,12 +2561,10 @@ class NativeUI {
         if (Screen.IsMouseInBounds(new Point(0, 0), new Size(30, 1080)) && this._mouseEdgeEnabled) {
             game__default.setGameplayCamRelativeHeading(game__default.getGameplayCamRelativeHeading() + 5.0);
             game__default.setMouseCursorStyle(6);
-        }
-        else if (Screen.IsMouseInBounds(new Point(Screen.ResolutionMaintainRatio.Width - 30.0, 0), new Size(30, 1080)) && this._mouseEdgeEnabled) {
+        } else if (Screen.IsMouseInBounds(new Point(Screen.ResolutionMaintainRatio.Width - 30.0, 0), new Size(30, 1080)) && this._mouseEdgeEnabled) {
             game__default.setGameplayCamRelativeHeading(game__default.getGameplayCamRelativeHeading() - 5.0);
             game__default.setMouseCursorStyle(7);
-        }
-        else if (this._mouseEdgeEnabled) {
+        } else if (this._mouseEdgeEnabled) {
             game__default.setMouseCursorStyle(1);
         }
         for (let i = this._minItem; i <= limit; i++) {
@@ -2453,23 +2598,19 @@ class NativeUI {
                                     }
                                     break;
                             }
-                        }
-                        else
+                        } else
                             this.SelectItem();
-                    }
-                    else if (!uiMenuItem.Selected) {
+                    } else if (!uiMenuItem.Selected) {
                         this.CurrentSelection = i;
                         Common.PlaySound(this.AUDIO_UPDOWN, this.AUDIO_LIBRARY);
                         this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
                         this.SelectItem();
                         this.UpdateDescriptionCaption();
                         this.UpdateScaleform();
-                    }
-                    else if (!uiMenuItem.Enabled && uiMenuItem.Selected) {
+                    } else if (!uiMenuItem.Enabled && uiMenuItem.Selected) {
                         Common.PlaySound(this.AUDIO_ERROR, this.AUDIO_LIBRARY);
                     }
-            }
-            else
+            } else
                 uiMenuItem.Hovered = false;
             counter++;
         }
@@ -2485,8 +2626,7 @@ class NativeUI {
                 else
                     this.GoUp();
             }
-        }
-        else
+        } else
             this._extraRectangleUp.Color = new Color(0, 0, 0, 200);
         if (Screen.IsMouseInBounds(new Point(extraX, extraY + 18), new Size(431 + this.WidthOffset, 18))) {
             this._extraRectangleDown.Color = new Color(30, 30, 30, 255);
@@ -2496,10 +2636,10 @@ class NativeUI {
                 else
                     this.GoDown();
             }
-        }
-        else
+        } else
             this._extraRectangleDown.Color = new Color(0, 0, 0, 200);
     }
+
     ProcessControl() {
         if (!this.Visible)
             return;
@@ -2519,39 +2659,32 @@ class NativeUI {
             else
                 this.GoUp();
             this.UpdateScaleform();
-        }
-        else if (game__default.isControlJustReleased(0, 172)) {
+        } else if (game__default.isControlJustReleased(0, 172)) {
             this._lastUpDownNavigation = 0;
-        }
-        else if (game__default.isControlPressed(0, 173) && this._lastUpDownNavigation + 120 < Date.now()) {
+        } else if (game__default.isControlPressed(0, 173) && this._lastUpDownNavigation + 120 < Date.now()) {
             this._lastUpDownNavigation = Date.now();
             if (this.MenuItems.length > this._maxItemsOnScreen + 1)
                 this.GoDownOverflow();
             else
                 this.GoDown();
             this.UpdateScaleform();
-        }
-        else if (game__default.isControlJustReleased(0, 173)) {
+        } else if (game__default.isControlJustReleased(0, 173)) {
             this._lastUpDownNavigation = 0;
-        }
-        else if (game__default.isControlPressed(0, 174) && this._lastLeftRightNavigation + 100 < Date.now()) {
+        } else if (game__default.isControlPressed(0, 174) && this._lastLeftRightNavigation + 100 < Date.now()) {
             this._lastLeftRightNavigation = Date.now();
             this.GoLeft();
-        }
-        else if (game__default.isControlJustReleased(0, 174)) {
+        } else if (game__default.isControlJustReleased(0, 174)) {
             this._lastLeftRightNavigation = 0;
-        }
-        else if (game__default.isControlPressed(0, 175) && this._lastLeftRightNavigation + 100 < Date.now()) {
+        } else if (game__default.isControlPressed(0, 175) && this._lastLeftRightNavigation + 100 < Date.now()) {
             this._lastLeftRightNavigation = Date.now();
             this.GoRight();
-        }
-        else if (game__default.isControlJustReleased(0, 175)) {
+        } else if (game__default.isControlJustReleased(0, 175)) {
             this._lastLeftRightNavigation = 0;
-        }
-        else if (game__default.isControlJustReleased(0, 201)) {
+        } else if (game__default.isControlJustReleased(0, 201)) {
             this.SelectItem();
         }
     }
+
     GoUpOverflow() {
         if (this.MenuItems.length <= this._maxItemsOnScreen + 1)
             return;
@@ -2563,16 +2696,14 @@ class NativeUI {
                 this._activeItem = this._maxMenuItems - (this._maxMenuItems % this.MenuItems.length);
                 this._activeItem += this.MenuItems.length - 1;
                 this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
-            }
-            else {
+            } else {
                 this._minItem--;
                 this._maxItem--;
                 this.MenuItems[this._activeItem % this.MenuItems.length].Selected = false;
                 this._activeItem--;
                 this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
             }
-        }
-        else {
+        } else {
             this.MenuItems[this._activeItem % this.MenuItems.length].Selected = false;
             this._activeItem--;
             this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
@@ -2581,6 +2712,7 @@ class NativeUI {
         this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
         this.UpdateDescriptionCaption();
     }
+
     GoUp() {
         if (this.MenuItems.length > this._maxItemsOnScreen + 1)
             return;
@@ -2591,6 +2723,7 @@ class NativeUI {
         this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
         this.UpdateDescriptionCaption();
     }
+
     GoDownOverflow() {
         if (this.MenuItems.length <= this._maxItemsOnScreen + 1)
             return;
@@ -2601,16 +2734,14 @@ class NativeUI {
                 this.MenuItems[this._activeItem % this.MenuItems.length].Selected = false;
                 this._activeItem = this._maxMenuItems - (this._maxMenuItems % this.MenuItems.length);
                 this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
-            }
-            else {
+            } else {
                 this._minItem++;
                 this._maxItem++;
                 this.MenuItems[this._activeItem % this.MenuItems.length].Selected = false;
                 this._activeItem++;
                 this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
             }
-        }
-        else {
+        } else {
             this.MenuItems[this._activeItem % this.MenuItems.length].Selected = false;
             this._activeItem++;
             this.MenuItems[this._activeItem % this.MenuItems.length].Selected = true;
@@ -2619,6 +2750,7 @@ class NativeUI {
         this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
         this.UpdateDescriptionCaption();
     }
+
     GoDown() {
         if (this.MenuItems.length > this._maxItemsOnScreen + 1)
             return;
@@ -2629,19 +2761,20 @@ class NativeUI {
         this.IndexChange.emit(this.CurrentSelection, this.MenuItems[this._activeItem % this.MenuItems.length]);
         this.UpdateDescriptionCaption();
     }
+
     GoBack() {
         if (this.ParentMenu != null) {
             this.Visible = false;
             this.ParentMenu.Visible = true;
             this.MenuChange.emit(this.ParentMenu, false);
             this.MenuClose.emit(false);
-        }
-        else if (this.CloseableByUser) {
+        } else if (this.CloseableByUser) {
             this.Visible = false;
             this.CleanUp(true);
             this.MenuClose.emit(false);
         }
     }
+
     BindMenuToItem(menuToBind, itemToBindTo) {
         if (!this.MenuItems.includes(itemToBindTo)) {
             this.AddItem(itemToBindTo);
@@ -2650,9 +2783,11 @@ class NativeUI {
         menuToBind.ParentItem = itemToBindTo;
         this.Children.set(itemToBindTo.Id, menuToBind);
     }
+
     AddSubMenu(subMenu, itemToBindTo) {
         this.BindMenuToItem(subMenu, itemToBindTo);
     }
+
     ReleaseMenuFromItem(releaseFrom) {
         if (!this.Children.has(releaseFrom.Id))
             return false;
@@ -2662,6 +2797,7 @@ class NativeUI {
         this.Children.delete(releaseFrom.Id);
         return true;
     }
+
     UpdateDescriptionCaption() {
         if (this.MenuItems.length) {
             this._descriptionText.Caption = this.MenuItems[this._activeItem % this.MenuItems.length].Description;
@@ -2669,6 +2805,7 @@ class NativeUI {
             this._recalculateDescriptionNextFrame++;
         }
     }
+
     CalculateDescription() {
         if (this.MenuItems.length <= 0)
             return;
@@ -2684,6 +2821,7 @@ class NativeUI {
             }
         }
     }
+
     UpdateScaleform() {
         if (!this.Visible || !this._buttonsEnabled)
             return;
@@ -2699,6 +2837,7 @@ class NativeUI {
         });
         this._instructionalButtonsScaleform.callFunction("DRAW_INSTRUCTIONAL_BUTTONS", -1);
     }
+
     render() {
         if (!this.Visible)
             return;
@@ -2749,8 +2888,7 @@ class NativeUI {
                 this._counterText.Caption = this._counterPretext + this._counterOverride;
                 this._counterText.Draw();
             }
-        }
-        else {
+        } else {
             for (let index = this._minItem; index <= this._maxItem; index++) {
                 let item = this.MenuItems[index];
                 item.SetVerticalPosition(count * 38 - 37 + this._extraOffset);
@@ -2767,8 +2905,7 @@ class NativeUI {
                 if (!this._counterOverride) {
                     const cap = this.CurrentSelection + 1 + " / " + this.MenuItems.length;
                     this._counterText.Caption = this._counterPretext + cap;
-                }
-                else {
+                } else {
                     this._counterText.Caption = this._counterPretext + this._counterOverride;
                 }
                 this._counterText.Draw();
@@ -2781,4 +2918,29 @@ class NativeUI {
     }
 }
 
-export { Alignment$1 as Alignment, BadgeStyle$1 as BadgeStyle, BigMessage, ChangeDirection$1 as ChangeDirection, Color, Control$1 as Control, Font$1 as Font, HudColor$1 as HudColor, InstructionalButton, ItemsCollection, ListItem, NativeUI as Menu, MidsizedMessage, Point, ResRectangle, Size, Sprite, UIMenuAutoListItem, UIMenuCheckboxItem, UIMenuDynamicListItem, UIMenuItem, UIMenuListItem, UIMenuSliderItem, NativeUI as default };
+export {
+    Alignment$1 as Alignment,
+    BadgeStyle$1 as BadgeStyle,
+    BigMessage,
+    ChangeDirection$1 as ChangeDirection,
+    Color,
+    Control$1 as Control,
+    Font$1 as Font,
+    HudColor$1 as HudColor,
+    InstructionalButton,
+    ItemsCollection,
+    ListItem,
+    NativeUI as Menu,
+    MidsizedMessage,
+    Point,
+    ResRectangle,
+    Size,
+    Sprite,
+    UIMenuAutoListItem,
+    UIMenuCheckboxItem,
+    UIMenuDynamicListItem,
+    UIMenuItem,
+    UIMenuListItem,
+    UIMenuSliderItem,
+    NativeUI as default
+};

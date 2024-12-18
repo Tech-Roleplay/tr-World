@@ -8,172 +8,174 @@ let msgInputBlock = null;
 let msgInputLine = null;
 
 if (window.alt === undefined) {
-  window.alt = {
-    emit: () => { },
-    on: () => { },
-  };
+    window.alt = {
+        emit: () => {
+        },
+        on: () => {
+        },
+    };
 }
 
 function escapeString(str) {
-  if (typeof str !== "string") return str;
+    if (typeof str !== "string") return str;
 
-  return str
-    //.replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+    return str
+        //.replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
 }
 
 function colorify(text) {
-  let matches = [];
-  let m = null;
-  let curPos = 0;
+    let matches = [];
+    let m = null;
+    let curPos = 0;
 
-  do {
-    m = /\{[A-Fa-f0-9]{3}\}|\{[A-Fa-f0-9]{6}\}/g.exec(text.substr(curPos));
+    do {
+        m = /\{[A-Fa-f0-9]{3}\}|\{[A-Fa-f0-9]{6}\}/g.exec(text.substr(curPos));
 
-    if (!m) {
-      break;
+        if (!m) {
+            break;
+        }
+
+        matches.push({
+            found: m[0],
+            index: m["index"] + curPos,
+        });
+
+        curPos = curPos + m["index"] + m[0].length;
+    } while (m != null);
+
+    if (matches.length > 0) {
+        text += "</font>";
+
+        for (let i = matches.length - 1; i >= 0; --i) {
+            let color = matches[i].found.substring(1, matches[i].found.length - 1);
+            let insertHtml = (i != 0 ? "</font>" : "") + '<font color="#' + color + '">';
+            text = text.slice(0, matches[i].index) + insertHtml + text.slice(matches[i].index + matches[i].found.length, text.length);
+        }
     }
 
-    matches.push({
-      found: m[0],
-      index: m["index"] + curPos,
-    });
-
-    curPos = curPos + m["index"] + m[0].length;
-  } while (m != null);
-
-  if (matches.length > 0) {
-    text += "</font>";
-
-    for (let i = matches.length - 1; i >= 0; --i) {
-      let color = matches[i].found.substring(1, matches[i].found.length - 1);
-      let insertHtml = (i != 0 ? "</font>" : "") + '<font color="#' + color + '">';
-      text = text.slice(0, matches[i].index) + insertHtml + text.slice(matches[i].index + matches[i].found.length, text.length);
-    }
-  }
-
-  return text;
+    return text;
 }
 
 function checkOverflow() {
-  if (messagesBlock.clientHeight > msgListBlock.clientHeight) {
-    if (!msgListBlock.classList.contains("overflowed")) {
-      msgListBlock.classList.add("overflowed");
+    if (messagesBlock.clientHeight > msgListBlock.clientHeight) {
+        if (!msgListBlock.classList.contains("overflowed")) {
+            msgListBlock.classList.add("overflowed");
+        }
+    } else if (msgListBlock.classList.contains("overflowed")) {
+        msgListBlock.classList.remove("overflowed");
     }
-  } else if (msgListBlock.classList.contains("overflowed")) {
-    msgListBlock.classList.remove("overflowed");
-  }
 }
 
 function openChat(insertSlash) {
-  clearTimeout(timeout);
+    clearTimeout(timeout);
 
-  if (!chatOpened) {
-    document.querySelector(".chatbox").classList.add("active");
+    if (!chatOpened) {
+        document.querySelector(".chatbox").classList.add("active");
 
-    if (insertSlash) {
-      msgInputLine.value = "/";
+        if (insertSlash) {
+            msgInputLine.value = "/";
+        }
+
+        msgInputBlock.style.display = "block";
+        msgInputBlock.style.opacity = 1;
+        msgInputLine.focus();
+
+        chatOpened = true;
     }
-
-    msgInputBlock.style.display = "block";
-    msgInputBlock.style.opacity = 1;
-    msgInputLine.focus();
-
-    chatOpened = true;
-  }
 }
 
 function closeChat() {
-  if (chatOpened) {
-    document.querySelector(".chatbox").classList.remove("active");
+    if (chatOpened) {
+        document.querySelector(".chatbox").classList.remove("active");
 
-    msgInputLine.blur();
-    msgInputBlock.style.display = "none";
+        msgInputLine.blur();
+        msgInputBlock.style.display = "none";
 
-    chatOpened = false;
-  }
+        chatOpened = false;
+    }
 }
 
 window.addEventListener("load", () => {
-  messagesBlock = document.querySelector(".messages");
-  msgListBlock = document.querySelector(".msglist");
-  msgInputBlock = document.querySelector(".msginput");
-  msgInputLine = document.querySelector(".msginput input");
+    messagesBlock = document.querySelector(".messages");
+    msgListBlock = document.querySelector(".msglist");
+    msgInputBlock = document.querySelector(".msginput");
+    msgInputLine = document.querySelector(".msginput input");
 
-  document.querySelector("#message").addEventListener("submit", (e) => {
-    e.preventDefault();
+    document.querySelector("#message").addEventListener("submit", (e) => {
+        e.preventDefault();
 
-    alt.emit("chatmessage", msgInputLine.value);
+        alt.emit("chatmessage", msgInputLine.value);
 
-    saveBuffer();
-    closeChat();
+        saveBuffer();
+        closeChat();
 
-    msgInputLine.value = "";
-  });
-
-  msgInputLine.addEventListener("keydown", (e) => {
-    if (e.keyCode === 9) {
-      e.preventDefault();
-    } else if (e.keyCode == 40) {
-      e.preventDefault();
-
-      if (currentBufferIndex > 0) {
-        loadBuffer(--currentBufferIndex);
-      } else if (currentBufferIndex == 0) {
-        currentBufferIndex = -1;
         msgInputLine.value = "";
-      }
-    } else if (e.keyCode == 38) {
-      e.preventDefault();
+    });
 
-      if (currentBufferIndex < buffer.length - 1) {
-        loadBuffer(++currentBufferIndex);
-      }
-    }
-  });
+    msgInputLine.addEventListener("keydown", (e) => {
+        if (e.keyCode === 9) {
+            e.preventDefault();
+        } else if (e.keyCode == 40) {
+            e.preventDefault();
+
+            if (currentBufferIndex > 0) {
+                loadBuffer(--currentBufferIndex);
+            } else if (currentBufferIndex == 0) {
+                currentBufferIndex = -1;
+                msgInputLine.value = "";
+            }
+        } else if (e.keyCode == 38) {
+            e.preventDefault();
+
+            if (currentBufferIndex < buffer.length - 1) {
+                loadBuffer(++currentBufferIndex);
+            }
+        }
+    });
 });
 
 function saveBuffer() {
-  if (!msgInputLine.value) return;
-  if (buffer.length > 100) {
-    buffer.pop();
-  }
+    if (!msgInputLine.value) return;
+    if (buffer.length > 100) {
+        buffer.pop();
+    }
 
-  buffer.unshift(msgInputLine.value);
-  currentBufferIndex = -1;
+    buffer.unshift(msgInputLine.value);
+    currentBufferIndex = -1;
 }
 
 function loadBuffer(idx) {
-  msgInputLine.value = buffer[idx];
+    msgInputLine.value = buffer[idx];
 }
 
 function highlightChat() {
-  msgListBlock.scrollTo({
-    left: 0,
-    top: msgListBlock.scrollHeight,
-    behaviour: "smooth",
-  });
+    msgListBlock.scrollTo({
+        left: 0,
+        top: msgListBlock.scrollHeight,
+        behaviour: "smooth",
+    });
 
-  document.querySelector(".chatbox").classList.add("active");
+    document.querySelector(".chatbox").classList.add("active");
 
-  clearTimeout(timeout);
-  timeout = setTimeout(() => document.querySelector(".chatbox").classList.remove("active"), 4000);
+    clearTimeout(timeout);
+    timeout = setTimeout(() => document.querySelector(".chatbox").classList.remove("active"), 4000);
 }
 
 function addString(text) {
-  if (messagesBlock.children.length > 100) {
-    messagesBlock.removeChild(messagesBlock.children[0]);
-  }
+    if (messagesBlock.children.length > 100) {
+        messagesBlock.removeChild(messagesBlock.children[0]);
+    }
 
-  const msg = document.createElement("p");
-  msg.innerHTML = text;
-  messagesBlock.appendChild(msg);
+    const msg = document.createElement("p");
+    msg.innerHTML = text;
+    messagesBlock.appendChild(msg);
 
-  checkOverflow();
-  highlightChat();
+    checkOverflow();
+    highlightChat();
 }
 
 alt.on("addString", (text) => addString(colorify(escapeString(text))));

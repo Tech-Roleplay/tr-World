@@ -6,4 +6,5 @@ declare enum Font {
     ChaletLondonFixedWidthNumbers = 5,
     Pricedown = 7
 }
+
 export default Font;

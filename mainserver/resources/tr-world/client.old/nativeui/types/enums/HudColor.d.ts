@@ -180,4 +180,5 @@ declare enum HudColor {
     HUD_COLOUR_HB_BLUE = 178,
     HUD_COLOUR_HB_YELLOW = 179
 }
+
 export default HudColor;

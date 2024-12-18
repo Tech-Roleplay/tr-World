@@ -1,4 +1,5 @@
 import Scaleform from '../utils/Scaleform.js';
+
 export default class Message {
     private static _messageVisible;
     private static _transitionOutTimeout;
@@ -7,17 +8,24 @@ export default class Message {
     private static _scaleform;
     private static _transitionOutTimeMs;
     private static _transitionOutAnimName;
-    protected static Initialize(scaleForm: string, transitionOutAnimName: string): void;
-    static get IsVisible(): boolean;
-    protected static get Scaleform(): Scaleform;
     private static Load;
     private static SetDelayedTransition;
+    private static TransitionIn;
+    private static SetTransitionOutTimer;
+
+    static get IsVisible(): boolean;
+
+    protected static get Scaleform(): Scaleform;
+
     static ShowCustomShard(funcName: string, time?: number, ...funcArgs: any[]): void;
+
     static ShowComplexCustomShard(messageHandler: {
         (): void;
     }, time?: number): void;
+
+    protected static Initialize(scaleForm: string, transitionOutAnimName: string): void;
+
     protected static TransitionOut(): void;
-    private static TransitionIn;
-    private static SetTransitionOutTimer;
+
     protected static Render(): void;
 }

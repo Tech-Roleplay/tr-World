@@ -4,7 +4,6 @@
 // @ts-ignore
 import * as alt from 'alt-client';
 // @ts-ignore
-import * as native from 'natives';
 
 const radioChannel = "";
 const radioVolume = 1.0;

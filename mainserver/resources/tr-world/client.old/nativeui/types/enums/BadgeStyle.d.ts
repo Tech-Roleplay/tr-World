@@ -31,4 +31,5 @@ declare enum BadgeStyle {
     AudioInactive = 29,
     AudioMute = 30
 }
+
 export default BadgeStyle;

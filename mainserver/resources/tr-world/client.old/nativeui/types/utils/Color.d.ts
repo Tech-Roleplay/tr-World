@@ -8,5 +8,6 @@ export default class Color {
     G: number;
     B: number;
     A: number;
+
     constructor(r: number, g: number, b: number, a?: number);
 }

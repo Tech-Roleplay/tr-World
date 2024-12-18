@@ -1,7 +1,6 @@
 /// <reference types="@altv/types-client"/>
 
 import * as alt from 'alt-client';
-import * as native from 'natives';
 
 // @ts-ignore
 export function loadBlips() {
@@ -79,11 +78,11 @@ export function loadBlips() {
 
 /**
  * Creates a blip at the given coordinates.
- * 
+ *
  * @param {number} x - The x coordinate.
- * @param {number} y - The y coordinate. 
+ * @param {number} y - The y coordinate.
  * @param {number} z - The z coordinate.
- * @param {number} sprite - The sprite for the blip. 
+ * @param {number} sprite - The sprite for the blip.
  * @param {number} color - The color for the blip.
  * @param {number} [scale=0.7] - The scale for the blip.
  * @param {boolean} [shortRange=false] - Whether this is a short range blip.
@@ -96,5 +95,7 @@ function createBlip(x, y, z, sprite, color, scale = 0.7, shortRange = false, nam
     tempBlip.color = color;
     tempBlip.scale = scale;
     tempBlip.shortRange = shortRange;
-    if (name.length > 0) { tempBlip.name = name; }
+    if (name.length > 0) {
+        tempBlip.name = name;
+    }
 }

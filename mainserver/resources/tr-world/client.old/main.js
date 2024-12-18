@@ -107,11 +107,11 @@ function loadBlips() {
 
 /**
  * Creates a blip at the given coordinates.
- * 
+ *
  * @param {number} x - The x coordinate.
- * @param {number} y - The y coordinate. 
+ * @param {number} y - The y coordinate.
  * @param {number} z - The z coordinate.
- * @param {number} sprite - The sprite for the blip. 
+ * @param {number} sprite - The sprite for the blip.
  * @param {number} color - The color for the blip.
  * @param {number} [scale=0.7] - The scale for the blip.
  * @param {boolean} [shortRange=false] - Whether this is a short range blip.
@@ -130,6 +130,7 @@ function createBlip(x, y, z, sprite, color, scale = 1.0, shortRange = false, nam
     }
 
 }
+
 //#endregion
 
 //#region SetPlayerIntoVehicle
@@ -161,4 +162,5 @@ function CloseWebview() {
     adminmenuwebview.destroy();
     adminmenuwebview = undefined;
 }
+
 //#endregion

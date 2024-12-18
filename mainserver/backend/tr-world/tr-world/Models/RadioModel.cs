@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace tr_world.Models;
 
-namespace tr_world.Models
+public class RadioModel
 {
-    public class RadioModel
-    {
-        public int id { get; set; }
-        public string Ident {  get; set; }
-        public string ChannelName { get; set; }
-        public int volume { get; set; }
-        public RadioModel() 
-        {
-            
-        }
-
-    }
+    public int id { get; set; }
+    public string Ident { get; set; }
+    public string ChannelName { get; set; }
+    public int volume { get; set; }
 }

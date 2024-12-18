@@ -3,4 +3,5 @@ export declare enum Alignment {
     Centered = 1,
     Right = 2
 }
+
 export default Alignment;

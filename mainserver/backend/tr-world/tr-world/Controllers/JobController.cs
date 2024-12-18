@@ -1,92 +1,84 @@
-﻿using AltV.Net;
-using MySqlConnector;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using tr_world.Base;
+﻿using System;
+using AltV.Net;
 
-namespace tr_world.Controllers
+namespace tr_world.Controllers;
+
+public abstract class JobController : IScript
 {
-    public abstract class JobController : IScript
+    public static object[] LoadJobDetailsFromDb(string jobName)
     {
-        public static object[] LoadJobDetailsFromDb(string jobName)
+        try
         {
-			try
-			{
-                MySqlCommand cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.Connection.CreateCommand();
 
-                cmd.CommandText = "SELECT * FROM jobs WHERE name=@name LIMIT 1";
-                cmd.Parameters.AddWithValue("@name", jobName);
+            cmd.CommandText = "SELECT * FROM jobs WHERE name=@name LIMIT 1";
+            cmd.Parameters.AddWithValue("@name", jobName);
 
-                using (MySqlDataReader reader = cmd.ExecuteReader())
-                {
-                    reader.Read();
-
-                    string label = reader.GetString("label");
-                    bool requireInvitation = reader.GetBoolean("is_required_to_be_invited");
-                    bool whitlistedjob = reader.GetBoolean("whitelisted");
-
-                    object[] backArray = new object[] {label,  requireInvitation, whitlistedjob};
-
-                    reader.Close();
-
-                    return backArray;                    
-                }
-            }
-            catch (Exception e)
-			{
-                Alt.LogError("ERROR == ERROR == ERROR");
-                Alt.LogError(e.ToString());
-
-                return null;
-            }
-        }
-        public static object[] LoadJobGradeFromDb(string jobname, int grade)
-        {
-            try
+            using (var reader = cmd.ExecuteReader())
             {
-                MySqlCommand cmd = Databank.Connection.CreateCommand();
-                cmd.CommandText = "SELECT * FROM job_grades WHERE job_name=@job_name AND grade=@grade";
-                cmd.Parameters.AddWithValue("@job_name", jobname);
-                cmd.Parameters.AddWithValue("@grade", grade);
+                reader.Read();
 
-                using (MySqlDataReader reader = cmd.ExecuteReader())
-                {
-                    reader.Read();
+                var label = reader.GetString("label");
+                var requireInvitation = reader.GetBoolean("is_required_to_be_invited");
+                var whitlistedjob = reader.GetBoolean("whitelisted");
 
-                    string name = reader.GetString("name");
-                    string label = reader.GetString("label");
-                    uint salary = reader.GetUInt32("salary");
-                    string skinMale = reader.GetString("skin_male");
-                    string skinFemale = reader.GetString("skin_female");
+                var backArray = new object[] { label, requireInvitation, whitlistedjob };
 
-                    object[] backArray = new object[] { name, label, salary, skinMale, skinFemale};
+                reader.Close();
 
-                    reader.Close();
-
-                    return backArray;
-                }
+                return backArray;
             }
-            catch (Exception e)
+        }
+        catch (Exception e)
+        {
+            Alt.LogError("ERROR == ERROR == ERROR");
+            Alt.LogError(e.ToString());
+
+            return null;
+        }
+    }
+
+    public static object[] LoadJobGradeFromDb(string jobname, int grade)
+    {
+        try
+        {
+            var cmd = Databank.Connection.CreateCommand();
+            cmd.CommandText = "SELECT * FROM job_grades WHERE job_name=@job_name AND grade=@grade";
+            cmd.Parameters.AddWithValue("@job_name", jobname);
+            cmd.Parameters.AddWithValue("@grade", grade);
+
+            using (var reader = cmd.ExecuteReader())
             {
-                Alt.LogError("ERROR == ERROR == ERROR");
-                Alt.LogError(e.ToString());
+                reader.Read();
 
-                return null;
+                var name = reader.GetString("name");
+                var label = reader.GetString("label");
+                var salary = reader.GetUInt32("salary");
+                var skinMale = reader.GetString("skin_male");
+                var skinFemale = reader.GetString("skin_female");
+
+                var backArray = new object[] { name, label, salary, skinMale, skinFemale };
+
+                reader.Close();
+
+                return backArray;
             }
         }
-        public static void GetInventoryForJob()
+        catch (Exception e)
         {
+            Alt.LogError("ERROR == ERROR == ERROR");
+            Alt.LogError(e.ToString());
 
+            return null;
         }
+    }
 
-        
-        public static void GetVehicleListForJob()
-        {
+    public static void GetInventoryForJob()
+    {
+    }
 
-        }
+
+    public static void GetVehicleListForJob()
+    {
     }
 }

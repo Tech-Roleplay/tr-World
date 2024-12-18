@@ -16,7 +16,7 @@ public class Keypress : Attribute
         Key = key;
         RequireCtrl = requireCtrl;
         RequireShift = requireShift;
-        
+
     }
 }
 
@@ -43,3 +43,4 @@ public class KeypressLogic : IScript
         }
     }
 }*/
+

@@ -3,9 +3,8 @@
 - Home of the BPlayer Class
 - PlayerFunctions
 
-
-
 ### Functions:
+
 - ```csharp
   void AddMoneyToCash(this BPlayer player, int amount, string reason)
 - ```csharp
@@ -26,7 +25,9 @@
   int GetMoneyFromBank(this BPlayer player)
   
   return player.BankBalance;
+
 #### Job Functions
+
 - ```csharp
   void SetJob(this BPlayer player, string jobname, int jobgrade)
 - ```csharp
@@ -49,9 +50,11 @@
   return player.Job.Skin_Male;
   return player.Job.Skin_Female;
   return string.Empty;
+
 #### Gang Functions
 
 #### Skin Functions
+
 - ````csharp
   void SetCloth(this BPlayer player, ComponentIDs componet, int drawable, int texture, int? pallette)
 - ```csharp

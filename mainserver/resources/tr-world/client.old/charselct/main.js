@@ -4,12 +4,10 @@
 // @ts-ignore
 import * as alt from 'alt-client';
 // @ts-ignore
-import * as native from 'natives';
 import * as NativeUI from '../nativeui/nativeui.js'
 
 
-
-alt.on("CharSect.Show", (player, char1, char2, char3, char4, char5, ) => {
+alt.on("CharSect.Show", (player, char1, char2, char3, char4, char5,) => {
 
     const ui = new NativeUI.Menu("Char Selection", "Select in Char", new NativeUI.Point(50, 50))
     ui.AddItem(new NativeUI.UIMenuListItem(

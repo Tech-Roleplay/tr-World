@@ -9,6 +9,7 @@
       "tr-world/1.0.0": {
         "dependencies": {
           "AltV.Net": "16.4.1",
+          "AltV.Net.Client": "16.4.1",
           "AltV.Net.Resources.Chat.Api": "16.4.1",
           "MySqlConnector": "2.4.0",
           "Newtonsoft.Json": "13.0.3"
@@ -31,6 +32,18 @@
       "AltV.Net.CApi/16.4.1": {
         "runtime": {
           "lib/net8.0/AltV.Net.CApi.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "AltV.Net.Client/16.4.1": {
+        "dependencies": {
+          "AltV.Net.CApi": "16.4.1",
+          "AltV.Net.Shared": "16.4.1"
+        },
+        "runtime": {
+          "lib/net8.0/AltV.Net.Client.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -118,6 +131,13 @@
       "sha512": "sha512-eSvKJ1g0vJTRvJzkhKKomXIjii4GeDuafwHDNX64fNZUMeCP8KqKSX9NlxkNP3Lo9LqNTitE49Y/lkjr9Sh8Aw==",
       "path": "altv.net.capi/16.4.1",
       "hashPath": "altv.net.capi.16.4.1.nupkg.sha512"
+    },
+    "AltV.Net.Client/16.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ZMxJ/hno6Lx5EWzI0NMoeHVzvNec9oJPrY22BOAsaXvD3n9SgP8qu0y9dDe/lwVgBFTdhKidE7tL+NiAoJtpCw==",
+      "path": "altv.net.client/16.4.1",
+      "hashPath": "altv.net.client.16.4.1.nupkg.sha512"
     },
     "AltV.Net.Resources.Chat.Api/16.4.1": {
       "type": "package",
