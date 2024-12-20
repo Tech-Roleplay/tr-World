@@ -8,6 +8,21 @@ public class Garage
     public bool IsForJob => !string.IsNullOrEmpty(JobGarage);
     public string JobGarage { get; set; }
     public TGagVehicleList[] VehicleList { get; set; }
+
+    public void ParkVehicle()
+    {
+        foreach (var veh in VehicleList)
+        {
+            
+        }
+    
+
+    }
+
+    public void UnparkVehicle()
+    {
+        
+    }
 }
 
 public class TGagVehicleList

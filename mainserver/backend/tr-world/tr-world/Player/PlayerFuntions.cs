@@ -11,16 +11,21 @@ using tr_world.Vehicle;
 
 namespace tr_world.Player;
 
+/// <summary>
+/// Provides a collection of extension methods for the BPlayer class to handle various player-related operations
+/// such as permissions, monetary transactions, job management, player states, and more.
+/// </summary>
 public static class PlayerFuntions
 {
+    /// Provides a set of utility methods for interacting with a player and their attributes, actions, or related entities like vehicles and other players.
     private static readonly Random random = new();
 
     /// <summary>
-    ///     Checks if the player haves the permission to do something
+    /// Checks if the player has the required permission to perform an action.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="RequiredPermission">the minimun, use (int)TPermission.[...]</param>
-    /// <returns>if true then return true, if false then return false and send a chat message</returns>
+    /// <param name="player">The player whose permissions are being checked.</param>
+    /// <param name="RequiredPermission">The minimum required permission, represented as an integer.</param>
+    /// <returns>Returns true if the player has the required permission, otherwise returns false and sends a chat message.</returns>
     public static bool HasPlayerPermission(this BPlayer player, int RequiredPermission)
     {
         if (player.Permission >= RequiredPermission) return true;
@@ -29,11 +34,11 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Search the nearest player to the player
+    /// Searches for the nearest player relative to the specified player.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="distance">a max distance between both, standard is 5</param>
-    /// <returns>Gives player back (in Form of BPlayer)</returns>
+    /// <param name="player">The player for whom the closest player is being searched.</param>
+    /// <param name="distance">The maximum distance within which to search for the nearest player, default is 5.0.</param>
+    /// <returns>Returns the nearest player as a BPlayer instance if found; otherwise, returns null.</returns>
     public static BPlayer GetClosestPlayer(this BPlayer player, float distance = 5.0f)
     {
         BPlayer tPlayer = null;
@@ -52,11 +57,11 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Search the nearest vehicle to the player
+    /// Searches for the closest vehicle to the player within a specified distance.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="distance">a max distance between both, a standard is 5</param>
-    /// <returns>Gives vehicle back (in Form of BVehicle)</returns>
+    /// <param name="player">The player from whose position the search is conducted.</param>
+    /// <param name="distance">The maximum distance to search for the closest vehicle. Default value is 5.0f.</param>
+    /// <returns>Returns the closest vehicle as a BVehicle object, or null if no vehicle is found within the specified distance.</returns>
     public static BVehicle GetClosestVehicle(this BPlayer player, float distance = 5.0f)
     {
         BVehicle tVehicle = null;
@@ -75,11 +80,11 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Search the nearest ped to the player
+    /// Searches for the nearest pedestrian within the specified distance from the player.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="distance">a max distance between both, a standard is 5</param>
-    /// <returns></returns>
+    /// <param name="player">The player for whom the closest pedestrian is being searched.</param>
+    /// <param name="distance">The maximum allowable distance to search for a pedestrian. Defaults to 5.0.</param>
+    /// <returns>The closest pedestrian within the specified distance, or null if none are found.</returns>
     public static Ped GetClosestPed(this BPlayer player, float distance = 5.0f)
     {
         Ped tPed = null;
@@ -100,6 +105,12 @@ public static class PlayerFuntions
 
     #region gang functions
 
+    /// <summary>
+    /// Sets the gang information for the specified player.
+    /// </summary>
+    /// <param name="player">The player whose gang information is being set.</param>
+    /// <param name="gangname">The name of the gang to assign to the player.</param>
+    /// <param name="ganggrade">The grade level to assign within the gang.</param>
     public static void SetGang(this BPlayer player, string gangname, int ganggrade)
     {
         var gangObject = GangController.LoadGangDetailsFromDb(gangname);
@@ -116,6 +127,11 @@ public static class PlayerFuntions
 
     #endregion
 
+    /// <summary>
+    /// Generates a random character ID for the given player.
+    /// </summary>
+    /// <param name="player">The player for whom the character ID will be generated.</param>
+    /// <returns>A string representing the generated random character ID.</returns>
     [Obsolete]
     public static string GetRandomCharid(this BPlayer player)
     {
@@ -129,9 +145,9 @@ public static class PlayerFuntions
     #region Adminstration
 
     /// <summary>
-    ///     freeze the player
+    /// Freezes or unfreezes the player based on their current state.
     /// </summary>
-    /// <param name="player">the player</param>
+    /// <param name="player">The player to freeze or unfreeze.</param>
     public static void Freeze(this BPlayer player)
     {
         player.Emit("admin:player:freeze", !player.Frozen);
@@ -141,10 +157,10 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     gives the player a warning
+    /// Gives a warning to a player.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="reason">the reason why the player is doing this</param>
+    /// <param name="player">The player receiving the warning.</param>
+    /// <param name="reason">The reason for the warning.</param>
     public static void Warn(this BPlayer player, string reason)
     {
         player.Emit("admin:player:warn", reason);
@@ -153,10 +169,10 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     kicks the player from the server
+    /// Kicks the player from the server.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="reason">the reason why the player is doing this</param>
+    /// <param name="player">The player to be kicked.</param>
+    /// <param name="reason">The reason for kicking the player.</param>
     public static void Kicking(this BPlayer player, string reason)
     {
         player.Kick(reason);
@@ -164,16 +180,23 @@ public static class PlayerFuntions
         //DCLog
     }
 
+    /// <summary>
+    /// Temporarily bans a player for a specified duration, with a specified reason.
+    /// </summary>
+    /// <param name="player">The player to be temporarily banned.</param>
+    /// <param name="duration">The duration of the ban as an integer.</param>
+    /// <param name="timeformat">The format of the time for the ban (e.g., "hours", "days").</param>
+    /// <param name="reason">The reason for the temporary ban.</param>
     public static void TempBan(this BPlayer player, int duration, string timeformat, string reason)
     {
     }
 
 
     /// <summary>
-    ///     Ban the playes from the server
+    /// Bans a player from the server.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="reason">the reason why the player is doing this</param>
+    /// <param name="player">The player to be banned.</param>
+    /// <param name="reason">The reason for the ban.</param>
     public static void Ban(this BPlayer player, string reason)
     {
         // BanFunc
@@ -188,11 +211,11 @@ public static class PlayerFuntions
     #region Money functions
 
     /// <summary>
-    ///     Adding Money to the Player's Cash Balance.
+    /// Adds a specified amount of money to the player's cash balance.
     /// </summary>
-    /// <param name="player">The player</param>
-    /// <param name="amount">The amount how much to add</param>
-    /// <param name="reason">The reason why,e.g. Payment or Income by ...</param>
+    /// <param name="player">The player to whom the money is being added</param>
+    /// <param name="amount">The amount of money to add to the player's cash balance</param>
+    /// <param name="reason">The reason for adding the money, such as payment or income</param>
     public static void AddMoneyToCash(this BPlayer player, int amount, string reason)
     {
         // Temporäres Geld erstellen
@@ -209,11 +232,11 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Adding Money to the Player's Bank Balance.
+    /// Adds the specified amount of money to the player's bank balance.
     /// </summary>
-    /// <param name="player">The player</param>
-    /// <param name="amount">The amount how much to add</param>
-    /// <param name="reason">The reason why,e.g. Payment or Income by ...</param>
+    /// <param name="player">The player whose bank balance will be updated.</param>
+    /// <param name="amount">The amount of money to add to the bank balance.</param>
+    /// <param name="reason">The reason for adding the money, such as payment or income source.</param>
     public static void AddMoneyToBank(this BPlayer player, int amount, string reason)
     {
         // Temporäres Geld erstellen
@@ -230,11 +253,11 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Subtract Money from the Player's Cash Balance.
+    /// Subtracts money from the player's cash balance.
     /// </summary>
     /// <param name="player">The player</param>
-    /// <param name="amount">The amount how much to subtract</param>
-    /// <param name="reason">The reason why,e.g. paying the rent or paying bills ...</param>
+    /// <param name="amount">The amount to subtract</param>
+    /// <param name="reason">The reason for the deduction, e.g., payment for purchases or services</param>
     public static void SubMoneyToCash(this BPlayer player, int amount, string reason)
     {
         // Temporäres Geld erstellen
@@ -251,11 +274,11 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Subtract Money from the Player's Bank Balance.
+    /// Subtracts money from the player's bank balance.
     /// </summary>
-    /// <param name="player">The player</param>
-    /// <param name="amount">The amount how much to subtract</param>
-    /// <param name="reason">The reason why,e.g. paying the rent or paying bills ...</param>
+    /// <param name="player">The player whose bank balance will be updated.</param>
+    /// <param name="amount">The amount to subtract from the bank balance.</param>
+    /// <param name="reason">The reason for the transaction, for instance, rent or bill payments.</param>
     public static void SubMoneyToBank(this BPlayer player, int amount, string reason)
     {
         // Temporäres Geld erstellen
@@ -272,11 +295,11 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Set Money for the Player's Cash Balance.
+    /// Sets the player's cash balance to a specified amount.
     /// </summary>
-    /// <param name="player">The player</param>
-    /// <param name="amount">The value how much a player money have</param>
-    /// <param name="reason">The reason why,e.g. setting money back after cheating or after spwan</param>
+    /// <param name="player">The player whose cash balance is being set.</param>
+    /// <param name="amount">The amount to set as the player's cash balance.</param>
+    /// <param name="reason">The reason for setting the player's cash balance (e.g., correcting balance after cheating or spawning).</param>
     public static void SetMoneyToCash(this BPlayer player, int amount, string reason)
     {
         // Temporäres Geld erstellen
@@ -293,11 +316,11 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Set Money for the Player's Bank Balance.
+    /// Sets the player's bank balance to the specified amount.
     /// </summary>
-    /// <param name="player">The player</param>
-    /// <param name="amount">The value how much a player money have</param>
-    /// <param name="reason">The reason why,e.g. setting money back after cheating or after spwan</param>
+    /// <param name="player">The player whose bank balance will be updated.</param>
+    /// <param name="amount">The new bank balance to be set.</param>
+    /// <param name="reason">The reason for updating the bank balance, e.g., correcting an error, resetting after cheating detection, or spawning events.</param>
     public static void SetMoneyToBank(this BPlayer player, int amount, string reason)
     {
         // Temporäres Geld erstellen
@@ -314,20 +337,20 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Return the Player's Cash Balance.
+    /// Returns the player's current cash balance.
     /// </summary>
     /// <param name="player">The player</param>
-    /// <returns>A Int of the Player's Cash Balance</returns>
+    /// <returns>An integer representing the player's cash balance</returns>
     public static int GetMoneyFromCash(this BPlayer player)
     {
         return player.CashBalance;
     }
 
     /// <summary>
-    ///     Return the Player's Bank Balance.
+    /// Retrieves the player's current bank balance.
     /// </summary>
-    /// <param name="player">The player</param>
-    /// <returns>A Int of the Player's Bank Balance</returns>
+    /// <param name="player">The player whose bank balance is being retrieved.</param>
+    /// <returns>An integer representing the player's bank balance.</returns>
     public static int GetMoneyFromBank(this BPlayer player)
     {
         return player.BankBalance;
@@ -340,14 +363,11 @@ public static class PlayerFuntions
     #region job functions
 
     /// <summary>
-    ///     Set the Job for Player.
+    /// Sets the job for the specified player.
     /// </summary>
-    /// <param name="player">The player</param>
-    /// <param name="jobname">Name(handling-name) of the Job</param>
-    /// <param name="jobgrade">Grade Level of the Job</param>
-    /// <example>
-    ///     <code lang="cs">SetJob("police", 4)</code>
-    /// </example>
+    /// <param name="player">The player to whom the job will be assigned.</param>
+    /// <param name="jobname">The job name (handling name) to assign to the player.</param>
+    /// <param name="jobgrade">The grade level of the job to assign to the player.</param>
     public static void SetJob(this BPlayer player, string jobname, int jobgrade)
     {
         // Jobs
@@ -366,9 +386,9 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Change the state of the Player's JobDuty
+    /// Changes the duty status of the player's job.
     /// </summary>
-    /// <param name="player">The player</param>
+    /// <param name="player">The player whose duty status will be changed.</param>
     public static void ChangeDuty(this BPlayer player)
     {
         if (player != null)
@@ -384,18 +404,18 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Pays the Player for his work
+    /// Pays the player for their work by adding their job payment to their bank balance.
     /// </summary>
-    /// <param name="player">The player</param>
+    /// <param name="player">The player to be paid.</param>
     public static void PaymentJob(this BPlayer player)
     {
         AddMoneyToBank(player, (int)player.Job.Payment, $"Salary by {player.Job.Label}");
     }
 
     /// <summary>
-    ///     Reset Job for Player.
+    /// Resets the player's job to unemployed status.
     /// </summary>
-    /// <param name="player">The player</param>
+    /// <param name="player">The player whose job will be reset</param>
     public static void ResetJob(this BPlayer player)
     {
         player.SetJob("unemployed", 0);
@@ -403,30 +423,33 @@ public static class PlayerFuntions
 
     //gets
     /// <summary>
-    ///     Gets if the player isBoss
+    /// Checks if the player is a boss in their current job.
     /// </summary>
-    /// <param name="player">The player</param>
-    /// <returns>boolean of the isBoss State</returns>
+    /// <param name="player">The player to check.</param>
+    /// <returns>True if the player is a boss, otherwise false.</returns>
     public static bool IsPlayerBoss(this BPlayer player)
     {
         return player.Job.IsBoss;
     }
 
     /// <summary>
-    ///     Gets the players Job Type
+    /// Retrieves the job type of the specified player.
     /// </summary>
-    /// <param name="player">The player</param>
-    /// <returns>string of the type</returns>
+    /// <param name="player">The player whose job type is being retrieved.</param>
+    /// <returns>A string representing the type of job the player has.</returns>
     public static string GetPlayerJobType(this BPlayer player)
     {
         return player.Job.Type;
     }
 
     /// <summary>
-    ///     TEMP: Gets the Skin for the player
+    /// Retrieves the appropriate skin for the job assigned to the player based on their gender.
     /// </summary>
     /// <param name="player">The player</param>
-    /// <returns>string of the players skin</returns>
+    /// <returns>
+    /// A string representing the player's job skin; returns the male skin if the player's gender is male,
+    /// the female skin if the player's gender is female, or an empty string if no match is found.
+    /// </returns>
     public static string GetSkinForJob(this BPlayer player)
     {
         if (player.Sex == 'm') return player.Job.SkinMale;
@@ -443,130 +466,130 @@ public static class PlayerFuntions
     #region Metadata
 
     /// <summary>
-    ///     Gets if player is cuffed
+    /// Checks if the player is currently cuffed
     /// </summary>
     /// <param name="player">The player</param>
-    /// <returns>Cuffed-State for the player</returns>
+    /// <returns>True if the player is cuffed, otherwise false</returns>
     public static bool GetIsPlayerCuffed(this BPlayer player)
     {
         return player.Metadata.IsCuffed;
     }
 
     /// <summary>
-    ///     Set the cuffed player state
+    /// Sets the player's cuffed state
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="value">Is cuffed or not.</param>
+    /// <param name="player">The player whose cuffed state is being set</param>
+    /// <param name="value">The cuffed state to set, where true indicates cuffed and false indicates uncuffed</param>
     public static void SetIsPlayerCuffed(this BPlayer player, bool value)
     {
         player.Metadata.IsCuffed = value;
     }
 
     /// <summary>
-    ///     Get the value of the player is prison
+    /// Gets whether the player is currently in prison.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <returns>bool of of in prision</returns>
+    /// <param name="player">The player whose prison status is being checked.</param>
+    /// <returns>True if the player is in prison, otherwise false.</returns>
     public static bool GetIsPlayerInPrison(this BPlayer player)
     {
         return player.Metadata.IsInPrison;
     }
 
     /// <summary>
-    ///     Set the player into prision
+    /// Sets the player's prison state.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="value">state to be in prision</param>
+    /// <param name="player">The player for whom the prison state is being set.</param>
+    /// <param name="value">The state indicating whether the player is in prison.</param>
     public static void SetIsPlayerInPrison(this BPlayer player, bool value)
     {
         player.Metadata.IsInPrison = value;
     }
 
     /// <summary>
-    ///     Get if the player is in prision
+    /// Determines whether the player is dead.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <returns>bool a palyer is dead</returns>
+    /// <param name="player">The player to check.</param>
+    /// <returns>True if the player is dead; otherwise, false.</returns>
     public static bool GetIsPlayerDead(this BPlayer player)
     {
         return player.Metadata.IsPlyDead;
     }
 
     /// <summary>
-    ///     Set is the player is dead
+    /// Sets whether the player is dead or alive
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="value">state of death</param>
+    /// <param name="player">The player</param>
+    /// <param name="value">A boolean value indicating the player's death state</param>
     public static void SetIsPlayerDead(this BPlayer player, bool value)
     {
         player.Metadata.IsPlyDead = value;
     }
 
     /// <summary>
-    ///     Gets the state of the player is onGround
+    /// Determines if the player is currently in a downed state.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <returns>bool a player is down</returns>
+    /// <param name="player">The player whose state is being checked.</param>
+    /// <returns>True if the player is down, otherwise false.</returns>
     public static bool GetIsPlayerDown(this BPlayer player)
     {
         return player.Metadata.IsPlyDown;
     }
 
     /// <summary>
-    ///     Sets is the player onGround
+    /// Sets whether the player is down or not.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="value">state of ground</param>
+    /// <param name="player">The player whose state will be updated.</param>
+    /// <param name="value">Boolean indicating if the player is down (true) or not (false).</param>
     public static void SetIsPlayerDown(this BPlayer player, bool value)
     {
         player.Metadata.IsPlyDown = value;
     }
 
     /// <summary>
-    ///     Gets the state of the player is Headshotted
+    /// Gets the state of whether the player has been headshotted.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <returns>bool, a player is headshotted</returns>
+    /// <param name="player">The player whose headshot status is to be checked.</param>
+    /// <returns>True if the player is headshotted; otherwise, false.</returns>
     public static bool GetIsPlayerHeadshotted(this BPlayer player)
     {
         return player.Metadata.IsPlyHeadshotted;
     }
 
     /// <summary>
-    ///     Sets is the player headshotted
+    /// Sets the headshotted state of the player
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="value">state of the player is headshotted</param>
+    /// <param name="player">The player to apply the state change</param>
+    /// <param name="value">Indicates whether the player is considered headshotted</param>
     public static void SetIsPlayerHeadshotted(this BPlayer player, bool value)
     {
         player.Metadata.IsPlyHeadshotted = value;
     }
 
     /// <summary>
-    ///     Gets the state of the player is logout
+    /// Gets the logout state of the player.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <returns>bool, a player is logout</returns>
+    /// <param name="player">The player.</param>
+    /// <returns>True if the player is logged out, otherwise false.</returns>
     public static bool GetIsPlayerLogout(this BPlayer player)
     {
         return player.Metadata.IsPlyLogout;
     }
 
     /// <summary>
-    ///     Sets the player Logout state
+    /// Sets the player's logout state.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="value">state of the player's logout</param>
+    /// <param name="player">The player whose logout state is being set.</param>
+    /// <param name="value">The new logout state of the player.</param>
     public static void SetIsPlayerLogout(this BPlayer player, bool value)
     {
         player.Metadata.IsPlyLogout = value;
     }
 
     /// <summary>
-    ///     Sets the hunger state
+    /// Sets the hunger state of a player.
     /// </summary>
-    /// <param name="player">the  player</param>
-    /// <param name="value">sets the hunger state. between 0.0 and 100.0</param>
+    /// <param name="player">The player whose hunger state will be set.</param>
+    /// <param name="value">The desired hunger state value, ranging between 0.0 and 100.0.</param>
     public static void SetHunger(this BPlayer player, float value)
     {
         if (value is <= 100f and >= 0f) return;
@@ -574,20 +597,20 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Get the state of the hunger
+    /// Retrieves the player's current hunger level.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <returns>floating the hunger state</returns>
+    /// <param name="player">The player whose hunger state is being retrieved.</param>
+    /// <returns>A float representing the current hunger state of the player.</returns>
     public static float GetHunger(this BPlayer player)
     {
         return player.Metadata.Hunger;
     }
 
     /// <summary>
-    ///     Sets the thirst state
+    /// Sets the thirst level of the player
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="value">sets the thirst state. It is between 0.0 and 100.0</param>
+    /// <param name="player">The player whose thirst level is to be set</param>
+    /// <param name="value">The thirst value to set, which should be between 0.0 and 100.0</param>
     public static void SetThirst(this BPlayer player, float value)
     {
         if (value is <= 100f and >= 0f) return;
@@ -595,20 +618,20 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Get the state of the thirst
+    /// Gets the state of the player's thirst
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <returns>floating the hunger state</returns>
+    /// <param name="player">The player</param>
+    /// <returns>A float representing the player's thirst level</returns>
     public static float GetThirst(this BPlayer player)
     {
         return player.Metadata.Thirst;
     }
 
     /// <summary>
-    ///     Sets the armor state
+    /// Sets the armor value for the specified player.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="value">sets the armor state. It is between 0.0 and 100.0</param>
+    /// <param name="player">The player for whom the armor value is being set.</param>
+    /// <param name="value">The armor value to set, between 0.0 and 100.0.</param>
     public static void SetArmor(this BPlayer player, float value)
     {
         if (value is <= 100f and >= 0f) return;
@@ -616,20 +639,20 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Gets the state of the armor
+    /// Retrieves the current armor value of the player.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <returns>floating the armor state</returns>
+    /// <param name="player">The player whose armor value is being retrieved.</param>
+    /// <returns>The player's current armor value as a float.</returns>
     public static float GetArmor(this BPlayer player)
     {
         return player.Metadata.Armor;
     }
 
     /// <summary>
-    ///     Sets the stress state
+    /// Sets the stress state for the given player.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <param name="value">sets the stress state. It is between 0.0 and 100.0</param>
+    /// <param name="player">The player whose stress state is to be set.</param>
+    /// <param name="value">The stress value to be set, ranging between 0.0 and 100.0.</param>
     public static void SetStress(this BPlayer player, float value)
     {
         if (value is <= 100f and >= 0f) return;
@@ -637,46 +660,69 @@ public static class PlayerFuntions
     }
 
     /// <summary>
-    ///     Gets the stress state
+    /// Gets the stress state of a player.
     /// </summary>
-    /// <param name="player">the player</param>
-    /// <returns>floating the stress state</returns>
+    /// <param name="player">The player whose stress level is being retrieved.</param>
+    /// <returns>The stress level as a floating-point value.</returns>
     public static float GetStress(this BPlayer player)
     {
         return player.Metadata.Stress;
     }
 
     /// <summary>
-    ///     Sets the jailtime
+    /// Sets the jail time for a player.
     /// </summary>
-    /// <param name="player"></param>
-    /// <param name="value"></param>
+    /// <param name="player">The player whose jail time is being set.</param>
+    /// <param name="value">The jail time value to set, must be between 0 and 100 inclusive.</param>
     public static void SetJailTime(this BPlayer player, float value)
     {
         if (value is <= 100f and >= 0f) return;
         player.Metadata.JailTime = value;
     }
 
+    /// <summary>
+    /// Retrieves the player's current jail time.
+    /// </summary>
+    /// <param name="player">The player whose jail time is being retrieved.</param>
+    /// <returns>The amount of jail time the player has, in seconds.</returns>
     public static float GetJailTime(this BPlayer player)
     {
         return player.Metadata.JailTime;
     }
 
+    /// <summary>
+    /// Updates the player's last update timestamp to the current date and time.
+    /// </summary>
+    /// <param name="player">The player for whom the last update timestamp will be updated.</param>
     public static void UpdateLastUpdate(this BPlayer player)
     {
         player.Metadata.LastUpdate = DateTime.Now;
     }
 
+    /// <summary>
+    /// Retrieves the last update timestamp for the player.
+    /// </summary>
+    /// <param name="player">The player whose last update timestamp is being retrieved.</param>
+    /// <returns>The DateTime of the last update.</returns>
     public static DateTime GetLastUpdate(this BPlayer player)
     {
         return player.Metadata.LastUpdate;
     }
 
+    /// <summary>
+    /// Sets the player's creation date to the current date and time.
+    /// </summary>
+    /// <param name="player">The player whose creation date is being set.</param>
     public static void CreateCreateDate(this BPlayer player)
     {
         player.Metadata.CreateDate = DateTime.Now;
     }
 
+    /// <summary>
+    /// Retrieves the account creation date of the player.
+    /// </summary>
+    /// <param name="player">The player whose creation date is being retrieved.</param>
+    /// <returns>The creation date of the player's account.</returns>
     public static DateTime GetCreateDate(this BPlayer player)
     {
         return player.Metadata.CreateDate;
@@ -687,17 +733,39 @@ public static class PlayerFuntions
 
     #region Skin
 
+    /// <summary>
+    /// Sets the clothing item for the player.
+    /// </summary>
+    /// <param name="player">The player character to set clothing for.</param>
+    /// <param name="componet">The component ID representing the part of the body (e.g., torso, legs, etc.).</param>
+    /// <param name="drawable">The drawable ID representing the specific clothing model.</param>
+    /// <param name="texture">The texture ID associated with the clothing model.</param>
+    /// <param name="pallette">The optional palette ID for advanced customization of the clothing model.</param>
     public static void SetCloth(this BPlayer player, ComponentIDs componet, int drawable, int texture,
         int? pallette)
     {
     }
 
+    /// <summary>
+    /// Retrieves the cloth currently equipped by the player.
+    /// </summary>
+    /// <param name="player">The player instance from which to retrieve the cloth.</param>
+    /// <returns>The name or identifier of the currently equipped cloth.</returns>
     public static string GetCloth(this BPlayer player)
     {
         //temp return "Cloth";
         return "Cloth";
     }
 
+    /// <summary>
+    /// Sets the DLC cloth for the player.
+    /// </summary>
+    /// <param name="player">The player for whom the DLC cloth will be set.</param>
+    /// <param name="dlc">The DLC identifier.</param>
+    /// <param name="componet">The component ID to be modified (e.g., mask, torso).</param>
+    /// <param name="drawable">The drawable ID representing the clothing item.</param>
+    /// <param name="texture">The texture ID for the clothing item.</param>
+    /// <param name="pallette">The optional palette ID for the clothing customization.</param>
     public static void SetDlcCloth(this BPlayer player, int dlc, ComponentIDs componet, int drawable, int texture,
         int? pallette)
     {
