@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AltV.Net;
 
 namespace tr_world.Models;
 
@@ -70,40 +71,39 @@ public class Inventory
         var item = _items.FirstOrDefault(i => i.Id == itemId);
         if (item == null)
         {
-            Console.WriteLine($"Item mit ID {itemId} nicht gefunden.");
+            //Console.WriteLine($"Item mit ID {itemId} nicht gefunden.");
             return;
         }
 
         if (item.Quantity < quantity)
         {
-            Console.WriteLine(
-                $"Nicht genügend von {item.Name} vorhanden. Benötigt: {quantity}, Verfügbar: {item.Quantity}.");
+            //Console.WriteLine($"Nicht genügend von {item.Name} vorhanden. Benötigt: {quantity}, Verfügbar: {item.Quantity}.");
             return;
         }
 
-        // Aktionen basierend auf dem ItemType
+        // Aktionen basierend auf den Itemtypen
         switch (itemType)
         {
             case ItemType.Consum:
-                Console.WriteLine($"Du hast {quantity}x {item.Name} konsumiert.");
+                //Console.WriteLine($"Du hast {quantity}x {item.Name} konsumiert.");
                 // Beispiel: Effekte anwenden, Spieler-Status ändern etc.
                 //ApplyConsumableEffect(item, quantity);
                 break;
 
             case ItemType.Weapon:
-                Console.WriteLine($"Du hast {item.Name} als Waffe verwendet.");
+                //Console.WriteLine($"Du hast {item.Name} als Waffe verwendet.");
                 // Beispiel: Munition laden, Waffe ausrüsten etc.
                 //EquipWeapon(item);
                 break;
 
             case ItemType.Equipment:
-                Console.WriteLine($"Du hast {item.Name} ausgerüstet.");
+                //Console.WriteLine($"Du hast {item.Name} ausgerüstet.");
                 // Beispiel: Spieler-Stärke erhöhen, Kleidung ausrüsten etc.
                 //EquipEquipment(item);
                 break;
 
             default:
-                Console.WriteLine($"Item-Typ {itemType} wird nicht unterstützt.");
+                //WriteLine($"Item-Typ {itemType} wird nicht unterstützt.");
                 return;
         }
 
@@ -160,7 +160,7 @@ public class Item
     public string Name { get; set; }
 
     /// <summary>
-    /// Represents the type of an item in the inventory.
+    /// Represents the type of item in the inventory.
     /// </summary>
     /// <remarks>
     /// This property is used to categorize items into different functional types,
@@ -180,6 +180,9 @@ public class Item
     /// This value is dynamically updated when items are added, used, or removed.
     /// </summary>
     public float Quantity { get; set; }
+    
+    public float Weight { get; set; } 
+    
 }
 
 /// <summary>

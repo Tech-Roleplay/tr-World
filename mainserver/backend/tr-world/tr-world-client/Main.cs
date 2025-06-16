@@ -1,8 +1,16 @@
-﻿using System.Numerics;
-using AltV.Net.Client;
+﻿using System;
+using System.Collections.Generic;
+using System.Numerics;
+using System.Threading.Tasks;
+using AltV.Net;
+using AltV.Net;
 using AltV.Net.Client.Elements.Data;
 using AltV.Net.Client.Elements.Entities;
+using AltV.Net.Client.Elements.Interfaces;
 using AltV.Net.Data;
+using AltV.Net.Elements.Entities;
+using Blip = AltV.Net.Client.Elements.Entities.Blip;
+using Vehicle = AltV.Net.Client.Elements.Entities.Vehicle;
 
 namespace tr_world_client;
 
@@ -17,7 +25,8 @@ public class Main : Resource
 
         Alt.OnKeyDown += OnKeyDownHandler;
         Alt.OnKeyUp += OnKeyUpHandler;
-
+       
+        
         LoadBlips();
     }
 
@@ -28,6 +37,16 @@ public class Main : Resource
     {
         base.OnTick();
         Alt.OnServer<Vehicle, int>("SetPlayerIntoVehicle", SetPlayerIntoVeh);
+        Alt.OnServer("adminmenu:Show", ShowAdminMenu);
+        Alt.OnServer<string>("UpdateSpecificPlayer:UpdateJobBlip", LoadJobBlip);
+        //Alt.OnServer<float, float, float, uint, uint, float, bool, string>("DEV:CreateBlip", CreatePersonalBilp);
+        // Alt.OnServer<List<IBlip>>("LoadBilps", )
+        Alt.OnServer("testremoveblip", testremoveblip);
+    }
+
+    private void testremoveblip()
+    {
+        blipsList.Clear();
     }
 
     /// <summary>
@@ -40,14 +59,54 @@ public class Main : Resource
         Alt.OnKeyDown -= OnKeyDownHandler;
         Alt.OnKeyUp -= OnKeyUpHandler;
     }
+    private const string  DISCORD_APP_ID = "1329925312795902003";
+    public static async Task GetOAuthToken()
+    {
+        try
+        {
+            string token = await Alt.Discord.RequestOAuth2Token(DISCORD_APP_ID);
+            Alt.EmitServer("token", token);
+        }
+        catch (Exception e)
+        {
+            // Fehler können durch eine ungültige App-ID, Discord-Serverprobleme oder das Verweigern des Zugriffs durch den Benutzer verursacht werden.
+            Alt.LogError(e.Message);
+        }
+    }
+    private void LoadJobBlip(string JobName)
+    {
+        
+    }
+    
+    private List<Blip> activeBlips = new List<Blip>();
+    private void OnUpdateBlips(List<float[]> blipData)
+    {
+        // Vorherige Blips entfernen
+        foreach (var blip in activeBlips)
+        {
+            activeBlips.Remove(blip);
+        }
+            
+        activeBlips.Clear();
 
+        // Neue Blips erstellen
+        foreach (var data in blipData)
+        {
+            var newBlip = Alt.CreatePointBlip(new Position(data[0], data[1], data[2]));
+            newBlip.Sprite = (uint)data[3];
+            newBlip.Color = (uint)data[4];
+            newBlip.ScaleXY = new Vector2(data[5], data[5]);
+            activeBlips.Add((Blip)newBlip);
+        }
+    }
+    
     /// <summary>
     ///     Loads all Blips
     /// </summary>
     private void LoadBlips()
     {
-        CreatePublicBlip(-609.01495f, -599.91205f, 34.67566f, 835, 53, 0.7f, true, "Parlament");
-        CreatePublicBlip(-692.8296f, -636.38007f, 31.55694f, 855, 53, 0.7f, true, "Whitehouse");
+        //CreatePublicBlip(-609.01495f, -599.91205f, 34.67566f, 835, 53, 0.7f, true, "Parlament");
+        //CreatePublicBlip(-692.8296f, -636.38007f, 31.55694f, 855, 53, 0.7f, true, "Whitehouse");
         CreatePublicBlip(-609.01495f, -599.91205f, 34.67566f, 835, 53, 0.7f, true, "Parlament");
         CreatePublicBlip(-692.8296f, -636.38007f, 31.55694f, 855, 53, 0.7f, true, "Whitehouse");
 
@@ -120,6 +179,33 @@ public class Main : Resource
         CreatePublicBlip(-38.795605f, -1109.6835f, 26.432251f, 369, 13, 0.6f, true, "Premium Deluxe Motorsport");
     }
 
+    private List<IBlip> blipsList = new List<IBlip>();
+    
+    /// <summary>
+    ///      Creates a player Blip entity for all players
+    /// </summary>
+    /// <param name="x">The x-axis</param>
+    /// <param name="y">The y-axis</param>
+    /// <param name="z">The z-axis</param>
+    /// <param name="sprite">The sprite-id</param>
+    /// <param name="color">The color-id</param>
+    /// <param name="scale">The floating scale</param>
+    /// <param name="shortRange">Is it only nearby, or globally accessible</param>
+    /// <param name="name">The name of the blip</param>
+    public void CreatePersonalBlip(float x, float y, float z, uint sprite, uint color, float scale = 1.0f,
+        bool shortRange = false, string name = "")
+    {
+        Alt.Log("Test");
+        var tempblips = Alt.CreatePointBlip(new Position(x,y,z));
+        tempblips.Sprite = sprite;
+        tempblips.Color = color;
+        tempblips.ScaleXY = new Vector2(scale, scale);
+        tempblips.ShortRange = shortRange;
+        if (name.Length > 0) tempblips.Name = name;
+        Alt.Log("Test");
+        //blipsList.Add(tempblips);
+    }
+    
     /// <summary>
     ///     Creates a public Blip entity for all players
     /// </summary>
@@ -131,7 +217,7 @@ public class Main : Resource
     /// <param name="scale">The floating scale</param>
     /// <param name="shortRange">Is it only nearby, or globally accessible</param>
     /// <param name="name">The name of the blip</param>
-    private static void CreatePublicBlip(float x, float y, float z, uint sprite, uint color, float scale = 1.0f,
+    private void CreatePublicBlip(float x, float y, float z, uint sprite, uint color, float scale = 1.0f,
         bool shortRange = false, string name = "")
     {
         var tempblips = Alt.CreatePointBlip(new Position(x, y, z));
@@ -140,6 +226,8 @@ public class Main : Resource
         tempblips.ScaleXY = new Vector2(scale, scale);
         tempblips.ShortRange = shortRange;
         if (name.Length > 0) tempblips.Name = name;
+
+        blipsList.Add((IBlip)tempblips);
     }
 
     /// <summary>
@@ -526,6 +614,43 @@ public class Main : Resource
     private void OnKeyDownHandler(Key key)
     {
         //
-        Alt.Log("Not Implemented");
+        //Alt.Log("Not Implemented");
     }
+    
+    private IWebView _adminMenuWebView;
+    private bool _isAdminMenuOpen = false;
+
+    
+    #region AdminMenu
+
+    private void ShowAdminMenu()
+    {
+        if (!_isAdminMenuOpen)
+        {
+            _adminMenuWebView = Alt.CreateWebView("http://resource/client/adminmenu/adminmenu.html");
+            _adminMenuWebView.On("adminmenu:Close:Webview", CloseWebview);
+            _isAdminMenuOpen = true;
+        }
+
+        _adminMenuWebView.Focus();
+        Alt.ShowCursor(true);
+    }
+
+    private void CloseWebview()
+    {
+        if (_adminMenuWebView != null)
+        {
+            _adminMenuWebView.Unfocus();
+            _adminMenuWebView.Destroy();
+            _adminMenuWebView = null;
+            _isAdminMenuOpen = false;
+
+            foreach (var player in Alt.GetAllPlayers())
+            {
+                Alt.ShowCursor(false);
+            }
+        }
+    }
+
+    #endregion
 }

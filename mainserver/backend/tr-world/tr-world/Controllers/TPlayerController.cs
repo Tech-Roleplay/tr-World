@@ -6,12 +6,12 @@ using tr_world.Player;
 
 namespace tr_world.Controllers;
 
-public class BPlayerController : IScript
+public class TPlayerController : IScript
 {
     private const string UpdateString =
         "UPDATE users SET discordid=@discordid, name=@name, `permissionlevel`=@permissionlevel, fname=@fname, lname=@lname, bank_money=@bank_money, cash_money=@cash_money, sex=@sex, height=@height, skin=@skin, status=@status, position=@position, metadata=@metadata, inventory=@inventory, backstory=@backstory, disabled=@disabled, main_property=@main_property, job=@job, jobgrade=@jobgrade, gang=@gang, ganggrade=@ganggrade, phone_number=@phone_number, phone=@phone, iban=@iban, callsign=@callsign WHERE discordid=@discordid LIMIT 1";
 
-    public static void LoadBPlayerData(BPlayer player)
+    public static void LoadTPlayerData(TPlayer player)
     {
         // try & catch function
 
@@ -115,7 +115,7 @@ public class BPlayerController : IScript
     ///     Save the player-data
     /// </summary>
     /// <param name="player">the player</param>
-    public static void SaveBPlayerData(BPlayer player)
+    public static void SaveTPlayerData(TPlayer player)
     {
         try
         {
@@ -157,7 +157,7 @@ public class BPlayerController : IScript
         }
     }
 
-    public static void CreateBPlayerAccount(BPlayer player)
+    public static void CreateTPlayerAccount(TPlayer player)
     {
         try
         {
@@ -205,7 +205,7 @@ public class BPlayerController : IScript
         }
     }
 
-    public static bool HasBPlayerAccount(BPlayer player)
+    public static bool HasTPlayerAccount(TPlayer player)
     {
         try
         {
@@ -233,7 +233,7 @@ public class BPlayerController : IScript
         }
     }
 
-    public static bool IsPlayerBanned(BPlayer player)
+    public static bool IsPlayerBanned(TPlayer player)
     {
         try
         {
@@ -263,7 +263,7 @@ public class BPlayerController : IScript
         }
     }
 
-    public static void AddPlayerToBanList(BPlayer player, string reason)
+    public static void AddPlayerToBanList(TPlayer player, string reason)
     {
         try
         {

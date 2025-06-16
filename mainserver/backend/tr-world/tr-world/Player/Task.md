@@ -1,43 +1,43 @@
 ## Task of <ins>Player</ins>
 
-- Home of the BPlayer Class
+- Home of the TPlayer Class
 - PlayerFunctions
 
 ### Functions:
 
 - ```csharp
-  void AddMoneyToCash(this BPlayer player, int amount, string reason)
+  void AddMoneyToCash(this TPlayer player, int amount, string reason)
 - ```csharp
-  void AddMoneyToBank(this BPlayer player, int amount, string reason)
+  void AddMoneyToBank(this TPlayer player, int amount, string reason)
 - ```csharp
-  void SubMoneyToCash(this BPlayer player, int amount, string reason)
+  void SubMoneyToCash(this TPlayer player, int amount, string reason)
 - ```csharp
-  void SubMoneyToBank(this BPlayer player, int amount, string reason)
+  void SubMoneyToBank(this TPlayer player, int amount, string reason)
 - ```csharp
-  void SetMoneyToCash(this BPlayer player, int amount, string reason)
+  void SetMoneyToCash(this TPlayer player, int amount, string reason)
 - ```csharp
-  void SetMoneyToBank(this BPlayer player, int amount, string reason)
+  void SetMoneyToBank(this TPlayer player, int amount, string reason)
 - ```csharp
-  int GetMoneyFromCash(this BPlayer player)
+  int GetMoneyFromCash(this TPlayer player)
   
   return player.CashBalance;
 - ```csharp
-  int GetMoneyFromBank(this BPlayer player)
+  int GetMoneyFromBank(this TPlayer player)
   
   return player.BankBalance;
 
 #### Job Functions
 
 - ```csharp
-  void SetJob(this BPlayer player, string jobname, int jobgrade)
+  void SetJob(this TPlayer player, string jobname, int jobgrade)
 - ```csharp
-  void ChangeDuty(this BPlayer player)
+  void ChangeDuty(this TPlayer player)
 - ```csharp
-  void PaymentJob(this BPlayer player)
+  void PaymentJob(this TPlayer player)
 - ```csharp
-  void ResetJob(this BPlayer player)
+  void ResetJob(this TPlayer player)
 - ```csharp
-  bool IsPlayerBoss(this BPlayer player)
+  bool IsPlayerBoss(this TPlayer player)
   
   return player.Job.IsBoss;
 - ```csharp

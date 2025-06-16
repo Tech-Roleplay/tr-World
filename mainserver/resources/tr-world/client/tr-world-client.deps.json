@@ -8,13 +8,13 @@
     ".NETCoreApp,Version=v8.0": {
       "tr-world-client/1.0.0": {
         "dependencies": {
-          "AltV.Net.Client": "16.4.1"
+          "AltV.Net.Client": "16.4.8"
         },
         "runtime": {
           "tr-world-client.dll": {}
         }
       },
-      "AltV.Net.CApi/16.4.1": {
+      "AltV.Net.CApi/16.4.8": {
         "runtime": {
           "lib/net8.0/AltV.Net.CApi.dll": {
             "assemblyVersion": "1.0.0.0",
@@ -22,10 +22,10 @@
           }
         }
       },
-      "AltV.Net.Client/16.4.1": {
+      "AltV.Net.Client/16.4.8": {
         "dependencies": {
-          "AltV.Net.CApi": "16.4.1",
-          "AltV.Net.Shared": "16.4.1"
+          "AltV.Net.CApi": "16.4.8",
+          "AltV.Net.Shared": "16.4.8"
         },
         "runtime": {
           "lib/net8.0/AltV.Net.Client.dll": {
@@ -34,9 +34,9 @@
           }
         }
       },
-      "AltV.Net.Shared/16.4.1": {
+      "AltV.Net.Shared/16.4.8": {
         "dependencies": {
-          "AltV.Net.CApi": "16.4.1"
+          "AltV.Net.CApi": "16.4.8"
         },
         "runtime": {
           "lib/net8.0/AltV.Net.Shared.dll": {
@@ -53,26 +53,26 @@
       "serviceable": false,
       "sha512": ""
     },
-    "AltV.Net.CApi/16.4.1": {
+    "AltV.Net.CApi/16.4.8": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-eSvKJ1g0vJTRvJzkhKKomXIjii4GeDuafwHDNX64fNZUMeCP8KqKSX9NlxkNP3Lo9LqNTitE49Y/lkjr9Sh8Aw==",
-      "path": "altv.net.capi/16.4.1",
-      "hashPath": "altv.net.capi.16.4.1.nupkg.sha512"
+      "sha512": "sha512-grivlinC6xetND78oXjTYW434Fb0LsVSrOcGcDQLTLMl7V/WWYaI7GfoQAbOKR6qKlUH0q/jV5HzUzYQe24rKA==",
+      "path": "altv.net.capi/16.4.8",
+      "hashPath": "altv.net.capi.16.4.8.nupkg.sha512"
     },
-    "AltV.Net.Client/16.4.1": {
+    "AltV.Net.Client/16.4.8": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ZMxJ/hno6Lx5EWzI0NMoeHVzvNec9oJPrY22BOAsaXvD3n9SgP8qu0y9dDe/lwVgBFTdhKidE7tL+NiAoJtpCw==",
-      "path": "altv.net.client/16.4.1",
-      "hashPath": "altv.net.client.16.4.1.nupkg.sha512"
+      "sha512": "sha512-Uddfv9t08Zi8RCLoFHQlOrnf5062f3jwduJTHJmsz5mZs4XcWCSJRY7n5004csjcZfrfvmEl/API8l1zqJZ2aw==",
+      "path": "altv.net.client/16.4.8",
+      "hashPath": "altv.net.client.16.4.8.nupkg.sha512"
     },
-    "AltV.Net.Shared/16.4.1": {
+    "AltV.Net.Shared/16.4.8": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-BsFXtrdT863FF7Lj+raJlFe63rJuXzETfcvMKgIdhSS1yk4awdM6RV1QyTf5dw/XiKeJAGsQU115szdqDi2GQw==",
-      "path": "altv.net.shared/16.4.1",
-      "hashPath": "altv.net.shared.16.4.1.nupkg.sha512"
+      "sha512": "sha512-hgys4zt1r7OAU9SlZpWC1WKo0ON85dkj39kJP+puohPcxT7x4f5SA4RQZwTqYrlcO7xb8RTYfqcb/riStpqYdw==",
+      "path": "altv.net.shared/16.4.8",
+      "hashPath": "altv.net.shared.16.4.8.nupkg.sha512"
     }
   }
 }

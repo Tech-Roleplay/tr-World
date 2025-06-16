@@ -81,4 +81,38 @@ public abstract class JobController : IScript
     public static void GetVehicleListForJob()
     {
     }
+
+    public static object[] GetJobBlips(string jobName, int jobGrade)
+    {
+        try
+        {
+            var cmd = Databank.Connection.CreateCommand();
+            cmd.CommandText = "SELECT * FROM job_blips WHERE job_name=@job_name AND grade=@grade";
+            cmd.Parameters.AddWithValue("@job_name", jobName);
+            cmd.Parameters.AddWithValue("@grade", jobGrade);
+            using (var reader = cmd.ExecuteReader())
+            {
+                reader.Read();
+                
+                var name = reader.GetString("b_name");
+                var pos = reader.GetString("b_pos");
+                var sprite = reader.GetUInt32("b_sprite");
+                var color = reader.GetUInt32("b_color");
+                var scale = reader.GetUInt32("b_scale");
+                
+                var backArray = new object[] { name, pos, sprite, color, scale };
+                
+                reader.Close();
+                return backArray;
+            }
+        
+        }
+        catch (Exception e)
+        {
+            Alt.LogError("ERROR == ERROR == ERROR");
+            Alt.LogError(e.ToString());
+
+            return null;
+        }
+    }
 }

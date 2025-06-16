@@ -10,14 +10,23 @@ namespace tr_world;
 public class Commands : IScript
 {
     [CommandEvent(CommandEventType.CommandNotFound)]
-    public void CommandNotFound(BPlayer player, string cmd)
+    public void CommandNotFound(TPlayer player, string cmd)
     {
         player.SendChatMessage("{FF0000}Command not found: " + cmd);
     }
 
+    // Dev 
+    // create peronal bo
+    [Command("cpb")]
+    public void Cpb(TPlayer player, 
+        string name = "")
+    {
+        player.Emit("DEV:CreateBlip", player.Position.X,player.Position.Y,player.Position.Z, 835, 49, 1.0f, false, name );
+    }
+    
     // Very basic Commands for Administration
     [Command("warn")]
-    public void CMD_warn(BPlayer player, uint targetid, string Reason)
+    public void CMD_warn(TPlayer player, uint targetid, string Reason)
     {
         if (!player.HasPlayerPermission((int)TPermission.Administrator))
         {
@@ -27,25 +36,25 @@ public class Commands : IScript
     }
 
     [Command("kick")]
-    public void CMD_kick(BPlayer player, uint targetid, string reason)
+    public void CMD_kick(TPlayer player, uint targetid, string reason)
     {
         if (!player.HasPlayerPermission((int)TPermission.Administrator)) return;
 
         foreach (var player1 in Alt.GetAllPlayers())
         {
-            var p = (BPlayer)player1;
+            var p = (TPlayer)player1;
             if (targetid == p.Id) p.Kick(reason);
         }
     }
 
     [Command("tempban")]
-    public void CMD_tempban(BPlayer player, uint targetid, int amount, string timevalue, string reason)
+    public void CMD_tempban(TPlayer player, uint targetid, int amount, string timevalue, string reason)
     {
         if (!player.HasPlayerPermission((int)TPermission.Administrator)) return;
 
         foreach (var player1 in Alt.GetAllPlayers())
         {
-            var p = (BPlayer)player1;
+            var p = (TPlayer)player1;
             if (targetid == p.Id) p.TempBan(amount, timevalue, reason);
         }
     }
@@ -57,19 +66,19 @@ public class Commands : IScript
     /// <param name="targetid">the target id</param>
     /// <param name="reason">The reason behind it</param>
     [Command("ban")]
-    public void CMD_ban(BPlayer player, uint targetid, string reason)
+    public void CMD_ban(TPlayer player, uint targetid, string reason)
     {
         if (!player.HasPlayerPermission((int)TPermission.Owner)) return;
 
         foreach (var player1 in Alt.GetAllPlayers())
         {
-            var p = (BPlayer)player1;
+            var p = (TPlayer)player1;
             if (targetid == p.Id) p.Ban(reason);
         }
     }
 
     [Command("veh", aliases: new[] { "car", "auto", "vehicle" })]
-    public void CMD_veh(BPlayer player, string VehicleName)
+    public void CMD_veh(TPlayer player, string VehicleName)
     {
         if (!player.HasPlayerPermission((int)TPermission.Moderator)) return;
 
@@ -88,7 +97,7 @@ public class Commands : IScript
                 //Log
                 player.SendChatMessage($"[Vehicle] The {VehicleName} spawned.");
                 Utility.DClog($"{player.Name}(<@{player.DiscordId}>) has spawned a new vehicle: a/an {VehicleName}",
-                    "Vehicle Spawner", secret.URL_VehSpawner, "", true);
+                    "Vehicle Spawner", secret.URL_VehSpawner, "https://th.bing.com/th/id/OIP.kgO6McTklBzmVlcSH4w-2wHaHa?rs=1&pid=ImgDetMain", true);
                 player.Emit("SetPlayerIntoVehicle", veh, 1);
                 player.SetIntoVehicle(veh, 1);
             }
@@ -99,8 +108,20 @@ public class Commands : IScript
         }
     }
 
+    [Command("rmveh")]
+    public void CMD_rmVeh(TPlayer player, string[] args)
+    {
+        if (!player.HasPlayerPermission((int)TPermission.Administrator)) return;
+        var veh = player.Vehicle;
+
+        if (veh != null)
+            veh.Destroy();
+        else
+            player.SendChatMessage("{FF0000}You are not in a vehicle.");
+    }
+
     [Command("repair")]
-    public void CMD_repair(BPlayer player, string[] args)
+    public void CMD_repair(TPlayer player, string[] args)
     {
         if (!player.HasPlayerPermission((int)TPermission.Moderator)) return;
         var veh = player.Vehicle;
@@ -111,8 +132,7 @@ public class Commands : IScript
             player.SendChatMessage("{FF0000}You are not in a vehicle.");
     }
 
-    [Command("rep")]
-    public void CMD_rep(BPlayer player, string[] args)
+    public void CMD_rep(TPlayer player, string[] args)
     {
         if (!player.HasPlayerPermission((int)TPermission.Moderator)) return;
 
@@ -126,11 +146,10 @@ public class Commands : IScript
     }
 
     [Command("pos", true)]
-    public void CMD_pos(BPlayer player, string name)
+    public void CMD_pos(TPlayer player, string name)
     {
         if (!player.HasPlayerPermission((int)TPermission.Developer)) return;
-        player.SendChatMessage(
-            $"X: {player.Position.X} Y: {player.Position.Y} Z: {player.Position.Z} and with Name: {name}.");
+        player.SendChatMessage($"X: {player.Position.X} Y: {player.Position.Y} Z: {player.Position.Z} and with Name: {name}.");
 
         Alt.Log("==POS==");
         Alt.Log($"{player.Position.X}, {player.Position.Y}, {player.Position.Z} and with Name: {name}.");
@@ -142,51 +161,51 @@ public class Commands : IScript
     }
 
     [Command("addmoneycash")]
-    public void CMD_AddMoneyCash(BPlayer player, int amount)
+    public void CMD_AddMoneyCash(TPlayer player, int amount)
     {
         if (!player.HasPlayerPermission((int)TPermission.Administrator)) return;
         player.AddMoneyToCash(amount, "Administrator giving.");
     }
 
     [Command("showcash")]
-    public void CMD_showcash(BPlayer player, string[] args)
+    public void CMD_showcash(TPlayer player, string[] args)
     {
         player.SendChatMessage($"Your Cash Balance is: {player.CashBalance}");
     }
 
     [Command("setjob")]
-    public void CMD_set(BPlayer player, int targetid, string jobname, int jobgrade)
+    public void CMD_set(TPlayer player, int targetid, string jobname, int jobgrade)
     {
         if (!player.HasPlayerPermission((int)TPermission.Moderator)) return;
-        foreach (BPlayer p in Alt.GetAllPlayers())
+        foreach (TPlayer p in Alt.GetAllPlayers())
             if (targetid == p.Id)
                 p.SetJob(jobname, jobgrade);
     }
 
     [Command("showjob")]
-    public void CMD_showJob(BPlayer player, string[] args)
+    public void CMD_showJob(TPlayer player, string[] args)
     {
         player.SendChatMessage($"Your Job is at: {player.Job.Label} with Grade: {player.Job.GradeLabel}");
     }
 
     [Command("setgang")]
-    public void CMD_setGang(BPlayer player, int targetid, string gangname, int ganggrade)
+    public void CMD_setGang(TPlayer player, int targetid, string gangname, int ganggrade)
     {
         if (!player.HasPlayerPermission((int)TPermission.Moderator)) return;
-        foreach (BPlayer p in Alt.GetAllPlayers())
+        foreach (TPlayer p in Alt.GetAllPlayers())
             if (targetid == p.Id)
                 p.SetGang(gangname, ganggrade);
     }
 
     [Command("showgang")]
-    public void CMD_showGang(BPlayer player, string[] args)
+    public void CMD_showGang(TPlayer player, string[] args)
     {
         player.SendChatMessage($"Your Gang-Activity is at: {player.Gang.Label} with Grade: {player.Gang.GradeLabel}");
     }
 
 
     [Command("testAdminmenu")]
-    public void CMD_testAdminMenu(BPlayer player)
+    public void CMD_testAdminMenu(TPlayer player)
     {
         if (!player.HasPlayerPermission((int)TPermission.Moderator)) return;
         player.Emit("adminmenu:Show");

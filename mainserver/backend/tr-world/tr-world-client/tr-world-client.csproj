@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -13,11 +13,13 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <OutputPath>S:\tr-world\mainserver\resources\tr-world\client</OutputPath>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="AltV.Net" Version="16.4.1"/>
-        <PackageReference Include="AltV.Net.Client" Version="16.4.1"/>
-    </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<OutputPath>S:\tr-world\mainserver\resources\tr-world\client</OutputPath>
+	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="AltV.Net" Version="16.4.8" />
+	  <PackageReference Include="AltV.Net.Client" Version="16.4.8" />
+	</ItemGroup>
 
 </Project>
  

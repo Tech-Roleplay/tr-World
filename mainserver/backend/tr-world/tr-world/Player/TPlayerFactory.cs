@@ -4,10 +4,10 @@ using AltV.Net.Elements.Entities;
 
 namespace tr_world.Player;
 
-internal class BPlayerFactory : IEntityFactory<IPlayer>
+internal class TPlayerFactory : IEntityFactory<IPlayer>
 {
     public IPlayer Create(ICore core, IntPtr entityPointer, uint id)
     {
-        return new BPlayer(core, entityPointer, id);
+        return new TPlayer(core, entityPointer, id);
     }
 }

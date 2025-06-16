@@ -1,0 +1,39 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    opacity: 50;
+}
+
+#header-container {
+    position: fixed;
+    background-color: rgba(51, 164, 229, 150);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+    z-index: 1000;
+}
+
+#sidebar-container {
+    position: fixed;
+    margin-top: 70px;
+    /* Höhe des Headers berücksichtigen */
+    left: 0;
+    width: 200px;
+    height: 100%;
+    background-color: #f4f4f4;
+    padding: 20px;
+    overflow-y: auto;
+    /* Ermöglicht das Scrollen innerhalb der Sidebar */
+}
+
+#content {
+    margin-left: 220px;
+    margin-top: auto;
+    /* Platz für die Sidebar lassen */
+    padding: 15px;
+    padding-top: 90px;
+}

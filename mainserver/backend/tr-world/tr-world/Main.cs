@@ -28,8 +28,8 @@ public class Main : Resource
     {
         foreach (var bplayer in Alt.GetAllPlayers())
         {
-            var player = (BPlayer)bplayer;
-            BPlayerController.SaveBPlayerData(player);
+            var player = (TPlayer)bplayer;
+            TPlayerController.SaveTPlayerData(player);
         }
 
         Alt.LogInfo("All players have been saved!");
@@ -39,7 +39,7 @@ public class Main : Resource
     // Player Factory
     public override IEntityFactory<IPlayer> GetPlayerFactory()
     {
-        return new BPlayerFactory();
+        return new TPlayerFactory();
     }
 
     // Vehicle Factory

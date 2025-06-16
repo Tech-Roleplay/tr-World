@@ -5,11 +5,11 @@ using tr_world.Models;
 namespace tr_world.Player;
 
 /// <summary>
-/// BPlayer Class:
+/// TPlayer Class:
 /// Represents a custom player class that extends the AltV.Net.Elements.Entities.Player.
 /// Adds additional properties, methods, and attributes relevant to the gameplay experience.
 /// </summary>
-public class BPlayer : AltV.Net.Elements.Entities.Player
+public class TPlayer : AltV.Net.Elements.Entities.Player
 {
     #region Metadata
 
@@ -106,7 +106,7 @@ public class BPlayer : AltV.Net.Elements.Entities.Player
     /// This property stores the appearance customization data for a player.
     public string Skin { get; set; }
 
-    /// This property is used to define or access the main identifier or primary attribute associated with the BPlayer class.
+    /// This property is used to define or access the main identifier or primary attribute associated with the TPlayer class.
     public string MainProperty { get; set; }
 
 
@@ -119,7 +119,7 @@ public class BPlayer : AltV.Net.Elements.Entities.Player
     /// This class inherits from AltV.Net.Elements.Entities.Player and adds custom properties and functionality
     /// specific to the game, such as job, gang affiliation, permissions, and personal metadata.
     /// </remarks>
-    public BPlayer(ICore core, IntPtr nativePointer, uint id) : base(core, nativePointer, id)
+    public TPlayer(ICore core, IntPtr nativePointer, uint id) : base(core, nativePointer, id)
     {
         Job = new TJob();
         Gang = new TGang();
@@ -146,9 +146,25 @@ public class BPlayer : AltV.Net.Elements.Entities.Player
         Gang.GradeLevel = 0;
         Gang.GradeName = "No Grades";
 
+        Metadata.Armor = 100.0f;
+        Metadata.Hunger = 100.0f;
+        Metadata.Thirst = 100.0f;
+        Metadata.JailTime = 0;
+        Metadata.IsCuffed = false;
+        Metadata.CreateDate = DateTime.Now;
+        Metadata.IsInPrison = false;
+        Metadata.IsPlyDead = false;
+        Metadata.IsPlyDown = false;
+        Metadata.IsPlyHeadshotted = false;
+        Metadata.IsPlyLogout = false;
+        Metadata.LastUpdate = DateTime.Now;
+
+
         Firstname = "CHANGE";
         Surname = "CHANGE";
 
+        Skin = "";
+        MainProperty = "";
 
         Phone.ProfilePicUrl =
             "https://cdn.icon-icons.com/icons2/3553/PNG/512/account_profile_user_ecommerce_icon_224942.png";
@@ -172,7 +188,7 @@ public class BPlayer : AltV.Net.Elements.Entities.Player
     /// <param name="reason"> The reason for adding the money.</param>
     /// <param name="moneytype"> The type of money to add (e.g., cash or bank).</param>
     [Obsolete("Use instate AddMoneyToCash, AddMoneyToBank", true)]
-    public static void AddMoney(BPlayer player, int amount, string reason, string moneytype)
+    public static void AddMoney(TPlayer player, int amount, string reason, string moneytype)
     {
     }
 

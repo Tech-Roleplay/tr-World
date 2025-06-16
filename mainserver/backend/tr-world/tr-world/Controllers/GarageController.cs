@@ -12,13 +12,13 @@ public class GarageController : IScript
         
     }
     
-    public static void GetGarageForPlayer(int garageID, BPlayer player)
+    public static void GetGarageForPlayer(int garageId, TPlayer player)
     {
         try
         {
             MySqlCommand cmd = tr_world.Databank.Connection.CreateCommand();
             cmd.CommandText = "SELECT * FROM garage WHERE garage_id=@garage_id";
-            cmd.Parameters.AddWithValue("@garage_id", garageID);
+            cmd.Parameters.AddWithValue("@garage_id", garageId);
             
             using (var reader = cmd.ExecuteReader())
             {
@@ -38,18 +38,18 @@ public class GarageController : IScript
         }
     }
 
-    public static void SaveGarageForPlayer(BPlayer player)
+    public static void SaveGarageForPlayer(TPlayer player)
     {
         
     }
 
-    public static void UpdateGarageForPlayer(BPlayer player)
+    public static void UpdateGarageForPlayer(TPlayer player)
     {
         
     }
 
     [Obsolete]
-    public static void GetTheListOfVehFromPlayer(BPlayer player)
+    public static void GetTheListOfVehFromPlayer(TPlayer player)
     {
         
     }
