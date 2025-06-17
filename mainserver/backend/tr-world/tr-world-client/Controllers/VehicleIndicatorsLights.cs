@@ -1,6 +1,6 @@
 ﻿using AltV.Net;
 
-namespace tr_world_client.Controllers;
+namespace trWorld_client.Controllers;
 
 public class VehicleIndicatorsLights : IScript
 {

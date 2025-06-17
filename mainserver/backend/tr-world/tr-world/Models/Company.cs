@@ -1,4 +1,4 @@
-﻿namespace tr_world.Models;
+﻿namespace trWorld.Models;
 
 /// <summary>
 /// Represents a company entity with attributes such as name, label, type,

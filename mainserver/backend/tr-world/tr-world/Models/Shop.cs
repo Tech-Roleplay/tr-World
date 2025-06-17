@@ -1,7 +1,7 @@
 ﻿using System;
 using AltV.Net;
 
-namespace tr_world.Models;
+namespace trWorld.Models;
 
 public class Shop : IScript
 {

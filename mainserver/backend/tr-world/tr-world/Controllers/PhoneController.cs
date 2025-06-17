@@ -1,6 +1,6 @@
-﻿using tr_world.Player;
+﻿using trWorld.Player;
 
-namespace tr_world.Controllers;
+namespace trWorld.Controllers;
 
 public class PhoneController
 {

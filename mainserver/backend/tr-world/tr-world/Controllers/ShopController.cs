@@ -1,8 +1,8 @@
 ﻿using System;
 using AltV.Net;
-using tr_world.Models;
+using trWorld.Models;
 
-namespace tr_world.Controllers;
+namespace trWorld.Controllers;
 
 public class ShopController : IScript
 {

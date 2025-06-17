@@ -1,7 +1,7 @@
 ﻿using System;
 using AltV.Net;
 
-namespace tr_world.Controllers;
+namespace trWorld.Controllers;
 
 public abstract class JobController : IScript
 {

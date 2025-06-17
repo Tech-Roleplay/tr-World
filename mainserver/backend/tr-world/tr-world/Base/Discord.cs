@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System;
 
-namespace tr_world.Base;
+namespace trWorld.Base;
 
 // Discord Class
 public class Discord : IScript

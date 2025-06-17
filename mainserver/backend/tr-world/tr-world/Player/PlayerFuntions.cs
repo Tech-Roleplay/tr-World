@@ -3,13 +3,13 @@ using System.Linq;
 using AltV.Net;
 using AltV.Net.Elements.Entities;
 using AltV.Net.Resources.Chat.Api;
-using tr_world.Controllers;
-using tr_world.Models;
-using tr_world.Vehicle;
+using trWorld.Controllers;
+using trWorld.Models;
+using trWorld.Vehicle;
 
 // TODO: Adding ban/freez func
 
-namespace tr_world.Player;
+namespace trWorld.Player;
 
 /// <summary>
 /// Provides a collection of extension methods for the TPlayer class to handle various player-related operations
@@ -153,7 +153,7 @@ public static class PlayerFuntions
     {
         player.Emit("admin:player:freeze", !player.Frozen);
 
-
+        
         //DCLog
     }
 

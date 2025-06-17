@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.Net;
 using AltV.Net;
 
-namespace tr_world;
+namespace trWorld;
 
 public class Utility : IScript
 {

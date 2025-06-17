@@ -1,4 +1,4 @@
-﻿namespace tr_world.Player;
+﻿namespace trWorld.Player;
 
 /// <summary>
 ///     Represents the different permission levels (roles) within the game.

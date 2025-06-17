@@ -1,6 +1,6 @@
 ﻿using AltV.Net.Data;
 
-namespace tr_world.Models;
+namespace trWorld.Models;
 
 /// <summary>
 /// Represents an address with properties for the city, country, street, postal code, housing number, and geographic position.

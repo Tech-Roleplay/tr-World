@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace tr_world.Player;
+namespace trWorld.Player;
 
 public interface IMetadata
 {

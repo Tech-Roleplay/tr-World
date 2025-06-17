@@ -1,7 +1,7 @@
 ﻿using System;
-using tr_world.Player;
+using trWorld.Player;
 
-namespace tr_world.Vehicle;
+namespace trWorld.Vehicle;
 
 public static class VehicleFunctions
 {

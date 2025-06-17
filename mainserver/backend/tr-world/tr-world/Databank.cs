@@ -3,7 +3,7 @@ using System.Threading;
 using AltV.Net;
 using MySqlConnector;
 
-namespace tr_world;
+namespace trWorld;
 
 // lot of code for basic constructer from here https://github.com/nSystemz/AltV-C-Tutorial-NemesusTV/blob/main/resources/AltVTutorial/AltVTutorial/Datenbank.cs
 public class Databank : Main

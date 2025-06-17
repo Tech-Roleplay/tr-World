@@ -1,4 +1,4 @@
-﻿namespace tr_world.Models;
+﻿namespace trWorld.Models;
 
 public class Skin
 {

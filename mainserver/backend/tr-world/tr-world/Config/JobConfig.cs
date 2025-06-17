@@ -1,4 +1,4 @@
-﻿namespace tr_world.Config;
+﻿namespace trWorld.Config;
 
 public class JobConfig
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AltV.Net;
 
-namespace tr_world.Models;
+namespace trWorld.Models;
 
 /// <summary>
 /// Represents an inventory system to manage items.

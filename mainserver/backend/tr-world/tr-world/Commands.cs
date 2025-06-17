@@ -1,11 +1,11 @@
 ﻿using AltV.Net;
 using AltV.Net.Data;
 using AltV.Net.Resources.Chat.Api;
-using tr_world.Config;
-using tr_world.Player;
-using tr_world.Vehicle;
+using trWorld.Config;
+using trWorld.Player;
+using trWorld.Vehicle;
 
-namespace tr_world;
+namespace trWorld;
 
 public class Commands : IScript
 {

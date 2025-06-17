@@ -1,11 +1,11 @@
 ﻿using System.Threading;
 using AltV.Net;
 using AltV.Net.Elements.Entities;
-using tr_world.Controllers;
-using tr_world.Player;
-using tr_world.Vehicle;
+using trWorld.Controllers;
+using trWorld.Player;
+using trWorld.Vehicle;
 
-namespace tr_world;
+namespace trWorld;
 
 public class Main : Resource
 {

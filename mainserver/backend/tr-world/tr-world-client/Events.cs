@@ -1,6 +1,6 @@
 ﻿using AltV.Net;
 
-namespace tr_world_client;
+namespace trWorld_client;
 
 public class Events : IScript
 {

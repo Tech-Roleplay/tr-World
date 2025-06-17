@@ -1,6 +1,6 @@
 using AltV.Net;
 
-namespace tr_world.Base;
+namespace trWorld.Base;
 
 public class Commands : IScript
 {

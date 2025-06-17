@@ -3,11 +3,11 @@ using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
 using AltV.Net.Enums;
 using AltV.Net.Resources.Chat.Api;
-using tr_world.Config;
-using tr_world.Controllers;
-using tr_world.Player;
+using trWorld.Config;
+using trWorld.Controllers;
+using trWorld.Player;
 
-namespace tr_world;
+namespace trWorld;
 
 public class Events : IScript
 {

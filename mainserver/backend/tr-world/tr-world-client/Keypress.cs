@@ -3,7 +3,7 @@ using AltV.Net;
 using AltV.Net.Client;
 using AltV.Net.Client.Elements.Data;
 
-namespace tr_world_client;
+namespace trWorld_client;
 
 [AttributeUsage(AttributeTargets.Method)]
 public class Keypress : Attribute

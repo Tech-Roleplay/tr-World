@@ -2,7 +2,7 @@
 using AltV.Net;
 using AltV.Net.Elements.Entities;
 
-namespace tr_world.Vehicle;
+namespace trWorld.Vehicle;
 
 internal class BVehicleFactory : IEntityFactory<IVehicle>
 {

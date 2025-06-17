@@ -1,4 +1,4 @@
-﻿namespace tr_world.Controllers;
+﻿namespace trWorld.Controllers;
 
 public class ComanyController
 {

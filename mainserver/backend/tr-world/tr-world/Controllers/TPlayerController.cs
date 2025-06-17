@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text.Json;
 using AltV.Net;
-using tr_world.Models;
-using tr_world.Player;
+using trWorld.Models;
+using trWorld.Player;
 
-namespace tr_world.Controllers;
+namespace trWorld.Controllers;
 
 public class TPlayerController : IScript
 {

@@ -1,4 +1,4 @@
-﻿namespace tr_world.Player;
+﻿namespace trWorld.Player;
 
 public interface IJob
 {

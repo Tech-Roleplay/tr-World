@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>tr_world_client</RootNamespace>
+        <RootNamespace>trWorld_client</RootNamespace>
         <OutputType>Library</OutputType>
 
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>

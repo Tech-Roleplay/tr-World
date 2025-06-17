@@ -1,7 +1,7 @@
 ﻿using System;
 using AltV.Net;
 
-namespace tr_world.Vehicle;
+namespace trWorld.Vehicle;
 
 public class BVehicle : AltV.Net.Elements.Entities.Vehicle
 {

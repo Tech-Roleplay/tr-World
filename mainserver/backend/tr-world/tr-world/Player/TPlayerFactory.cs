@@ -2,7 +2,7 @@
 using AltV.Net;
 using AltV.Net.Elements.Entities;
 
-namespace tr_world.Player;
+namespace trWorld.Player;
 
 internal class TPlayerFactory : IEntityFactory<IPlayer>
 {

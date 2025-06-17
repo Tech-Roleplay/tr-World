@@ -12,7 +12,7 @@ using AltV.Net.Elements.Entities;
 using Blip = AltV.Net.Client.Elements.Entities.Blip;
 using Vehicle = AltV.Net.Client.Elements.Entities.Vehicle;
 
-namespace tr_world_client;
+namespace trWorld_client;
 
 public class Main : Resource
 {

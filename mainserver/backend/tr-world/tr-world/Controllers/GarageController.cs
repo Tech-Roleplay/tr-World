@@ -1,9 +1,9 @@
 ﻿using System;
 using AltV.Net;
 using MySqlConnector;
-using tr_world.Player;
+using trWorld.Player;
 
-namespace tr_world.Controllers;
+namespace trWorld.Controllers;
 
 public class GarageController : IScript
 {
@@ -16,7 +16,7 @@ public class GarageController : IScript
     {
         try
         {
-            MySqlCommand cmd = tr_world.Databank.Connection.CreateCommand();
+            MySqlCommand cmd = trWorld.Databank.Connection.CreateCommand();
             cmd.CommandText = "SELECT * FROM garage WHERE garage_id=@garage_id";
             cmd.Parameters.AddWithValue("@garage_id", garageId);
             
