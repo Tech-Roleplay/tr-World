@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as alt from "alt-server";
 import {CHAT_MESSAGE_EVENT} from "../shared/index.js";
 
@@ -42,6 +43,7 @@ alt.onClient(CHAT_MESSAGE_EVENT, (player, msg) => {
         }
     }
 });
+
 
 export function send(player, msg) {
     if (!player) {
