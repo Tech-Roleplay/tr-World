@@ -1,6 +1,8 @@
 ﻿using System.Threading;
+using System;
 using AltV.Net;
 using AltV.Net.Elements.Entities;
+using trWorld.Base;
 using trWorld.Controllers;
 using trWorld.Player;
 using trWorld.Vehicle;
@@ -15,17 +17,33 @@ public class Main : Resource
     /// </summary>
     public override void OnStart()
     {
+        Console.WriteLine(AppContext.BaseDirectory);
         Alt.Log("Server-C#-backend is starting!");
+        
+        Databank.InitMongo();
+        Databank.InitMySQL();
 
-        Databank.InitConnection();
+        if (!Databank.MongoConnected && !Databank.MySQLConnected)
+        {
+            Alt.LogError("Keine Datenbank konnte verbunden werden. Server wird beendet.");
+            Thread.Sleep(3000);
+            Environment.Exit(0);
+        }
 
+        //GameTimeService.Init();
+        
         // Timer
         var saveTimer = new Timer(OnSaveTimer, null, 1000, 120000);
+        var timeSyncTimer = new Timer(SendTimeToPlayer, null, 0, 4000);
     }
 
     // Timers
     public static void OnSaveTimer(object state)
     {
+        var (hour, minute, day, month, year) = GameTimeService.GetCurrentGameDateTime();
+        var newStartTime = new DateTime(year, month, day, hour, minute, 0, DateTimeKind.Utc);
+        //GameTimeService.SetStartTime(newStartTime);
+        
         foreach (var bplayer in Alt.GetAllPlayers())
         {
             var player = (TPlayer)bplayer;
@@ -35,6 +53,15 @@ public class Main : Resource
         Alt.LogInfo("All players have been saved!");
     }
 
+    public static void SendTimeToPlayer(object state)
+    {
+        var (hour, minute, day, month, year) = GameTimeService.GetCurrentGameDateTime();
+
+        foreach (var player in Alt.GetAllPlayers())
+        {
+            player.Emit("updateTime", hour, minute, day, month, year);
+        }
+    }
 
     // Player Factory
     public override IEntityFactory<IPlayer> GetPlayerFactory()

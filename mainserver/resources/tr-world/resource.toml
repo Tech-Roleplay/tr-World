@@ -4,7 +4,11 @@ deps = [
     'chat'
 ]
 client-type = "csharp"
-client-main = "client/tr-world-client.dll"
+client-main = "client/Release/win-x64/trWorld_client.dll"
 client-files = [
-    "client/*"
+    "client/Release/win-x64/trWorld_client.dll",
+    "client/Release/win-x64/AltV.Net.dll",
+    "client/Release/win-x64/AltV.Net.Client.dll",
+    "client/Release/win-x64/AltV.Net.Shared.dll",
+    "client/Release/win-x64/AltV.Net.CApi.dll"
 ]

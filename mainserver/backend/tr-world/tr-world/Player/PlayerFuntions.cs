@@ -155,6 +155,7 @@ public static class PlayerFuntions
 
         
         //DCLog
+        //Utility.DClog("A Player has been freezed. Player is: " + player.Name, "Freeze-Log", );
     }
 
     /// <summary>

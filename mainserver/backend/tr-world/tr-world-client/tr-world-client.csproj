@@ -1,25 +1,36 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>trWorld_client</RootNamespace>
+    <AssemblyName>trWorld_client</AssemblyName>
+    <OutputType>Library</OutputType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishSingleFile>false</PublishSingleFile>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <ImplicitUsings>enable</ImplicitUsings>
 
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>trWorld_client</RootNamespace>
-        <OutputType>Library</OutputType>
+    <PlatformTarget>x64</PlatformTarget>
+    <BaseOutputPath>S:\tr-world\mainserver\resources\tr-world\client</BaseOutputPath>
+  </PropertyGroup>
 
-        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <PlatformTarget>x64</PlatformTarget>
-        <BaseOutputPath>S:\tr-world\mainserver\resources\tr-world\client</BaseOutputPath>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <OutputPath>S:\tr-world\mainserver\resources\tr-world\client</OutputPath>
-    </PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<OutputPath>S:\tr-world\mainserver\resources\tr-world\client</OutputPath>
-	</PropertyGroup>
-	<ItemGroup>
-	  <PackageReference Include="AltV.Net" Version="16.4.8" />
-	  <PackageReference Include="AltV.Net.Client" Version="16.4.8" />
-	</ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutputPath>S:\tr-world\mainserver\resources\tr-world\client</OutputPath>
+  </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutputPath>S:\tr-world\mainserver\resources\tr-world\client</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AltV.Net.Client" Version="16.4.13" />
+  </ItemGroup>
+
+  <Target Name="CopyAllReferences" AfterTargets="Build">
+    <ItemGroup>
+      <ReferenceCopyPaths Include="@(ReferenceCopyLocalPaths)" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ReferenceCopyPaths)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>
- 

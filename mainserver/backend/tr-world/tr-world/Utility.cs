@@ -27,7 +27,7 @@ public class Utility : IScript
         string url;
         try
         {
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
 
             cmd.CommandText = "SELECT * FROM dc_url WHERE name=@name LIMIT 1";
 

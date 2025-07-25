@@ -16,7 +16,7 @@ public class GarageController : IScript
     {
         try
         {
-            MySqlCommand cmd = trWorld.Databank.Connection.CreateCommand();
+            MySqlCommand cmd = Databank.SqlConnection.CreateCommand();
             cmd.CommandText = "SELECT * FROM garage WHERE garage_id=@garage_id";
             cmd.Parameters.AddWithValue("@garage_id", garageId);
             

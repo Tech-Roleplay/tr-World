@@ -1,33 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Threading.Tasks;
-using AltV.Net;
-using AltV.Net;
+﻿using AltV.Net;
+using AltV.Net.Client;
 using AltV.Net.Client.Elements.Data;
 using AltV.Net.Client.Elements.Entities;
 using AltV.Net.Client.Elements.Interfaces;
 using AltV.Net.Data;
 using AltV.Net.Elements.Entities;
+using AltV.Net.Types;
+using System;
+using System.Collections.Generic;
+using System.Numerics;
+using System.Threading.Tasks;
 using Blip = AltV.Net.Client.Elements.Entities.Blip;
 using Vehicle = AltV.Net.Client.Elements.Entities.Vehicle;
+using static AltV.Net.Client.Natives;
+using IBlip = AltV.Net.Client.Elements.Interfaces.IBlip;
+using Timer = System.Timers.Timer;
 
 namespace trWorld_client;
 
-public class Main : Resource
+public class Main : AltV.Net.Client.Resource
 {
     /// <summary>
     ///     Runs on startup of the resource
     /// </summary>
     public override void OnStart()
     {
+        Console.WriteLine(AppContext.BaseDirectory);
+
         Alt.Log("Hello from Client");
 
         Alt.OnKeyDown += OnKeyDownHandler;
         Alt.OnKeyUp += OnKeyUpHandler;
-       
-        
+
         LoadBlips();
+
+        
     }
 
     /// <summary>
@@ -38,12 +45,54 @@ public class Main : Resource
         base.OnTick();
         Alt.OnServer<Vehicle, int>("SetPlayerIntoVehicle", SetPlayerIntoVeh);
         Alt.OnServer("adminmenu:Show", ShowAdminMenu);
+        Alt.OnServer<string, int>("client:warn:showFullUI", ShowWarning);
         Alt.OnServer<string>("UpdateSpecificPlayer:UpdateJobBlip", LoadJobBlip);
         //Alt.OnServer<float, float, float, uint, uint, float, bool, string>("DEV:CreateBlip", CreatePersonalBilp);
         // Alt.OnServer<List<IBlip>>("LoadBilps", )
         Alt.OnServer("testremoveblip", testremoveblip);
+        
+        // time sync
+
+        // Kamera auf First Person setzen (4)
+        Alt.Natives.SetFollowPedCamViewMode(4);
+
+        // Kamerawechsel mit V blockieren (INPUT_NEXT_CAMERA = 0)
+        Alt.Natives.DisableControlAction(0, 0, true);
+
     }
 
+    private static Timer _closeTimer;
+    
+    /// <summary>
+    /// Zeigt eine Vollbild-Warnmeldung.
+    /// </summary>
+    /// <param name="message">Die Warnmeldung</param>
+    /// <param name="timeout">Optionaler Timeout in Millisekunden (0 = bleibt offen)</param>
+    public static void ShowWarning(string message, int timeout = 400)
+    {
+        // Native: SET_WARNING_MESSAGE(bool entryLine, char* message, char* p1, bool p2, int p3, char* p4, char* p5, bool background, int unk)
+        Alt.EmitClient("native:invoke", "SET_WARNING_MESSAGE", true, message, "", false, -1, null, null, true, 0);
+
+        if (timeout > 0)
+        {
+            _closeTimer?.Stop();
+            _closeTimer = new System.Timers.Timer(timeout);
+            _closeTimer.Elapsed += (_, _) => CloseWarning();
+            _closeTimer.AutoReset = false;
+            _closeTimer.Start();
+        }
+    }
+
+    /// <summary>
+    /// Schließt die Warnmeldung (wenn aktiv).
+    /// </summary>
+    private static void CloseWarning()
+    {
+        Alt.EmitClient("native:invoke", "REMOVE_WARNING_MESSAGE_LIST_ITEMS"); // Entfernt alle UI-Items
+        Alt.EmitClient("native:invoke", "IS_WARNING_MESSAGE_ACTIVE");          // Check, ob sichtbar
+        // Du kannst auch ein Dummy-Update forcieren, um es sofort zu schließen
+    }
+    
     private void testremoveblip()
     {
         blipsList.Clear();
@@ -58,8 +107,13 @@ public class Main : Resource
 
         Alt.OnKeyDown -= OnKeyDownHandler;
         Alt.OnKeyUp -= OnKeyUpHandler;
+        // Kameraeinstellungen
+        Alt.Natives.SetFollowPedCamViewMode(4);
+        Alt.Natives.DisableControlAction(0, 0, true);
     }
+    
     private const string  DISCORD_APP_ID = "1329925312795902003";
+    
     public static async Task GetOAuthToken()
     {
         try
@@ -73,21 +127,28 @@ public class Main : Resource
             Alt.LogError(e.Message);
         }
     }
+
+    private void SyncDateTime(int hour, int minute, int day, int month, int year)
+    {
+        Alt.Natives.SetClockTime(hour, minute, 0);
+        Alt.Natives.SetClockDate(day, month, year);
+    }
+    
     private void LoadJobBlip(string JobName)
     {
         
     }
     
-    private List<Blip> activeBlips = new List<Blip>();
+    private List<Blip> _activeBlips = new List<Blip>();
     private void OnUpdateBlips(List<float[]> blipData)
     {
         // Vorherige Blips entfernen
-        foreach (var blip in activeBlips)
+        foreach (var blip in _activeBlips)
         {
-            activeBlips.Remove(blip);
+            _activeBlips.Remove(blip);
         }
             
-        activeBlips.Clear();
+        _activeBlips.Clear();
 
         // Neue Blips erstellen
         foreach (var data in blipData)
@@ -96,7 +157,7 @@ public class Main : Resource
             newBlip.Sprite = (uint)data[3];
             newBlip.Color = (uint)data[4];
             newBlip.ScaleXY = new Vector2(data[5], data[5]);
-            activeBlips.Add((Blip)newBlip);
+            _activeBlips.Add((Blip)newBlip);
         }
     }
     
@@ -240,6 +301,9 @@ public class Main : Resource
         if (vehicle == null) return;
 
         Alt.Natives.SetPedIntoVehicle(Alt.LocalPlayer, vehicle, -1);
+        
+        
+        
     }
 
     /// <summary>

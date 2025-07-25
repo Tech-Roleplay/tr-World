@@ -1,53 +1,62 @@
 ﻿using System;
-using System.Threading;
 using AltV.Net;
+using MongoDB.Driver;
 using MySqlConnector;
 
-namespace trWorld;
-
-// lot of code for basic constructer from here https://github.com/nSystemz/AltV-C-Tutorial-NemesusTV/blob/main/resources/AltVTutorial/AltVTutorial/Datenbank.cs
-public class Databank : Main
+public static class Databank
 {
-    public static bool DatabankConnection;
-    public static MySqlConnection Connection;
+    public static IMongoClient Client;
+    public static IMongoDatabase MongoDatabase;
+    public static MySqlConnection SqlConnection;
 
-    public Databank()
+    public static bool MongoConnected;
+    public static bool MySQLConnected;
+
+    private static readonly string Host = "localhost";
+    private static readonly string Port = "27017";
+    private static readonly string Username = "root";
+    private static readonly string Password = "";
+    private static readonly string DatabaseName = "altv-server";
+    private static readonly string MongoDBName = "tech-roleplay";
+
+    public static void InitMongo()
     {
-        Host = "localhost";
-        Username = "root";
-        Password = "";
-        Database = "altv-server";
-    }
-
-    public string Host { get; set; }
-    public string Username { get; set; }
-    public string Password { get; set; }
-    public string Database { get; set; }
-
-    public static string GetConnectionString()
-    {
-        var sql = new Databank();
-        var SQLConnection = $"SERVER={sql.Host}; DATABASE={sql.Database}; UID={sql.Username}; Password={sql.Password}";
-        return SQLConnection;
-    }
-
-    public static void InitConnection()
-    {
-        var SQLConnection = GetConnectionString();
-        Connection = new MySqlConnection(SQLConnection);
         try
         {
-            Connection.Open();
-            DatabankConnection = true;
-            Alt.LogWarning("MYSQL connection established successfully!");
+            string connectionString = string.IsNullOrWhiteSpace(Username)
+                ? $"mongodb://{Host}:{Port}"
+                : $"mongodb://{Username}:{Password}@{Host}:{Port}";
+
+            Client = new MongoClient(connectionString);
+            MongoDatabase = Client.GetDatabase(MongoDBName);
+
+            MongoConnected = true;
+            Alt.LogWarning("MongoDB connected.");
         }
         catch (Exception e)
         {
-            DatabankConnection = false;
-            Alt.LogError("MYSQL connection could not be established.");
+            MongoConnected = false;
+            Alt.LogError("MongoDB failed.");
             Alt.LogError(e.ToString());
-            Thread.Sleep(5000);
-            Environment.Exit(0);
+        }
+    }
+
+    public static void InitMySQL()
+    {
+        try
+        {
+            string sqlConnStr = $"SERVER={Host}; DATABASE={DatabaseName}; UID={Username}; Password={Password}";
+            SqlConnection = new MySqlConnection(sqlConnStr);
+            SqlConnection.Open();
+
+            MySQLConnected = true;
+            Alt.LogWarning("MySQL connected.");
+        }
+        catch (Exception e)
+        {
+            MySQLConnected = false;
+            Alt.LogError("MySQL failed.");
+            Alt.LogError(e.ToString());
         }
     }
 }

@@ -17,7 +17,7 @@ public class TPlayerController : IScript
 
         try
         {
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
 
             cmd.CommandText = "SELECT * FROM users WHERE discordid=@discordid LIMIT 1";
 
@@ -119,7 +119,7 @@ public class TPlayerController : IScript
     {
         try
         {
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
             cmd.CommandText = UpdateString;
             cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
             cmd.Parameters.AddWithValue("@name", player.Name);
@@ -161,7 +161,7 @@ public class TPlayerController : IScript
     {
         try
         {
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
             cmd.CommandText =
                 "INSERT INTO users (discordid, name, `permissionlevel`, fname, lname, cash_money, bank_money, sex, height, skin, status, position, metadata, inventory, backstory, job, jobgrade, gang, ganggrade, phone_number, phone) VALUES (@discordid, @name, @permissionlevel, @fname, @lname, @cash_money, @bank_money, @sex, @height, @skin, @status, @position, @metadata, @inventory, @backstory, @job, @jobgrade, @gang, @ganggrade, @phone_number, @phone)";
 
@@ -209,7 +209,7 @@ public class TPlayerController : IScript
     {
         try
         {
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
             cmd.CommandText = "SELECT * FROM users WHERE discordid=@discordid LIMIT 1";
             cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
 
@@ -237,7 +237,7 @@ public class TPlayerController : IScript
     {
         try
         {
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
             cmd.CommandText = "SELECT * FROM ban_list WHERE discordid=@discordid LIMIT 1";
             cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
             using (var reader = cmd.ExecuteReader())
@@ -267,7 +267,7 @@ public class TPlayerController : IScript
     {
         try
         {
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
             cmd.CommandText = "INSERT INTO ban_list (discordid, reason) VALUES (@discordid, @reason)";
             cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
             cmd.Parameters.AddWithValue("@reason", reason);
@@ -281,6 +281,8 @@ public class TPlayerController : IScript
             player.Kick("Internal Error in system.");
         }
     }
+
+
 
 //        public static void 
 }

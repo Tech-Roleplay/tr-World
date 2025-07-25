@@ -1,6 +1,9 @@
-﻿using AltV.Net;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AltV.Net;
 using AltV.Net.Data;
 using AltV.Net.Resources.Chat.Api;
+using tr_world.Config;
 using trWorld.Config;
 using trWorld.Player;
 using trWorld.Vehicle;
@@ -9,6 +12,50 @@ namespace trWorld;
 
 public class Commands : IScript
 {
+    private static readonly string[] blacklistVehicles = {
+        "rhino",            // Panzer
+        "hydra",            // Jet mit Raketen
+        "lazer",            // Kampfjet
+        "buzzard",          // Kampfhelikopter mit Raketen
+        "annihilator",      // Schwer bewaffneter Heli
+        "insurgent",        // Militärfahrzeug mit Geschütz
+        "insurgent2",       // Mit Geschützturm
+        "nightshark",       // Bewaffnetes SUV
+        "technical",        // Pickup mit MG
+        "technical2",       // Technischer Pickup
+        "technical3",       // Panzerpickup
+        "oppressor",        // Raketen-Motorrad
+        "oppressor2",       // MK2 mit Lenkraketen
+        "deluxo",           // Fliegendes Auto mit Waffen
+        "phantom2",         // Bewaffneter Truck
+        "chernobog",        // Raketenwerfer-Fahrzeug
+        "trailersmall2",    // Raketenplattform
+        "tampa3",           // Bewaffneter Muscle-Car
+        "halftrack",        // Halbkettenfahrzeug mit MG
+        "apc",              // Schwimmfähiger Schützenpanzer
+        "barrage",          // Offroad mit Bewaffnung
+        "menacer",          // SUV mit Maschinengewehr
+        "revolter",         // Sportwagen mit MG
+        "scramjet",         // Raketenauto mit Waffen
+        "bruiser",          // Arena-War-Fahrzeuge (Mad Max Style)
+        "brutus",           // Arena-War
+        "cerberus",         // Bewaffneter Truck (Arena-War)
+        "deathbike",        // Arena-War-Motorrad mit Waffen
+        "dominator4",       // Arena-War Muscle-Car
+        "impaler2",         // Arena-War Lowrider
+        "monster5",         // Arena-War Monstertruck
+        "zr380",            // Arena-War Sportwagen
+        "strikeforce",      // Kampfflugzeug
+        "alkonost",         // Tarnbomber
+        "volatol",          // Bomber
+        "toreador",         // U-Boot-Auto mit Raketen
+        "vetir",            // Militärtruck
+        "kosatka",          // U-Boot mit Raketen (eig. kein „Fahrzeug“, aber relevant für Realismus)
+        "ruiner2",          // Ruiner 2000 mit Raketen und Fallschirm
+        "thruster",         // Jetpack
+        "wastelander",      // Postapokalyptisches Fahrzeug
+    };
+    
     [CommandEvent(CommandEventType.CommandNotFound)]
     public void CommandNotFound(TPlayer player, string cmd)
     {
@@ -18,18 +65,22 @@ public class Commands : IScript
     // Dev 
     // create peronal bo
     [Command("cpb")]
-    public void Cpb(TPlayer player, 
-        string name = "")
+    public void Cpb(TPlayer player, string name = "")
     {
         player.Emit("DEV:CreateBlip", player.Position.X,player.Position.Y,player.Position.Z, 835, 49, 1.0f, false, name );
     }
     
     // Very basic Commands for Administration
     [Command("warn")]
-    public void CMD_warn(TPlayer player, uint targetid, string Reason)
+    public void CMD_warn(TPlayer player, uint targetid, string reason)
     {
         if (!player.HasPlayerPermission((int)TPermission.Administrator))
         {
+            foreach (var player1 in Alt.GetAllPlayers())
+            {
+                var p = (TPlayer)player1;
+                if (targetid == p.Id) p.Emit("client:warn:showFullUI", reason, 4000);
+            }
         }
 
         // emit event
@@ -80,8 +131,20 @@ public class Commands : IScript
     [Command("veh", aliases: new[] { "car", "auto", "vehicle" })]
     public void CMD_veh(TPlayer player, string VehicleName)
     {
-        if (!player.HasPlayerPermission((int)TPermission.Moderator)) return;
+        // removed 
+        //if (!player.HasPlayerPermission((int)TPermission.Moderator)) return;
+        
+        if (blacklistVehicles.Contains(VehicleName.ToLower()))
+        {
+            if (!player.HasPlayerPermission((int)TPermission.Moderator))
+            {
+                player.SendChatMessage("{FF0000} The specified vehicle is blacklisted.");
+                return;
+            }
+                
+        }
 
+        
         if (!string.IsNullOrWhiteSpace(VehicleName))
         {
             var veh = (BVehicle)Alt.CreateVehicle(Alt.Hash(VehicleName),

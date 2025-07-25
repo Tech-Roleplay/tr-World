@@ -11,7 +11,7 @@ public class ShopController : IScript
         try
         {
             var shop = new Shop();
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
 
             cmd.CommandText = "SELECT * FROM shops WHERE name=@name LIMIT 1";
 

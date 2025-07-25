@@ -17,7 +17,7 @@ public class GangController : IScript
     {
         try
         {
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
 
             cmd.CommandText = "SELECT * FROM gangs WHERE name=@name LIMIT 1";
             cmd.Parameters.AddWithValue("@name", gangName);
@@ -50,7 +50,7 @@ public class GangController : IScript
         ReturnGangClass returnGangClass = new();
         try
         {
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
             cmd.CommandText = "SELECT * FROM gang_grades WHERE gang_name=@gang_name AND grade=@grade";
             cmd.Parameters.AddWithValue("@gang_name", gangName);
             cmd.Parameters.AddWithValue("@grade", grade);

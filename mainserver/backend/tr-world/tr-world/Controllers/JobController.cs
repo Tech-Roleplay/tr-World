@@ -9,7 +9,7 @@ public abstract class JobController : IScript
     {
         try
         {
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
 
             cmd.CommandText = "SELECT * FROM jobs WHERE name=@name LIMIT 1";
             cmd.Parameters.AddWithValue("@name", jobName);
@@ -42,7 +42,7 @@ public abstract class JobController : IScript
     {
         try
         {
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
             cmd.CommandText = "SELECT * FROM job_grades WHERE job_name=@job_name AND grade=@grade";
             cmd.Parameters.AddWithValue("@job_name", jobname);
             cmd.Parameters.AddWithValue("@grade", grade);
@@ -86,7 +86,7 @@ public abstract class JobController : IScript
     {
         try
         {
-            var cmd = Databank.Connection.CreateCommand();
+            var cmd = Databank.SqlConnection.CreateCommand();
             cmd.CommandText = "SELECT * FROM job_blips WHERE job_name=@job_name AND grade=@grade";
             cmd.Parameters.AddWithValue("@job_name", jobName);
             cmd.Parameters.AddWithValue("@grade", jobGrade);
