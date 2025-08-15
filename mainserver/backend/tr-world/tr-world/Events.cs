@@ -16,26 +16,29 @@ public class Events : IScript
     [ScriptEvent(ScriptEventType.PlayerConnect)]
     public void PlayerConnect(TPlayer player, string reason)
     {
-        if (player.DiscordId == 0) player.Kick("No Discord Account founded.");
-
-        if (TPlayerController.IsPlayerBanned(player)) return;
+        if (player.SocialClubId == 0) 
+        {
+            player.Kick("Hey, Rockstar Launcher is not working");
+            return;
+        }
 
         player.Spawn((uint)PedModel.FreemodeMale01, new Position(0, 0, 72));
 
         AltChat.SendBroadcast($"[{player.Id}] The Player {player.Name} has joined the Server. Welcome.");
         Alt.Log(
-            $"[{player.Id}] The Player {player.Name} has joined the Server. Discord-ID is: {player.DiscordId}. Welcome.");
+            $"[{player.Id}] The Player {player.Name} has joined the Server. Rockstar-ID is: {player.SocialClubId}. Welcome.");
 
         Utility.DClog(
-            $"[{player.Id}] The Player {player.Name} has joined the Server. Welcome. Discord-ID is: <@{player.DiscordId}>.",
+            $"[{player.Id}] The Player {player.Name} has joined the Server. Welcome. Rockstar-ID is {player.SocialClubId}.",
             "Join-Log", secret.URL_Join, "https://altv.mp/img/branding/logo_black.png", true);
 
-        if (TPlayerController.HasTPlayerAccount(player))
-            TPlayerController.LoadTPlayerData(player);
-        else
-            TPlayerController.CreateTPlayerAccount(player);
-        //TPlayerController.LoadTPlayerData(player, );
+        // Spieler-Daten laden oder neu erstellen
+        if (!MongoTPlayerController.HasTPlayerAccount(player.SocialClubId.ToString())) 
+            MongoTPlayerController.CreateTPlayerAccount(player);
+    
+        MongoTPlayerController.LoadTPlayerData(player);
     }
+
 
     [ScriptEvent(ScriptEventType.PlayerDisconnect)]
     public void PlayerDisconnect(TPlayer player, string reason)
@@ -43,13 +46,13 @@ public class Events : IScript
         if (reason == string.Empty) reason = "disconnected by user or else";
         //AltChat.SendBroadcast($"[{player.Id}] The Player {player.Name} has left the Server. Bye.");
         Alt.Log(
-            $"[{player.Id}] The Player {player.Name} has left the Server. Discord-ID is: {player.DiscordId}. Bye. Of Reason: {reason}.");
+            $"[{player.Id}] The Player {player.Name} has left the Server. Discord-ID is: {player.SocialClubId}. Bye. Of Reason: {reason}.");
 
         Utility.DClog(
-            $"[{player.Id}] The Player {player.Name} has left the Server. Discord-ID is: <@{player.DiscordId}>. Bye. Of Reason: {reason}.",
+            $"[{player.Id}] The Player {player.Name} has left the Server. Discord-ID is: <@{player.SocialClubId}>. Bye. Of Reason: {reason}.",
             "Disconnect-Log", secret.URL_Join, "https://altv.mp/img/branding/logo_black.png", true);
 
-        TPlayerController.SaveTPlayerData(player);
+        MongoTPlayerController.SaveTPlayerData(player);
     }
 
     // death handle || only for dev

@@ -15,7 +15,8 @@ public static class Databank
     private static readonly string Host = "localhost";
     private static readonly string Port = "27017";
     private static readonly string Username = "root";
-    private static readonly string Password = "";
+    private static readonly string Password = "TheBlokker";
+    private static readonly string PasswordMySQL = "";
     private static readonly string DatabaseName = "altv-server";
     private static readonly string MongoDBName = "tech-roleplay";
 
@@ -45,7 +46,7 @@ public static class Databank
     {
         try
         {
-            string sqlConnStr = $"SERVER={Host}; DATABASE={DatabaseName}; UID={Username}; Password={Password}";
+            string sqlConnStr = $"SERVER={Host}; DATABASE={DatabaseName}; UID={Username}; Password={PasswordMySQL}";
             SqlConnection = new MySqlConnection(sqlConnStr);
             SqlConnection.Open();
 

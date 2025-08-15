@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AltV.Net;
 using AltV.Net.Data;
@@ -62,6 +63,16 @@ public class Commands : IScript
         player.SendChatMessage("{FF0000}Command not found: " + cmd);
     }
 
+    [Command("login")]
+    public void Login(TPlayer player, string discordTag)
+    {
+        // Random Code generieren
+        string code = new Random().Next(100000, 999999).ToString();
+        
+        
+    }
+    
+    
     // Dev 
     // create peronal bo
     [Command("cpb")]
@@ -159,7 +170,7 @@ public class Commands : IScript
 
                 //Log
                 player.SendChatMessage($"[Vehicle] The {VehicleName} spawned.");
-                Utility.DClog($"{player.Name}(<@{player.DiscordId}>) has spawned a new vehicle: a/an {VehicleName}",
+                Utility.DClog($"{player.Name}({player.SocialClubId}) has spawned a new vehicle: a/an {VehicleName}",
                     "Vehicle Spawner", secret.URL_VehSpawner, "https://th.bing.com/th/id/OIP.kgO6McTklBzmVlcSH4w-2wHaHa?rs=1&pid=ImgDetMain", true);
                 player.Emit("SetPlayerIntoVehicle", veh, 1);
                 player.SetIntoVehicle(veh, 1);

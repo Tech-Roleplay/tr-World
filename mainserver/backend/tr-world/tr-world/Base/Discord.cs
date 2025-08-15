@@ -9,6 +9,9 @@ namespace trWorld.Base;
 // Discord Class
 public class Discord : IScript
 {
+    
+    
+    
     private static readonly HttpClient HttpClient = new HttpClient();
 
     [ClientEvent("token")]

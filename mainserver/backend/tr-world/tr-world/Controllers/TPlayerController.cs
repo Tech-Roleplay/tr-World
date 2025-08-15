@@ -1,288 +1,123 @@
-﻿using System;
-using System.Text.Json;
-using AltV.Net;
+﻿using AltV.Net.Data;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
 using trWorld.Models;
 using trWorld.Player;
 
 namespace trWorld.Controllers;
 
-public class TPlayerController : IScript
+public class TPlayerModel
 {
-    private const string UpdateString =
-        "UPDATE users SET discordid=@discordid, name=@name, `permissionlevel`=@permissionlevel, fname=@fname, lname=@lname, bank_money=@bank_money, cash_money=@cash_money, sex=@sex, height=@height, skin=@skin, status=@status, position=@position, metadata=@metadata, inventory=@inventory, backstory=@backstory, disabled=@disabled, main_property=@main_property, job=@job, jobgrade=@jobgrade, gang=@gang, ganggrade=@ganggrade, phone_number=@phone_number, phone=@phone, iban=@iban, callsign=@callsign WHERE discordid=@discordid LIMIT 1";
+    [BsonId] // Marks this as the MongoDB _id
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
+    public int Permission { get; set; }
+    public string Firstname { get; set; }
+    public string Surname { get; set; }
+    public char Sex { get; set; }
+    public int Height { get; set; }
+    public string Skin { get; set; }
+    public Position Position { get; set; }
+    public TMetadata Metadata { get; set; }
+    public string Backstory { get; set; }
+    public TJob Job { get; set; }
+    public TGang Gang { get; set; }
+    public Phone Phone { get; set; }
 
-    public static void LoadTPlayerData(TPlayer player)
+    public string SocialClubId { get; set; }
+
+    public string Name { get; set; }
+    // weitere Felder...
+}
+
+
+public static class MongoTPlayerController
+{
+    private static readonly IMongoCollection<TPlayerModel> _players =
+        Databank.MongoDatabase.GetCollection<TPlayerModel>("players");
+
+    public static bool HasTPlayerAccount(string socialClubId)
     {
-        // try & catch function
-
-        try
-        {
-            var cmd = Databank.SqlConnection.CreateCommand();
-
-            cmd.CommandText = "SELECT * FROM users WHERE discordid=@discordid LIMIT 1";
-
-            cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
-
-            using (var reader = cmd.ExecuteReader())
-            {
-                if (reader.HasRows)
-                {
-                    reader.Read();
-                    //player.DiscordId;
-
-                    //player.SetMetaData("user:discordid", reader.GetInt64("discordid"));
-                    //player.Name = reader.GetString("name");
-                    player.Permission = reader.GetInt32("permissionlevel");
-
-                    player.Firstname = reader.GetString("fname");
-                    player.Surname = reader.GetString("lname");
-
-                    player.CashBalance = reader.GetInt32("cash_money");
-                    player.BankBalance = reader.GetInt32("bank_money");
-
-                    player.Sex = reader.GetChar("sex");
-                    player.Height = reader.GetByte("height");
-
-                    player.sInventory = reader.GetString("inventory");
-
-                    player.Backstory = reader.GetString("backstory");
-
-
-                    var jsonMetadata = reader.GetString("metadata");
-                    player.Metadata = JsonSerializer.Deserialize<TMetadata>(jsonMetadata);
-
-                    var disabled = reader.GetBoolean("disabled");
-
-                    // Jobs
-                    var jobname = reader.GetString("job");
-                    int jobgrade = reader.GetUInt16("jobgrade");
-                    // gang
-                    var gangname = reader.GetString("gang");
-                    int ganggrade = reader.GetUInt16("ganggrade");
-
-
-                    //player.VehKeysID = reader.GetString("vehkeysid",);
-
-                    player.Skin = reader.GetString("skin");
-
-                    player.Phone.Number = reader.GetInt32("phone_number");
-                    var jsonPhone = reader.GetString("phone");
-                    player.Phone = JsonSerializer.Deserialize<Phone>(jsonPhone);
-
-                    //iban
-                    //callsign
-
-                    reader.Close();
-
-                    //job 2
-                    var jobobj = JobController.LoadJobDetailsFromDb(jobname);
-                    var jobgradeobj = JobController.LoadJobGradeFromDb(jobname, jobgrade);
-
-
-                    player.Job.Name = jobname;
-                    player.Job.GradeLevel = (uint)jobgrade;
-                    player.Job.Label = (string)jobobj[0];
-                    player.Job.GradeName = (string)jobgradeobj[0];
-                    player.Job.GradeLabel = (string)jobgradeobj[1];
-                    player.Job.Payment = (uint)jobgradeobj[2];
-                    player.Job.SkinMale = (string)jobgradeobj[3];
-                    player.Job.SkinFemale = (string)jobgradeobj[4];
-
-                    // gang 2
-                    var returnGangClass = GangController.LoadGangGradeFromDb(gangname, ganggrade);
-
-                    player.Gang.Name = gangname;
-                    player.Gang.GradeLevel = (uint)ganggrade;
-                    player.Gang.Label = GangController.LoadGangDetailsFromDb(gangname);
-                    player.Gang.GradeName = returnGangClass.Name;
-                    player.Gang.GradeLabel = returnGangClass.Label;
-                    player.Gang.SkinMale = returnGangClass.SkinMale;
-                    player.Gang.SkinFemale = returnGangClass.SkinFemale;
-
-
-                    Alt.Log($"Sucessfully loading playerdata for (${player.Name})!");
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Alt.LogError("ERROR == ERROR == ERROR");
-            Alt.LogError(e.ToString());
-        }
-    }
-
-    /// <summary>
-    ///     Save the player-data
-    /// </summary>
-    /// <param name="player">the player</param>
-    public static void SaveTPlayerData(TPlayer player)
-    {
-        try
-        {
-            var cmd = Databank.SqlConnection.CreateCommand();
-            cmd.CommandText = UpdateString;
-            cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
-            cmd.Parameters.AddWithValue("@name", player.Name);
-            cmd.Parameters.AddWithValue("@permissionlevel", player.Permission);
-            cmd.Parameters.AddWithValue("@fname", player.Firstname);
-            cmd.Parameters.AddWithValue("@lname", player.Surname);
-            cmd.Parameters.AddWithValue("@cash_money", player.CashBalance);
-            cmd.Parameters.AddWithValue("@bank_money", player.BankBalance);
-            cmd.Parameters.AddWithValue("@sex", player.Sex);
-            cmd.Parameters.AddWithValue("@height", player.Height);
-            cmd.Parameters.AddWithValue("@skin", player.Skin);
-//              cmd.Parameters.AddWithValue("@status", player.Status);
-            var jsonPosition = JsonSerializer.Serialize(player.Position.Normalized);
-            cmd.Parameters.AddWithValue("@position", jsonPosition);
-            player.Metadata.LastUpdate = DateTime.Now;
-            var jsonMetadata = JsonSerializer.Serialize(player.Metadata);
-            cmd.Parameters.AddWithValue("@backstory", jsonMetadata);
-            cmd.Parameters.AddWithValue("@inventory", player.sInventory);
-            cmd.Parameters.AddWithValue("@backstory", player.Backstory);
-            cmd.Parameters.AddWithValue("@job", player.Job.Name);
-            cmd.Parameters.AddWithValue("@jobgrade", player.Job.GradeLevel);
-            cmd.Parameters.AddWithValue("@gang", player.Gang.Name);
-            cmd.Parameters.AddWithValue("@ganggrade", player.Gang.GradeLevel);
-            cmd.Parameters.AddWithValue("@phone_number", player.Phone.Number);
-            var jsonPhone = JsonSerializer.Serialize(player.Phone);
-            cmd.Parameters.AddWithValue("@phone", jsonPhone);
-
-
-            cmd.ExecuteNonQuery();
-        }
-        catch (Exception e)
-        {
-            Alt.LogError("ERROR == ERROR == ERROR");
-            Alt.LogError(e.ToString());
-        }
+        var indexKeys = Builders<TPlayerModel>.IndexKeys.Ascending(p => p.SocialClubId);
+        _players.Indexes.CreateOne(new CreateIndexModel<TPlayerModel>(indexKeys));
+        return _players.CountDocuments(p => p.SocialClubId == socialClubId) > 0;
     }
 
     public static void CreateTPlayerAccount(TPlayer player)
     {
-        try
-        {
-            var cmd = Databank.SqlConnection.CreateCommand();
-            cmd.CommandText =
-                "INSERT INTO users (discordid, name, `permissionlevel`, fname, lname, cash_money, bank_money, sex, height, skin, status, position, metadata, inventory, backstory, job, jobgrade, gang, ganggrade, phone_number, phone) VALUES (@discordid, @name, @permissionlevel, @fname, @lname, @cash_money, @bank_money, @sex, @height, @skin, @status, @position, @metadata, @inventory, @backstory, @job, @jobgrade, @gang, @ganggrade, @phone_number, @phone)";
-
-            cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
-            cmd.Parameters.AddWithValue("@name", player.Name);
-            cmd.Parameters.AddWithValue("@permissionlevel", player.Permission);
-            cmd.Parameters.AddWithValue("@fname", player.Firstname);
-            cmd.Parameters.AddWithValue("@lname", player.Surname);
-            cmd.Parameters.AddWithValue("@cash_money", player.CashBalance);
-            cmd.Parameters.AddWithValue("@bank_money", player.BankBalance);
-            cmd.Parameters.AddWithValue("@sex", player.Sex);
-            cmd.Parameters.AddWithValue("@height", player.Height);
-            cmd.Parameters.AddWithValue("@skin", player.Skin);
-            cmd.Parameters.AddWithValue("@status", "n/n");
-            // Serialize position as a JSON object
-            var jsonPosition =
-                JsonSerializer.Serialize(new { player.Position.X, player.Position.Y, player.Position.Z });
-            cmd.Parameters.AddWithValue("@position", jsonPosition);
-
-            // Serialize metadata and phone as JSON
-            var jsonMetadata = JsonSerializer.Serialize(player.Metadata);
-            cmd.Parameters.AddWithValue("@metadata", jsonMetadata);
-
-            var jsonPhone = JsonSerializer.Serialize(player.Phone);
-            cmd.Parameters.AddWithValue("@phone", jsonPhone);
-
-            cmd.Parameters.AddWithValue("@inventory", player.sInventory);
-            cmd.Parameters.AddWithValue("@backstory", player.Backstory);
-            cmd.Parameters.AddWithValue("@job", player.Job.Name);
-            cmd.Parameters.AddWithValue("@jobgrade", player.Job.GradeLevel);
-            cmd.Parameters.AddWithValue("@gang", player.Gang.Name);
-            cmd.Parameters.AddWithValue("@ganggrade", player.Gang.GradeLevel);
-            cmd.Parameters.AddWithValue("@phone_number", player.Phone.Number);
-
-            cmd.ExecuteNonQuery();
-        }
-        catch (Exception e)
-        {
-            Alt.LogError("ERROR == ERROR == ERROR");
-            Alt.LogError(e.ToString());
-        }
+        var model = ConvertToModel(player);
+        _players.InsertOne(model);
     }
 
-    public static bool HasTPlayerAccount(TPlayer player)
+    public static void SaveTPlayerData(TPlayer player)
     {
-        try
-        {
-            var cmd = Databank.SqlConnection.CreateCommand();
-            cmd.CommandText = "SELECT * FROM users WHERE discordid=@discordid LIMIT 1";
-            cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
+        var model = ConvertToModel(player);
+        var filter = Builders<TPlayerModel>.Filter.Eq(p => p.SocialClubId, model.SocialClubId);
+        var update = Builders<TPlayerModel>.Update
+            .Set(p => p.Name, model.Name)
+            .Set(p => p.Permission, model.Permission)
+            .Set(p => p.Firstname, model.Firstname)
+            .Set(p => p.Surname, model.Surname)
+            .Set(p => p.Sex, model.Sex)
+            .Set(p => p.Height, model.Height)
+            .Set(p => p.Skin, model.Skin)
+            .Set(p => p.Position, model.Position)
+            .Set(p => p.Metadata, model.Metadata)
+            .Set(p => p.Backstory, model.Backstory)
+            .Set(p => p.Job, model.Job)
+            .Set(p => p.Gang, model.Gang)
+            .Set(p => p.Phone, model.Phone);
+    
+        _players.UpdateOne(filter, update, new UpdateOptions { IsUpsert = true });
 
-            using (var reader = cmd.ExecuteReader())
-            {
-                if (reader.HasRows)
-                {
-                    reader.Close();
-                    return true;
-                }
-
-                reader.Close();
-                return false;
-            }
-        }
-        catch (Exception e)
-        {
-            Alt.LogError("ERROR == ERROR == ERROR");
-            Alt.LogError(e.ToString());
-            return false;
-        }
     }
 
-    public static bool IsPlayerBanned(TPlayer player)
+    public static bool LoadTPlayerData(TPlayer player)
     {
-        try
-        {
-            var cmd = Databank.SqlConnection.CreateCommand();
-            cmd.CommandText = "SELECT * FROM ban_list WHERE discordid=@discordid LIMIT 1";
-            cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
-            using (var reader = cmd.ExecuteReader())
-            {
-                if (!reader.HasRows)
-                {
-                    reader.Close();
-                    return false;
-                }
+        var model = _players.Find(p => p.SocialClubId == player.SocialClubId.ToString()).FirstOrDefault();
+        if (model == null) return false;
 
-                player.Kick("You are already banned. Reason was: " + reader.GetString("reason"));
-                reader.Close();
-                return true;
-            }
-        }
-        catch (Exception e)
-        {
-            Alt.LogError("ERROR == ERROR == ERROR");
-            Alt.LogError(e.ToString());
-            player.Kick("Internal Error in system");
+        // Eigenschaften zurückschreiben
+        //player.Name = model.Name;
+        player.Permission = model.Permission;
+        player.Firstname = model.Firstname;
+        player.Surname = model.Surname;
+        player.Sex = model.Sex;
+        player.Height = model.Height;
+        player.Skin = model.Skin;
+        player.Position = model.Position;
+        player.Metadata = model.Metadata;
+        player.Backstory = model.Backstory;
+        player.Job = model.Job;
+        player.Gang = model.Gang;
+        player.Phone = model.Phone;
 
-            return false;
-        }
+        return true;
     }
 
-    public static void AddPlayerToBanList(TPlayer player, string reason)
+
+    private static TPlayerModel ConvertToModel(TPlayer player)
     {
-        try
+        return new TPlayerModel
         {
-            var cmd = Databank.SqlConnection.CreateCommand();
-            cmd.CommandText = "INSERT INTO ban_list (discordid, reason) VALUES (@discordid, @reason)";
-            cmd.Parameters.AddWithValue("@discordid", player.DiscordId);
-            cmd.Parameters.AddWithValue("@reason", reason);
-
-            cmd.ExecuteNonQuery();
-        }
-        catch (Exception e)
-        {
-            Alt.LogError("ERROR == ERROR == ERROR");
-            Alt.LogError(e.ToString());
-            player.Kick("Internal Error in system.");
-        }
+            SocialClubId = player.SocialClubId.ToString(),
+            Name = player.Name,
+            Permission = player.Permission,
+            Firstname = player.Firstname,
+            Surname = player.Surname,
+            Sex = player.Sex,
+            Height = player.Height,
+            Skin = player.Skin,
+            //Metadata.Status = "n/n",
+            Position = player.Position,
+            Metadata = player.Metadata,
+           // Inventory = player.sInventory ?? new Inventory() "{}",
+            Backstory = player.Backstory,
+            Job = (TJob)player.Job,
+            Gang = (TGang)player.Gang,
+            Phone = player.Phone,
+            //Phone.Number = player.Phone.Number
+        };
     }
-
-
-
-//        public static void 
 }

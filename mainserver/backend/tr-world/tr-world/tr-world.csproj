@@ -17,6 +17,9 @@
     <ItemGroup>
         <PackageReference Include="AltV.Net" Version="16.4.13" />
         <PackageReference Include="AltV.Net.Resources.Chat.Api" Version="16.4.13" />
+        <PackageReference Include="DSharpPlus" Version="4.5.1" />
+        <PackageReference Include="DSharpPlus.Interactivity" Version="4.5.1" />
+        <PackageReference Include="DSharpPlus.SlashCommands" Version="4.5.1" />
         <PackageReference Include="MongoDB.Bson" Version="3.4.0" />
         <PackageReference Include="MongoDB.Driver" Version="3.4.0" />
         <PackageReference Include="MySqlConnector" Version="2.4.0" />

@@ -202,7 +202,7 @@ public static class PlayerFuntions
     public static void Ban(this TPlayer player, string reason)
     {
         // BanFunc
-        TPlayerController.AddPlayerToBanList(player, reason);
+        //TPlayerController.AddPlayerToBanList(player, reason);
         player.Kick("Ban: " + reason);
 
         //DCLog
